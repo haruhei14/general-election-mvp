@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { BarChart3, Award, History } from 'lucide-react';
+import { BarChart3, Award, History, Home, PlusCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export function Navbar() {
@@ -44,39 +44,42 @@ export function Navbar() {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/60">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
-                <Link href="/" className="flex items-center space-x-2 group">
-                    <BarChart3 className="h-6 w-6 text-blue-600 group-hover:rotate-12 transition-transform" />
-                    <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                <Link href="/" className="flex items-center space-x-1.5 group flex-shrink-0">
+                    <BarChart3 className="h-5 w-5 md:h-6 md:w-6 text-blue-600 group-hover:rotate-12 transition-transform" />
+                    <span className="text-lg md:text-xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hidden xs:inline-block">
                         なんでも総選挙
                     </span>
                 </Link>
 
-                <nav className="flex items-center gap-4 md:gap-8">
+                <nav className="flex items-center gap-2 md:gap-6">
                     {/* Achievement Badge */}
-                    <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100 shadow-sm">
-                        <Award className={`w-4 h-4 ${rank.color}`} />
+                    <div className="flex items-center gap-1.5 bg-slate-50 px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-slate-100 shadow-sm flex-shrink-0">
+                        <Award className={`w-3.5 h-3.5 md:w-4 md:h-4 ${rank.color}`} />
                         <div className="flex flex-col items-start leading-none">
-                            <span className={`text-[10px] font-bold uppercase tracking-tighter ${rank.color}`}>
+                            <span className={`text-[8px] md:text-[10px] font-bold uppercase tracking-tighter ${rank.color} hidden sm:inline`}>
                                 {rank.label}
                             </span>
-                            <span className="text-xs font-bold text-slate-700">
-                                {voteCount} 投票
+                            <span className="text-[10px] md:text-xs font-bold text-slate-700">
+                                {voteCount}<span className="hidden xs:inline"> 投票</span>
                             </span>
                         </div>
                     </div>
 
-                    <Link href="/" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
-                        ホーム
+                    <Link href="/" className="p-2 md:px-0 text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1.5">
+                        <Home className="w-5 h-5 md:w-4 md:h-4" />
+                        <span className="text-sm font-bold hidden md:inline">ホーム</span>
                     </Link>
-                    <Link href="/my-votes" className="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1.5">
-                        <History className="w-4 h-4 text-blue-500" />
-                        マイレポート
+
+                    <Link href="/my-votes" className="p-2 md:px-0 text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1.5">
+                        <History className="w-5 h-5 md:w-4 md:h-4 text-blue-500" />
+                        <span className="text-sm font-bold hidden md:inline">マイレポート</span>
                     </Link>
                     <Link
                         href="/poll/create"
-                        className="hidden sm:inline-flex items-center justify-center rounded-full bg-blue-600 px-4 py-1.5 text-sm font-medium text-white shadow-md hover:bg-blue-700 transition-colors"
+                        className="flex items-center justify-center rounded-full bg-blue-600 p-2 md:px-4 md:py-1.5 text-sm font-medium text-white shadow-md hover:bg-blue-700 transition-colors"
                     >
-                        投票をつくる
+                        <PlusCircle className="w-5 h-5 md:hidden" />
+                        <span className="hidden md:inline">投票をつくる</span>
                     </Link>
                 </nav>
             </div>
