@@ -21,9 +21,9 @@ export default async function Home(props: { searchParams: Promise<{ genre?: stri
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-blue-900/90 to-indigo-900/40" />
 
         <div className="relative z-10 max-w-2xl">
-          <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">
-            みんなの「好き」が<br />
-            ここにある。
+          <h1 className="text-3xl md:text-5xl font-black mb-4 leading-tight">
+            <span className="inline-block">みんなの「好き」が</span>
+            <span className="inline-block">ここにある。</span>
           </h1>
           <p className="text-blue-100 text-lg mb-8 opacity-95">
             日常の選択から究極の決断まで。あなたの1票が日本のスタンダードを決めるかもしれません。
