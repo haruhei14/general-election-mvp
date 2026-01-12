@@ -3,7 +3,8 @@
 import { PollOption } from '@/lib/data';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Check, Users } from 'lucide-react';
+import { Check, Users, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 export function VoteVisualization({
     pollId,
@@ -15,6 +16,12 @@ export function VoteVisualization({
     votedOptionId?: string | null
 }) {
     const [options, setOptions] = useState<PollOption[]>(initialOptions);
+    const [hasVotedLocally, setHasVotedLocally] = useState(false);
+
+    useEffect(() => {
+        const voted = localStorage.getItem(`vote_${pollId}`);
+        if (voted) setHasVotedLocally(true);
+    }, [pollId]);
 
     useEffect(() => {
         // Fetch latest results to stay in sync
@@ -100,6 +107,18 @@ export function VoteVisualization({
                     );
                 })}
             </div>
+
+            {(votedOptionId || hasVotedLocally) && (
+                <div className="pt-6 animate-in slide-in-from-bottom-2 duration-500">
+                    <Link
+                        href="/api/poll/random"
+                        className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-slate-900 text-white font-black text-lg hover:bg-slate-800 transition-all shadow-xl active:scale-95"
+                    >
+                        次のお題に進む
+                        <ArrowRight className="w-5 h-5" />
+                    </Link>
+                </div>
+            )}
         </div>
     );
 }

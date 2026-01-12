@@ -105,14 +105,6 @@ export default async function PollPage(props: Props) {
                             </h4>
                             <VoteVisualization pollId={poll.id} initialOptions={poll.options} />
 
-                            <Link
-                                href="/api/poll/random"
-                                className="mt-8 w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-slate-900 text-white font-black text-lg hover:bg-slate-800 transition-all shadow-xl active:scale-95"
-                            >
-                                次のお題に進む
-                                <ArrowRight className="w-5 h-5" />
-                            </Link>
-
                             <div className="mt-8 p-4 bg-slate-50 rounded-xl border border-slate-100">
                                 <p className="text-xs text-slate-500 leading-relaxed">
                                     ※投票は匿名で行われ、ブラウザのCookie/LocalStorageを使用して多重投票を制限しています。より公正な結果を提供するため、不正なアクセスは集計から除外される場合があります。
