@@ -1,0 +1,24 @@
+{
+    "polls": [
+        {
+            "id": "sea-vs-mountain",
+            "title": "好きなのは？海 or 山",
+            "description": "あなたの休日の理想の過ごし方に近いのはどっち？",
+            "genre": "自然",
+            "createdAt": "2024-01-01T00:00:00.000Z",
+            "options": [
+                {
+                    "id": "opt-sea",
+                    "label": "海",
+                    "votes": 0
+                },
+                {
+                    "id": "opt-mountain",
+                    "label": "山",
+                    "votes": 0
+                }
+            ]
+        }
+    ],
+    "comments": []
+}

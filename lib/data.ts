@@ -64,15 +64,30 @@ async function ensureDb() {
     }
 }
 
+let memoryDb: DataSchema | null = null;
+
 async function readDb(): Promise<DataSchema> {
-    await ensureDb();
-    const data = await fs.readFile(DB_PATH, 'utf-8');
-    return JSON.parse(data);
+    if (memoryDb) return memoryDb;
+
+    try {
+        const data = await fs.readFile(DB_PATH, 'utf-8');
+        memoryDb = JSON.parse(data);
+        return memoryDb!;
+    } catch (e) {
+        console.error("Read DB Error, using initial data:", e);
+        memoryDb = INITIAL_DATA;
+        return INITIAL_DATA;
+    }
 }
 
 async function writeDb(data: DataSchema) {
-    await ensureDb();
-    await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
+    memoryDb = data;
+    try {
+        await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
+    } catch (e) {
+        // On Vercel, this will fail. We just log it and continue with memoryDb.
+        console.warn("Write DB Warning (Normal on Vercel):", e);
+    }
 }
 
 export async function getPolls(genre?: string): Promise<Poll[]> {
