@@ -45,20 +45,23 @@ export function Navbar() {
         <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/60">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
                 <Link href="/" className="flex items-center space-x-1 sm:space-x-1.5 group flex-shrink-0">
-                    <BarChart3 className="h-5 w-5 md:h-6 md:w-6 text-blue-600 group-hover:rotate-12 transition-transform" />
-                    <div className="flex flex-col sm:flex-row leading-[1.1] sm:leading-none">
-                        <span className="text-[10px] xs:text-sm md:text-xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    <BarChart3 className="h-6 w-6 md:h-7 md:w-7 text-blue-600 group-hover:rotate-12 transition-transform" />
+                    <div className="flex flex-col sm:flex-row leading-[1.05] sm:leading-none">
+                        <span className="text-[13px] xs:text-base md:text-xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                             なんでも
                         </span>
-                        <span className="text-[12px] xs:text-sm md:text-xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                        <span className="text-[15px] xs:text-base md:text-xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                             総選挙
                         </span>
                     </div>
                 </Link>
 
                 <nav className="flex items-center gap-2 md:gap-6">
-                    {/* Achievement Badge */}
-                    <div className="flex items-center gap-1.5 bg-slate-50 px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-slate-100 shadow-sm flex-shrink-0">
+                    {/* Achievement Badge - Clickable */}
+                    <Link
+                        href="/achievements"
+                        className="flex items-center gap-1.5 bg-slate-50 px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-slate-100 shadow-sm flex-shrink-0 hover:bg-slate-100 transition-colors active:scale-95"
+                    >
                         <Award className={`w-3.5 h-3.5 md:w-4 md:h-4 ${rank.color}`} />
                         <div className="flex flex-col items-start leading-none">
                             <span className={`text-[8px] md:text-[10px] font-bold uppercase tracking-tighter ${rank.color} hidden sm:inline`}>
@@ -68,7 +71,7 @@ export function Navbar() {
                                 {voteCount}<span className="hidden xs:inline"> 投票</span>
                             </span>
                         </div>
-                    </div>
+                    </Link>
 
                     <Link href="/" className="p-2 md:px-0 text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1.5">
                         <Home className="w-5 h-5 md:w-4 md:h-4" />
