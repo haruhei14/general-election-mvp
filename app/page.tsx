@@ -25,19 +25,17 @@ export default async function Home(props: { searchParams: Promise<{ genre?: stri
         />
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-blue-900/90 to-indigo-900/40" />
 
-        <div className="relative z-10 max-w-2xl">
-          <h1 className="text-3xl md:text-5xl font-black mb-4 leading-tight">
-            <span className="inline-block">みんなの「好き」が</span>
-            <span className="inline-block">ここにある。</span>
+        <div className="relative z-10 max-w-2xl px-4 md:px-0">
+          <h1 className="text-3xl md:text-6xl font-black mb-6 leading-tight">
+            <span className="inline-block">みんなの「普通」を</span>
+            <span className="inline-block">可視化する。</span>
           </h1>
-          <p className="text-blue-100 text-lg mb-8 opacity-95">
-            日常の選択から究極の決断まで。あなたの1票が日本のスタンダードを決めるかもしれません。
+          <p className="text-blue-100 text-lg md:text-2xl mb-2 opacity-95 font-medium">
+            1億人のスタンダードを決める「なんでも総選挙」へようこそ。
           </p>
-          <div className="flex flex-wrap gap-4">
-            <Link href="/poll/create" className="bg-white text-blue-700 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-colors shadow-lg">
-              お題を作成する
-            </Link>
-          </div>
+          <p className="text-blue-200/80 text-sm md:text-base max-w-lg">
+            日常のこだわりから究極の決断まで。あなたの1票が、日本の新たな価値観の地図を作ります。
+          </p>
         </div>
       </div>
 

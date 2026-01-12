@@ -7,13 +7,13 @@ import { CommentSection } from './CommentSection';
 import { useState, useEffect } from 'react';
 import { Shuffle, ArrowRight, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
     const [candidatePolls, setCandidatePolls] = useState<Poll[]>(initialPolls);
     const [currentPoll, setCurrentPoll] = useState<Poll | null>(null);
     const [comments, setComments] = useState<Comment[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [showOptions, setShowOptions] = useState(false);
     const [isVoted, setIsVoted] = useState(false);
     const [votedPollId, setVotedPollId] = useState<string | null>(null);
 
@@ -51,7 +51,6 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
     const handleNext = () => {
         setIsLoading(true);
         setIsVoted(false);
-        setShowOptions(false);
         setComments([]);
         const nextPoll = initialPolls[Math.floor(Math.random() * initialPolls.length)];
         setCurrentPoll(nextPoll);
@@ -94,13 +93,21 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
                     <span className="truncate">今日のチャレンジ</span>
                 </h2>
                 {isVoted && (
-                    <button
-                        onClick={handleNext}
-                        className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-all shadow-lg active:scale-95 whitespace-nowrap"
-                    >
-                        次のお題へ
-                        <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <div className="flex flex-wrap items-center gap-3">
+                        <Link
+                            href="/my-votes"
+                            className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-white border border-slate-200 text-slate-600 font-bold text-sm hover:border-slate-300 transition-all shadow-sm active:scale-95"
+                        >
+                            投票履歴を見る
+                        </Link>
+                        <button
+                            onClick={handleNext}
+                            className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-all shadow-lg active:scale-95 whitespace-nowrap"
+                        >
+                            次のお題へ
+                            <ArrowRight className="w-4 h-4" />
+                        </button>
+                    </div>
                 )}
             </div>
 
@@ -112,19 +119,7 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
                     "lg:col-span-12",
                     isVoted ? "lg:col-span-12 xl:col-span-4" : "max-w-2xl mx-auto w-full"
                 )}>
-                    <PollCard poll={currentPoll} hideOptions={!showOptions} />
-
-                    {!showOptions && !isVoted && (
-                        <div className="mt-6 flex justify-center">
-                            <button
-                                onClick={() => setShowOptions(true)}
-                                className="w-full btn-gradient py-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all active:scale-95"
-                            >
-                                投票へ進む
-                                <ArrowRight className="w-6 h-6" />
-                            </button>
-                        </div>
-                    )}
+                    <PollCard poll={currentPoll} />
                 </div>
 
                 {isVoted && (
