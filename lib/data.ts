@@ -59,6 +59,13 @@ export async function getRandomPoll(): Promise<Poll | undefined> {
     return data[0] as Poll;
 }
 
+export async function getRandomPolls(limit: number = 3): Promise<Poll[]> {
+    // For MVP, fetch recent and shuffle in memory
+    const { data, error } = await supabase.from('polls').select('*').limit(30);
+    if (error || !data) return [];
+    return (data as Poll[]).sort(() => Math.random() - 0.5).slice(0, limit);
+}
+
 export async function getPoll(id: string): Promise<Poll | undefined> {
     const { data, error } = await supabase.from('polls').select('*').eq('id', id).single();
     if (error) return undefined;
