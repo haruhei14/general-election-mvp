@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { submitVote } from '@/lib/actions';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Check, Share2, MessageCircle } from 'lucide-react';
+import { Check, Share2, MessageCircle, ArrowRight } from 'lucide-react';
 
-export function PollCard({ poll }: { poll: Poll }) {
+export function PollCard({ poll, hideOptions = false }: { poll: Poll, hideOptions?: boolean }) {
     const [hasVoted, setHasVoted] = useState(false);
     const [votedOptionId, setVotedOptionId] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
@@ -106,53 +106,65 @@ export function PollCard({ poll }: { poll: Poll }) {
                     )}
                 </Link>
 
-                <div className="space-y-3 mb-6">
-                    {poll.options.map((option) => {
-                        const percent = totalVotes > 0 ? Math.round((option.votes / totalVotes) * 100) : 0;
-                        const isSelected = votedOptionId === option.id;
-                        const showResult = hasVoted;
+                {(hideOptions && !hasVoted) ? (
+                    <div className="mb-6">
+                        <Link
+                            href={`/poll/${poll.id}`}
+                            className="w-full btn-gradient py-3 rounded-xl font-bold flex items-center justify-center gap-2 group/btn"
+                        >
+                            <span>投票へ進む</span>
+                            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                        </Link>
+                    </div>
+                ) : (
+                    <div className="space-y-3 mb-6">
+                        {poll.options.map((option) => {
+                            const percent = totalVotes > 0 ? Math.round((option.votes / totalVotes) * 100) : 0;
+                            const isSelected = votedOptionId === option.id;
+                            const showResult = hasVoted;
 
-                        return (
-                            <button
-                                key={option.id}
-                                onClick={() => handleVote(option.id)}
-                                disabled={hasVoted}
-                                className={cn(
-                                    "relative w-full text-left p-3 rounded-xl border transition-all overflow-hidden group",
-                                    hasVoted
-                                        ? "border-slate-200 cursor-default"
-                                        : "border-slate-200 hover:border-blue-400 hover:shadow-md cursor-pointer active:scale-[0.99]"
-                                )}
-                            >
-                                {/* Progress Bar Background */}
-                                {showResult && (
-                                    <div
-                                        className={cn(
-                                            "absolute top-0 left-0 h-full transition-all duration-1000 ease-out",
-                                            isSelected ? "bg-green-100/70" : "bg-slate-100/50"
-                                        )}
-                                        style={{ width: `${percent}%` }}
-                                    />
-                                )}
-
-                                <div className="relative z-10 flex justify-between items-center">
-                                    <span className={cn(
-                                        "font-medium",
-                                        isSelected ? "text-green-700 font-bold" : "text-slate-700"
-                                    )}>
-                                        {isSelected && <Check className="inline w-4 h-4 mr-1 -mt-1" />}
-                                        {option.label}
-                                    </span>
-                                    {showResult && (
-                                        <span className="text-sm font-bold text-slate-600">
-                                            {percent}%
-                                        </span>
+                            return (
+                                <button
+                                    key={option.id}
+                                    onClick={() => handleVote(option.id)}
+                                    disabled={hasVoted}
+                                    className={cn(
+                                        "relative w-full text-left p-3 rounded-xl border transition-all overflow-hidden group",
+                                        hasVoted
+                                            ? "border-slate-200 cursor-default"
+                                            : "border-slate-200 hover:border-blue-400 hover:shadow-md cursor-pointer active:scale-[0.99]"
                                     )}
-                                </div>
-                            </button>
-                        );
-                    })}
-                </div>
+                                >
+                                    {/* Progress Bar Background */}
+                                    {showResult && (
+                                        <div
+                                            className={cn(
+                                                "absolute top-0 left-0 h-full transition-all duration-1000 ease-out",
+                                                isSelected ? "bg-green-100/70" : "bg-slate-100/50"
+                                            )}
+                                            style={{ width: `${percent}%` }}
+                                        />
+                                    )}
+
+                                    <div className="relative z-10 flex justify-between items-center">
+                                        <span className={cn(
+                                            "font-medium",
+                                            isSelected ? "text-green-700 font-bold" : "text-slate-700"
+                                        )}>
+                                            {isSelected && <Check className="inline w-4 h-4 mr-1 -mt-1" />}
+                                            {option.label}
+                                        </span>
+                                        {showResult && (
+                                            <span className="text-sm font-bold text-slate-600">
+                                                {percent}%
+                                            </span>
+                                        )}
+                                    </div>
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
 
                 <div className="flex items-center justify-between text-slate-400 text-sm border-t pt-4 mt-auto">
                     <span className="flex items-center gap-1">

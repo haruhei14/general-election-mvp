@@ -13,6 +13,7 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
     const [currentPoll, setCurrentPoll] = useState<Poll | null>(null);
     const [comments, setComments] = useState<Comment[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [showOptions, setShowOptions] = useState(false);
     const [isVoted, setIsVoted] = useState(false);
     const [votedPollId, setVotedPollId] = useState<string | null>(null);
 
@@ -50,6 +51,7 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
     const handleNext = () => {
         setIsLoading(true);
         setIsVoted(false);
+        setShowOptions(false);
         setComments([]);
         const nextPoll = initialPolls[Math.floor(Math.random() * initialPolls.length)];
         setCurrentPoll(nextPoll);
@@ -84,17 +86,17 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
 
     return (
         <div className="space-y-8 animate-in fade-in duration-700">
-            <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-black text-slate-800 flex items-center gap-3">
-                    <span className="p-2 bg-purple-100 text-purple-600 rounded-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h2 className="text-xl md:text-2xl font-black text-slate-800 flex items-center gap-3">
+                    <span className="p-2 bg-purple-100 text-purple-600 rounded-xl flex-shrink-0">
                         <Shuffle className="w-5 h-5" />
                     </span>
-                    今日のチャレンジ
+                    <span className="truncate">今日のチャレンジ</span>
                 </h2>
                 {isVoted && (
                     <button
                         onClick={handleNext}
-                        className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-all shadow-lg active:scale-95"
+                        className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-all shadow-lg active:scale-95 whitespace-nowrap"
                     >
                         次のお題へ
                         <ArrowRight className="w-4 h-4" />
@@ -104,13 +106,25 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
 
             <div className={cn(
                 "grid grid-cols-1 lg:grid-cols-12 gap-8",
-                isVoted ? "items-start" : "items-center max-w-2xl mx-auto"
+                isVoted ? "items-start" : "items-center"
             )}>
                 <div className={cn(
                     "lg:col-span-12",
-                    isVoted ? "lg:col-span-12 xl:col-span-4" : ""
+                    isVoted ? "lg:col-span-12 xl:col-span-4" : "max-w-2xl mx-auto w-full"
                 )}>
-                    <PollCard poll={currentPoll} />
+                    <PollCard poll={currentPoll} hideOptions={!showOptions} />
+
+                    {!showOptions && !isVoted && (
+                        <div className="mt-6 flex justify-center">
+                            <button
+                                onClick={() => setShowOptions(true)}
+                                className="w-full btn-gradient py-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all active:scale-95"
+                            >
+                                投票へ進む
+                                <ArrowRight className="w-6 h-6" />
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 {isVoted && (

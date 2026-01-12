@@ -93,7 +93,7 @@ export default async function Home(props: { searchParams: Promise<{ genre?: stri
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {displayPolls.map(poll => (
               <div key={poll.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <PollCard poll={poll} />
+                <PollCard poll={poll} hideOptions={true} />
               </div>
             ))}
           </div>
