@@ -113,6 +113,14 @@ export async function addComment(pollId: string, text: string, author: string = 
         }]);
 }
 
+export async function createPoll(poll: Omit<Poll, 'created_at'>): Promise<void> {
+    const { error } = await supabase.from('polls').insert([poll]);
+    if (error) {
+        console.error('createPoll error:', error);
+        throw new Error('お題の作成に失敗しました');
+    }
+}
+
 export async function likeComment(commentId: string): Promise<void> {
     // Note: needs a RPC or raw query for atomic increment in Supabase for better performance, 
     // but this read-write works for MVP
