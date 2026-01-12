@@ -12,13 +12,20 @@ export default async function Home(props: { searchParams: Promise<{ genre?: stri
   return (
     <div className="container-responsive py-8 space-y-10">
       {/* Hero / Ad Space */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 md:p-12 text-white shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-white shadow-2xl min-h-[300px] flex items-center">
+        {/* Background Image with Overlay */}
+        <div
+          className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-1000 hover:scale-105"
+          style={{ backgroundImage: 'url(/hero-bg.png)' }}
+        />
+        <div className="absolute inset-0 z-0 bg-gradient-to-r from-blue-900/90 to-indigo-900/40" />
+
         <div className="relative z-10 max-w-2xl">
           <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">
-            みんなの「どっち？」が<br />
+            みんなの「好き」が<br />
             ここにある。
           </h1>
-          <p className="text-blue-100 text-lg mb-8 opacity-90">
+          <p className="text-blue-100 text-lg mb-8 opacity-95">
             日常の選択から究極の決断まで。あなたの1票が日本のスタンダードを決めるかもしれません。
           </p>
           <div className="flex flex-wrap gap-4">
@@ -27,10 +34,6 @@ export default async function Home(props: { searchParams: Promise<{ genre?: stri
             </Link>
           </div>
         </div>
-
-        {/* Background Decoration */}
-        <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute right-0 top-0 w-40 h-40 bg-blue-400/20 rounded-full blur-2xl" />
       </div>
 
       {/* Top Banner Ad */}
