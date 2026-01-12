@@ -81,18 +81,18 @@ export function PollCard({ poll, hideOptions = false }: { poll: Poll, hideOption
 
                 {/* Featured Image Section */}
                 {(() => {
-                    const genreConfigs: Record<string, { pos: string; grad: string }> = {
-                        "食べ物": { pos: "0% 0%", grad: "from-orange-50 to-orange-100" },
-                        "日常・生活": { pos: "33.33% 0%", grad: "from-blue-50 to-blue-100" },
-                        "価値観": { pos: "66.66% 0%", grad: "from-amber-50 to-amber-100" },
-                        "エンタメ": { pos: "100% 0%", grad: "from-purple-50 to-purple-100" },
-                        "仕事・学び": { pos: "0% 100%", grad: "from-teal-50 to-teal-100" },
-                        "テクノロジー": { pos: "33.33% 100%", grad: "from-slate-100 to-slate-200" },
-                        "人間関係": { pos: "66.66% 100%", grad: "from-pink-50 to-pink-100" },
-                        "究極の選択": { pos: "100% 100%", grad: "from-red-50 to-blue-50" },
+                    const genreConfigs: Record<string, { grad: string }> = {
+                        "食べ物": { grad: "from-orange-100 to-amber-200" },
+                        "日常・生活": { grad: "from-sky-100 to-blue-200" },
+                        "価値観": { grad: "from-emerald-100 to-teal-200" },
+                        "エンタメ": { grad: "from-purple-100 to-pink-200" },
+                        "仕事・学び": { grad: "from-indigo-100 to-slate-200" },
+                        "テクノロジー": { grad: "from-cyan-100 to-blue-200" },
+                        "人間関係": { grad: "from-rose-100 to-red-200" },
+                        "究極の選択": { grad: "from-red-100 to-blue-100" },
                     };
 
-                    const config = genreConfigs[poll.genre] || { pos: "0% 0%", grad: "from-slate-50 to-slate-100" };
+                    const config = genreConfigs[poll.genre] || { grad: "from-slate-50 to-slate-100" };
 
                     return (
                         <div className={cn(
@@ -108,19 +108,12 @@ export function PollCard({ poll, hideOptions = false }: { poll: Poll, hideOption
                                     onError={(e) => (e.currentTarget.style.display = 'none')}
                                 />
                             ) : (
-                                <div
-                                    className="w-full h-full bg-no-repeat group-hover/card:scale-110 transition-transform duration-700"
-                                    style={{
-                                        backgroundImage: 'url(/genres-sprite.png)',
-                                        backgroundSize: '400% 200%',
-                                        backgroundPosition: config.pos,
-                                        backgroundOrigin: 'content-box',
-                                    }}
-                                />
-                            )}
-                            {!poll.image_url && !config.pos && (
-                                <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                                    <span className="text-4xl font-black uppercase tracking-tighter text-slate-900/10">VOTE</span>
+                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+                                    <div className="absolute top-[-20%] left-[-10%] w-[120%] h-[120%] bg-white/20 blur-3xl rounded-full" />
+                                    <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-black/5 blur-2xl rounded-full" />
+                                    <span className="text-4xl font-black uppercase tracking-tighter text-black/5 select-none translate-y-4">
+                                        {poll.genre}
+                                    </span>
                                 </div>
                             )}
                         </div>
