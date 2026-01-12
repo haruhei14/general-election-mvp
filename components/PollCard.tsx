@@ -102,8 +102,9 @@ export function PollCard({ poll, hideOptions = false }: { poll: Poll, hideOption
                             {poll.image_url ? (
                                 <img
                                     src={poll.image_url}
-                                    alt={poll.title}
-                                    className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                                    alt=""
+                                    aria-hidden="true"
+                                    className="w-full h-full object-cover object-center group-hover/card:scale-105 transition-transform duration-500"
                                     onError={(e) => (e.currentTarget.style.display = 'none')}
                                 />
                             ) : (
@@ -113,6 +114,7 @@ export function PollCard({ poll, hideOptions = false }: { poll: Poll, hideOption
                                         backgroundImage: 'url(/genres-sprite.png)',
                                         backgroundSize: '400% 200%',
                                         backgroundPosition: config.pos,
+                                        backgroundOrigin: 'content-box',
                                     }}
                                 />
                             )}
