@@ -3,17 +3,55 @@
 import { Poll } from '@/lib/data';
 import Link from 'next/link';
 import { submitVote } from '@/lib/actions';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { Check, Share2, MessageCircle, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
+
+// Count-up animation hook
+function useCountUp(end: number, duration: number = 600, shouldStart: boolean = false) {
+    const [count, setCount] = useState(0);
+    const startRef = useRef<number | null>(null);
+
+    useEffect(() => {
+        if (!shouldStart) return;
+
+        const animate = (timestamp: number) => {
+            if (!startRef.current) startRef.current = timestamp;
+            const progress = Math.min((timestamp - startRef.current) / duration, 1);
+            setCount(Math.round(progress * end));
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+        requestAnimationFrame(animate);
+    }, [end, duration, shouldStart]);
+
+    return count;
+}
+
+// Mini summary generator
+function getMiniSummary(options: { votes: number }[], totalVotes: number): string {
+    if (totalVotes < 5) return 'まだ投票が集まり始めたばかり';
+
+    const percentages = options.map(o => totalVotes > 0 ? (o.votes / totalVotes) * 100 : 0);
+    const maxPercent = Math.max(...percentages);
+    const minPercent = Math.min(...percentages);
+
+    if (maxPercent - minPercent < 15) return '意見が割れやすいお題みたい';
+    if (maxPercent > 60) return 'かなり票が集まっているね';
+    return 'いい勝負になっているね';
+}
 
 export function PollCard({ poll, hideOptions = false, hideNextButton = false }: { poll: Poll, hideOptions?: boolean, hideNextButton?: boolean }) {
     const [hasVoted, setHasVoted] = useState(false);
     const [votedOptionId, setVotedOptionId] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
+    const [justVoted, setJustVoted] = useState(false);
+    const [animatedOptionId, setAnimatedOptionId] = useState<string | null>(null);
+    const [updatedOptions, setUpdatedOptions] = useState(poll.options);
 
     // Total votes calculation
-    const totalVotes = poll.options.reduce((acc, curr) => acc + curr.votes, 0);
+    const totalVotes = updatedOptions.reduce((acc, curr) => acc + curr.votes, 0);
 
     useEffect(() => {
         const voted = localStorage.getItem(`vote_${poll.id}`);
@@ -26,9 +64,19 @@ export function PollCard({ poll, hideOptions = false, hideNextButton = false }: 
     const handleVote = async (optionId: string) => {
         if (hasVoted || isPending) return;
 
+        // Trigger scale animation
+        setAnimatedOptionId(optionId);
+        setTimeout(() => setAnimatedOptionId(null), 300);
+
         setIsPending(true);
         try {
             await submitVote(poll.id, optionId);
+
+            // Update local options with incremented vote
+            const newOptions = updatedOptions.map(o =>
+                o.id === optionId ? { ...o, votes: o.votes + 1 } : o
+            );
+            setUpdatedOptions(newOptions);
 
             // Save vote state
             localStorage.setItem(`vote_${poll.id}`, optionId);
@@ -36,11 +84,10 @@ export function PollCard({ poll, hideOptions = false, hideNextButton = false }: 
             // Append to history for /my-votes
             const historyJson = localStorage.getItem('vote_history');
             const history = historyJson ? JSON.parse(historyJson) : [];
-            const selectedOption = poll.options.find(o => o.id === optionId);
-
-            const isMajority = selectedOption
-                ? (selectedOption.votes + 1) === Math.max(...poll.options.map(o => o.id === optionId ? o.votes + 1 : o.votes))
-                : false;
+            const selectedOption = newOptions.find(o => o.id === optionId);
+            const newTotal = newOptions.reduce((acc, o) => acc + o.votes, 0);
+            const selectedVotes = selectedOption?.votes || 0;
+            const isMajority = (selectedVotes / newTotal) >= 0.5;
 
             const newEntry = {
                 pollId: poll.id,
@@ -52,12 +99,12 @@ export function PollCard({ poll, hideOptions = false, hideNextButton = false }: 
                 isMajority: isMajority
             };
 
-            // Prevent duplicates and keep latest
             const filteredHistory = history.filter((h: any) => h.pollId !== poll.id);
             localStorage.setItem('vote_history', JSON.stringify([newEntry, ...filteredHistory]));
 
             setHasVoted(true);
             setVotedOptionId(optionId);
+            setJustVoted(true);
         } catch (e) {
             console.error(e);
         } finally {
@@ -66,77 +113,23 @@ export function PollCard({ poll, hideOptions = false, hideNextButton = false }: 
     };
 
     return (
-        <div className="card-premium p-0 flex flex-col h-full bg-white overflow-hidden relative group/card">
-            {/* OG Image Background */}
-            <div
-                className="absolute inset-0 z-0 opacity-[0.03] group-hover/card:opacity-[0.05] transition-opacity duration-500"
-                style={{
-                    backgroundImage: `url(/og/${poll.id})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}
-            />
-
-            <div className="p-6 flex flex-col h-full relative z-10">
-                <div className="flex justify-between items-start mb-4">
-                    <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100">
+        <div className="card-premium p-0 flex flex-col bg-white overflow-hidden relative group/card">
+            <div className="p-6 flex flex-col relative z-10">
+                {/* Genre Badge */}
+                <div className="flex items-center gap-2 mb-4">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-slate-50 px-3 py-1 rounded-full">
                         {poll.genre}
                     </span>
-                    <span className="text-xs text-slate-400">{new Date(poll.created_at).toLocaleDateString()}</span>
                 </div>
 
-                {/* Featured Image Section */}
-                {(() => {
-                    const genreConfigs: Record<string, { grad: string }> = {
-                        "食べ物": { grad: "from-orange-100 to-amber-200" },
-                        "日常・生活": { grad: "from-sky-100 to-blue-200" },
-                        "価値観": { grad: "from-emerald-100 to-teal-200" },
-                        "エンタメ": { grad: "from-purple-100 to-pink-200" },
-                        "仕事・学び": { grad: "from-indigo-100 to-slate-200" },
-                        "テクノロジー": { grad: "from-cyan-100 to-blue-200" },
-                        "人間関係": { grad: "from-rose-100 to-red-200" },
-                        "究極の選択": { grad: "from-red-100 to-blue-100" },
-                    };
+                {/* Title */}
+                <h3 className="text-xl md:text-2xl font-black text-slate-800 mb-6 leading-snug">
+                    {poll.title}
+                </h3>
 
-                    const config = genreConfigs[poll.genre] || { grad: "from-slate-50 to-slate-100" };
-
-                    return (
-                        <div className={cn(
-                            "mb-4 rounded-xl overflow-hidden border border-slate-100 shadow-sm relative aspect-video bg-gradient-to-br",
-                            config.grad
-                        )}>
-                            {poll.image_url ? (
-                                <img
-                                    src={poll.image_url}
-                                    alt=""
-                                    aria-hidden="true"
-                                    className="w-full h-full object-cover object-center group-hover/card:scale-105 transition-transform duration-500"
-                                    onError={(e) => (e.currentTarget.style.display = 'none')}
-                                />
-                            ) : (
-                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-                                    <div className="absolute top-[-20%] left-[-10%] w-[120%] h-[120%] bg-white/20 blur-3xl rounded-full" />
-                                    <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-black/5 blur-2xl rounded-full" />
-                                    <span className="text-4xl font-black uppercase tracking-tighter text-black/5 select-none translate-y-4">
-                                        {poll.genre}
-                                    </span>
-                                </div>
-                            )}
-                        </div>
-                    );
-                })()}
-
-                <Link href={`/poll/${poll.id}`} className="group block mb-4 flex-grow">
-                    <h3 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-2">
-                        {poll.title}
-                    </h3>
-                    {poll.description && (
-                        <p className="text-sm text-slate-500 line-clamp-2">{poll.description}</p>
-                    )}
-                </Link>
-
-                {(hideOptions && !hasVoted) ? (
-                    <div className="mb-6">
+                {/* Options */}
+                {hideOptions && !hasVoted ? (
+                    <div className="mt-auto">
                         <Link
                             href={`/poll/${poll.id}`}
                             className="w-full btn-gradient py-3 rounded-xl font-bold flex items-center justify-center gap-2 group/btn"
@@ -146,82 +139,155 @@ export function PollCard({ poll, hideOptions = false, hideNextButton = false }: 
                         </Link>
                     </div>
                 ) : (
-                    <div className="space-y-3 mb-6">
-                        {poll.options.map((option) => {
+                    <div className="space-y-3">
+                        {updatedOptions.map((option) => {
                             const percent = totalVotes > 0 ? Math.round((option.votes / totalVotes) * 100) : 0;
                             const isSelected = votedOptionId === option.id;
                             const showResult = hasVoted;
+                            const isAnimating = animatedOptionId === option.id;
 
                             return (
-                                <button
+                                <OptionButton
                                     key={option.id}
+                                    option={option}
+                                    percent={percent}
+                                    isSelected={isSelected}
+                                    showResult={showResult}
+                                    isAnimating={isAnimating}
+                                    hasVoted={hasVoted}
+                                    justVoted={justVoted}
                                     onClick={() => handleVote(option.id)}
-                                    disabled={hasVoted}
-                                    className={cn(
-                                        "relative w-full text-left p-3 rounded-xl border transition-all overflow-hidden group",
-                                        hasVoted
-                                            ? "border-slate-200 cursor-default"
-                                            : "border-slate-200 hover:border-blue-400 hover:shadow-md cursor-pointer active:scale-[0.99]"
-                                    )}
-                                >
-                                    {/* Progress Bar Background */}
-                                    {showResult && (
-                                        <div
-                                            className={cn(
-                                                "absolute top-0 left-0 h-full transition-all duration-1000 ease-out",
-                                                isSelected ? "bg-green-100/70" : "bg-slate-100/50"
-                                            )}
-                                            style={{ width: `${percent}%` }}
-                                        />
-                                    )}
-
-                                    <div className="relative z-10 flex justify-between items-center">
-                                        <span className={cn(
-                                            "font-medium",
-                                            isSelected ? "text-green-700 font-bold" : "text-slate-700"
-                                        )}>
-                                            {isSelected && <Check className="inline w-4 h-4 mr-1 -mt-1" />}
-                                            {option.label}
-                                        </span>
-                                        {showResult && (
-                                            <span className="text-sm font-bold text-slate-600">
-                                                {percent}%
-                                            </span>
-                                        )}
-                                    </div>
-                                </button>
+                                    totalVotes={totalVotes}
+                                />
                             );
                         })}
                     </div>
                 )}
 
-                {hasVoted && !hideNextButton && (
-                    <div className="mt-6 pt-6 border-t border-slate-50">
-                        <Link
-                            href="/api/poll/random"
-                            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-slate-900 text-white font-black text-sm hover:bg-slate-800 transition-all active:scale-95 shadow-md"
-                        >
-                            次のお題に進む
-                            <ArrowRight className="w-4 h-4" />
-                        </Link>
+                {/* Post-vote Summary */}
+                {hasVoted && (
+                    <div className="mt-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                        {/* Mini Summary */}
+                        <p className="text-center text-sm text-slate-500 italic mb-4">
+                            💡 {getMiniSummary(updatedOptions, totalVotes)}
+                        </p>
+
+                        {/* Total Votes */}
+                        <div className="text-center text-slate-400 text-xs font-bold mb-4">
+                            総投票数: {totalVotes}票
+                        </div>
+
+                        {/* Next Poll Button */}
+                        {!hideNextButton && (
+                            <Link
+                                href="/api/poll/random"
+                                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-slate-900 text-white font-black text-base hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg"
+                            >
+                                次のお題へ
+                                <ArrowRight className="w-5 h-5" />
+                            </Link>
+                        )}
                     </div>
                 )}
-
-                <div className="flex items-center justify-between text-slate-400 text-sm border-t pt-4 mt-auto">
-                    <span className="flex items-center gap-1">
-                        {totalVotes} 票
-                    </span>
-                    <div className="flex gap-4">
-                        <Link href={`/poll/${poll.id}`} className="flex items-center gap-1 hover:text-blue-500 transition-colors">
-                            <MessageCircle className="w-4 h-4" />
-                            <span>コメント</span>
-                        </Link>
-                        <button className="flex items-center gap-1 hover:text-blue-500 transition-colors">
-                            <Share2 className="w-4 h-4" />
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
+    );
+}
+
+// Separate component for option button with animations
+function OptionButton({
+    option,
+    percent,
+    isSelected,
+    showResult,
+    isAnimating,
+    hasVoted,
+    justVoted,
+    onClick,
+    totalVotes
+}: {
+    option: { id: string; label: string; votes: number };
+    percent: number;
+    isSelected: boolean;
+    showResult: boolean;
+    isAnimating: boolean;
+    hasVoted: boolean;
+    justVoted: boolean;
+    onClick: () => void;
+    totalVotes: number;
+}) {
+    const animatedPercent = useCountUp(percent, 600, justVoted && showResult);
+    const displayPercent = justVoted ? animatedPercent : percent;
+
+    // Majority/Minority labels
+    const isMajority = percent >= 60;
+    const isMinority = percent < 40 && percent > 0;
+
+    return (
+        <button
+            onClick={onClick}
+            disabled={hasVoted}
+            className={cn(
+                "relative w-full text-left p-4 rounded-xl border-2 transition-all overflow-hidden",
+                isAnimating && "scale-[1.04]",
+                hasVoted
+                    ? isSelected
+                        ? "border-blue-400 bg-blue-50/50"
+                        : "border-slate-100 bg-slate-50/30"
+                    : "border-slate-200 hover:border-blue-400 hover:shadow-lg cursor-pointer active:scale-[0.98]",
+                "duration-300"
+            )}
+        >
+            {/* Progress Bar Background */}
+            {showResult && (
+                <div
+                    className={cn(
+                        "absolute top-0 left-0 h-full transition-all duration-700 ease-out",
+                        isSelected
+                            ? "bg-gradient-to-r from-blue-200/60 to-blue-100/40"
+                            : "bg-slate-100/60"
+                    )}
+                    style={{ width: justVoted ? `${animatedPercent}%` : `${percent}%` }}
+                />
+            )}
+
+            <div className="relative z-10 flex justify-between items-center gap-2">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                    {isSelected && (
+                        <span className="flex-shrink-0 w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center animate-in zoom-in duration-300">
+                            <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                        </span>
+                    )}
+                    <span className={cn(
+                        "truncate",
+                        isSelected ? "text-blue-700 font-bold" : "text-slate-700 font-medium"
+                    )}>
+                        {option.label}
+                    </span>
+                </div>
+
+                {showResult && (
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                        {/* Majority/Minority Label */}
+                        {isSelected && isMajority && (
+                            <span className="text-[10px] font-black bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full animate-in slide-in-from-right duration-500">
+                                多数派！
+                            </span>
+                        )}
+                        {isSelected && isMinority && (
+                            <span className="text-[10px] font-black bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full animate-in slide-in-from-right duration-500">
+                                少数派かも？
+                            </span>
+                        )}
+                        <span className={cn(
+                            "text-lg font-black tabular-nums",
+                            isSelected ? "text-blue-600" : "text-slate-500"
+                        )}>
+                            {displayPercent}%
+                        </span>
+                    </div>
+                )}
+            </div>
+        </button>
     );
 }
