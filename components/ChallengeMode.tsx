@@ -16,6 +16,7 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
     const [isLoading, setIsLoading] = useState(true);
     const [isVoted, setIsVoted] = useState(false);
     const [votedPollId, setVotedPollId] = useState<string | null>(null);
+    const [votedOptionId, setVotedOptionId] = useState<string | null>(null);
 
     // Pick a random poll on mount or from localStorage
     useEffect(() => {
@@ -28,6 +29,8 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
             if (lastVotedId === saved.id) {
                 setIsVoted(true);
                 setVotedPollId(lastVotedId);
+                const savedOptionId = localStorage.getItem(`vote_${saved.id}`);
+                setVotedOptionId(savedOptionId);
                 fetchComments(saved.id);
             }
         } else if (candidatePolls.length > 0) {
@@ -66,6 +69,7 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
             if (votedInCard && !isVoted) {
                 setIsVoted(true);
                 setVotedPollId(currentPoll.id);
+                setVotedOptionId(votedInCard);
                 localStorage.setItem('challenge_last_voted_id', currentPoll.id);
                 fetchComments(currentPoll.id);
             }
