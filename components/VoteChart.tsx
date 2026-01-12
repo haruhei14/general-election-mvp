@@ -1,16 +1,23 @@
 'use client';
 
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { PollOption } from '@/lib/data';
 import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
+import { Check, Users } from 'lucide-react';
 
-const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
-
-export function VoteVisualization({ pollId, initialOptions }: { pollId: string, initialOptions: PollOption[] }) {
+export function VoteVisualization({
+    pollId,
+    initialOptions,
+    votedOptionId
+}: {
+    pollId: string,
+    initialOptions: PollOption[],
+    votedOptionId?: string | null
+}) {
     const [options, setOptions] = useState<PollOption[]>(initialOptions);
 
     useEffect(() => {
-        // Polling every 5 seconds to get latest shared results
+        // Fetch latest results to stay in sync
         const fetchLatest = async () => {
             try {
                 const res = await fetch(`/api/vote?pollId=${pollId}`);
@@ -27,45 +34,72 @@ export function VoteVisualization({ pollId, initialOptions }: { pollId: string, 
         return () => clearInterval(interval);
     }, [pollId]);
 
-    const data = options.map(opt => ({
-        name: opt.label,
-        value: opt.votes
-    }));
-
     const total = options.reduce((acc, curr) => acc + curr.votes, 0);
 
-    if (total === 0) {
-        return (
-            <div className="h-64 flex items-center justify-center text-slate-400 bg-slate-50 rounded-xl">
-                まだ投票がありません
-            </div>
-        );
-    }
-
     return (
-        <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                    <Pie
-                        data={data}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
-                        paddingAngle={5}
-                        dataKey="value"
-                    >
-                        {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                    </Pie>
-                    <Tooltip
-                        formatter={(value: any) => [`${value} 票`, '投票数']}
-                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    />
-                    <Legend />
-                </PieChart>
-            </ResponsiveContainer>
+        <div className="space-y-6 animate-in fade-in duration-700">
+            {/* Total Votes Header */}
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-2 text-slate-500 font-bold text-sm">
+                    <Users className="w-4 h-4" />
+                    総投票数
+                </div>
+                <div className="text-xl font-black text-slate-900">
+                    {total.toLocaleString()} 票
+                </div>
+            </div>
+
+            {/* Bar List */}
+            <div className="space-y-4">
+                {options.map((opt) => {
+                    const percentage = total > 0 ? Math.round((opt.votes / total) * 100) : 0;
+                    const isSelected = votedOptionId === opt.id;
+
+                    return (
+                        <div key={opt.id} className="space-y-2">
+                            <div className="flex justify-between items-end">
+                                <div className="flex items-center gap-2">
+                                    <span className={cn(
+                                        "font-bold text-sm transition-colors",
+                                        isSelected ? "text-blue-600" : "text-slate-700"
+                                    )}>
+                                        {opt.label}
+                                    </span>
+                                    {isSelected && (
+                                        <span className="flex items-center gap-1 text-[10px] font-black uppercase bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">
+                                            <Check className="w-2.5 h-2.5" />
+                                            Selected
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="text-right">
+                                    <span className={cn(
+                                        "text-lg font-black italic",
+                                        isSelected ? "text-blue-600" : "text-slate-900"
+                                    )}>
+                                        {percentage}%
+                                    </span>
+                                    <span className="text-[10px] text-slate-400 font-bold ml-1">
+                                        ({opt.votes}票)
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="h-4 w-full bg-slate-100 rounded-full overflow-hidden relative">
+                                <div
+                                    className={cn(
+                                        "h-full rounded-full transition-all duration-1000 ease-out shadow-sm",
+                                        isSelected
+                                            ? "bg-gradient-to-r from-blue-500 to-indigo-600"
+                                            : "bg-slate-300"
+                                    )}
+                                    style={{ width: `${percentage}%` }}
+                                />
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }
