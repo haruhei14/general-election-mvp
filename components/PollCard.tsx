@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Check, Share2, MessageCircle, ArrowRight } from 'lucide-react';
 
-export function PollCard({ poll, hideOptions = false }: { poll: Poll, hideOptions?: boolean }) {
+export function PollCard({ poll, hideOptions = false, hideNextButton = false }: { poll: Poll, hideOptions?: boolean, hideNextButton?: boolean }) {
     const [hasVoted, setHasVoted] = useState(false);
     const [votedOptionId, setVotedOptionId] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
@@ -192,6 +192,18 @@ export function PollCard({ poll, hideOptions = false }: { poll: Poll, hideOption
                                 </button>
                             );
                         })}
+                    </div>
+                )}
+
+                {hasVoted && !hideNextButton && (
+                    <div className="mt-6 pt-6 border-t border-slate-50">
+                        <Link
+                            href="/api/poll/random"
+                            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-slate-900 text-white font-black text-sm hover:bg-slate-800 transition-all active:scale-95 shadow-md"
+                        >
+                            次のお題に進む
+                            <ArrowRight className="w-4 h-4" />
+                        </Link>
                     </div>
                 )}
 
