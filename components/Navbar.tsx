@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu } from 'lucide-react';
+import { Menu, Vote } from 'lucide-react';
 import { useState } from 'react';
 import { SideDrawer } from './SideDrawer';
 
@@ -22,7 +22,8 @@ export function Navbar() {
                     </button>
 
                     {/* Center: Logo */}
-                    <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex items-center">
+                    <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+                        <Vote className="w-5 h-5 text-blue-600" />
                         <span className="text-lg font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                             なんでも総選挙
                         </span>
