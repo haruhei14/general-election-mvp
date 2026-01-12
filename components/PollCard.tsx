@@ -38,12 +38,18 @@ export function PollCard({ poll, hideOptions = false }: { poll: Poll, hideOption
             const history = historyJson ? JSON.parse(historyJson) : [];
             const selectedOption = poll.options.find(o => o.id === optionId);
 
+            const isMajority = selectedOption
+                ? (selectedOption.votes + 1) === Math.max(...poll.options.map(o => o.id === optionId ? o.votes + 1 : o.votes))
+                : false;
+
             const newEntry = {
                 pollId: poll.id,
                 pollTitle: poll.title,
                 genre: poll.genre,
+                optionId: optionId,
                 optionLabel: selectedOption?.label || 'Unknown',
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                isMajority: isMajority
             };
 
             // Prevent duplicates and keep latest
