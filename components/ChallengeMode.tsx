@@ -109,7 +109,7 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
                     "lg:col-span-12 xl:col-span-4",
                     !isVoted && "max-w-2xl mx-auto w-full"
                 )}>
-                    <PollCard poll={currentPoll} hideNextButton={true} />
+                    <PollCard key={currentPoll.id} poll={currentPoll} hideNextButton={true} />
                 </div>
 
                 {/* Right Side: Results & Comments (only if voted) */}
