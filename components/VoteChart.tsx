@@ -9,11 +9,13 @@ import Link from 'next/link';
 export function VoteVisualization({
     pollId,
     initialOptions,
-    votedOptionId
+    votedOptionId,
+    hideNextButton = false
 }: {
     pollId: string,
     initialOptions: PollOption[],
-    votedOptionId?: string | null
+    votedOptionId?: string | null,
+    hideNextButton?: boolean
 }) {
     const [options, setOptions] = useState<PollOption[]>(initialOptions);
     const [hasVotedLocally, setHasVotedLocally] = useState(false);
@@ -108,7 +110,7 @@ export function VoteVisualization({
                 })}
             </div>
 
-            {(votedOptionId || hasVotedLocally) && (
+            {(votedOptionId || hasVotedLocally) && !hideNextButton && (
                 <div className="pt-6 animate-in slide-in-from-bottom-2 duration-500">
                     <Link
                         href="/api/poll/random"

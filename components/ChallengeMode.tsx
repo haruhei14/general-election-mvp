@@ -128,6 +128,7 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
                                         pollId={currentPoll.id}
                                         initialOptions={currentPoll.options}
                                         votedOptionId={votedOptionId}
+                                        hideNextButton={true}
                                     />
                                 </div>
                                 <div className="mt-8 pt-6 border-t border-slate-50 flex justify-center relative z-10">
