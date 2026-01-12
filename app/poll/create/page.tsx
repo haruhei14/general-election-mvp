@@ -58,6 +58,19 @@ export default function CreatePollPage() {
                         />
                     </div>
 
+                    {/* Image URL */}
+                    <div>
+                        <label className="block text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
+                            <ImageIcon className="w-4 h-4 text-slate-400" />
+                            お題の画像URL（任意）
+                        </label>
+                        <input
+                            name="imageUrl"
+                            placeholder="https://example.com/image.jpg (空欄でも自動生成画像が背景になります)"
+                            className="w-full text-sm bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                        />
+                    </div>
+
                     {/* Genre */}
                     <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">

@@ -59,6 +59,17 @@ export function PollCard({ poll }: { poll: Poll }) {
                     <span className="text-xs text-slate-400">{new Date(poll.created_at).toLocaleDateString()}</span>
                 </div>
 
+                {/* Featured Image */}
+                {poll.image_url && (
+                    <div className="mb-4 rounded-xl overflow-hidden border border-slate-100 shadow-sm relative aspect-video">
+                        <img
+                            src={poll.image_url}
+                            alt={poll.title}
+                            className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                        />
+                    </div>
+                )}
+
                 <Link href={`/poll/${poll.id}`} className="group block mb-4 flex-grow">
                     <h3 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-2">
                         {poll.title}

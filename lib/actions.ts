@@ -13,6 +13,7 @@ export async function submitPoll(formData: FormData) {
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
     const genre = formData.get('genre') as string;
+    const imageUrl = formData.get('imageUrl') as string;
     const option1 = formData.get('option1') as string;
     const option2 = formData.get('option2') as string;
 
@@ -32,6 +33,7 @@ export async function submitPoll(formData: FormData) {
         title,
         description,
         genre,
+        image_url: imageUrl || '',
         options: [
             { id: 'opt-1', label: option1, votes: 0 },
             { id: 'opt-2', label: option2, votes: 0 }

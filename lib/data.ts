@@ -12,6 +12,7 @@ export type Poll = {
     description?: string;
     options: PollOption[];
     genre: string;
+    image_url?: string;
     created_at: string;
 };
 
