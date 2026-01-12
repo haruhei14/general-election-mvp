@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { BarChart3, Award } from 'lucide-react';
+import { BarChart3, Award, History } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export function Navbar() {
@@ -67,6 +67,10 @@ export function Navbar() {
 
                     <Link href="/" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
                         ホーム
+                    </Link>
+                    <Link href="/my-votes" className="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1.5">
+                        <History className="w-4 h-4 text-blue-500" />
+                        マイレポート
                     </Link>
                     <Link
                         href="/poll/create"

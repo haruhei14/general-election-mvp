@@ -29,7 +29,27 @@ export function PollCard({ poll, hideOptions = false }: { poll: Poll, hideOption
         setIsPending(true);
         try {
             await submitVote(poll.id, optionId);
+
+            // Save vote state
             localStorage.setItem(`vote_${poll.id}`, optionId);
+
+            // Append to history for /my-votes
+            const historyJson = localStorage.getItem('vote_history');
+            const history = historyJson ? JSON.parse(historyJson) : [];
+            const selectedOption = poll.options.find(o => o.id === optionId);
+
+            const newEntry = {
+                pollId: poll.id,
+                pollTitle: poll.title,
+                genre: poll.genre,
+                optionLabel: selectedOption?.label || 'Unknown',
+                timestamp: new Date().toISOString()
+            };
+
+            // Prevent duplicates and keep latest
+            const filteredHistory = history.filter((h: any) => h.pollId !== poll.id);
+            localStorage.setItem('vote_history', JSON.stringify([newEntry, ...filteredHistory]));
+
             setHasVoted(true);
             setVotedOptionId(optionId);
         } catch (e) {
