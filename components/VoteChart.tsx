@@ -2,10 +2,31 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { PollOption } from '@/lib/data';
+import { useState, useEffect } from 'react';
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
-export function VoteVisualization({ options }: { options: PollOption[] }) {
+export function VoteVisualization({ pollId, initialOptions }: { pollId: string, initialOptions: PollOption[] }) {
+    const [options, setOptions] = useState<PollOption[]>(initialOptions);
+
+    useEffect(() => {
+        // Polling every 5 seconds to get latest shared results
+        const fetchLatest = async () => {
+            try {
+                const res = await fetch(`/api/vote?pollId=${pollId}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    setOptions(data.options);
+                }
+            } catch (e) {
+                console.error('Polling error:', e);
+            }
+        };
+
+        const interval = setInterval(fetchLatest, 5000);
+        return () => clearInterval(interval);
+    }, [pollId]);
+
     const data = options.map(opt => ({
         name: opt.label,
         value: opt.votes

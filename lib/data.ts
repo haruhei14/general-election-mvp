@@ -1,5 +1,4 @@
-import fs from 'fs/promises';
-import path from 'path';
+import { supabase } from './supabase';
 
 export type PollOption = {
     id: string;
@@ -13,95 +12,37 @@ export type Poll = {
     description?: string;
     options: PollOption[];
     genre: string;
-    createdAt: string;
+    created_at: string;
 };
 
 export type Comment = {
     id: string;
-    pollId: string;
+    poll_id: string;
     text: string;
     author: string;
-    createdAt: string;
+    created_at: string;
     likes: number;
 };
 
-type DataSchema = {
-    polls: Poll[];
-    comments: Comment[];
-};
-
-const DB_PATH = path.join(process.cwd(), 'data', 'db.json');
-
-// Initial data
-const INITIAL_DATA: DataSchema = {
-    polls: [
-        {
-            id: "sea-vs-mountain",
-            title: "好きなのは？海 or 山",
-            description: "あなたの休日の理想の過ごし方に近いのはどっち？",
-            genre: "自然",
-            createdAt: new Date().toISOString(),
-            options: [
-                { id: "opt-sea", label: "海", votes: 0 },
-                { id: "opt-mountain", label: "山", votes: 0 },
-            ]
-        }
-    ],
-    comments: []
-};
-
-async function ensureDb() {
-    try {
-        await fs.access(DB_PATH);
-    } catch {
-        const dir = path.dirname(DB_PATH);
-        try {
-            await fs.access(dir);
-        } catch {
-            await fs.mkdir(dir, { recursive: true });
-        }
-        await fs.writeFile(DB_PATH, JSON.stringify(INITIAL_DATA, null, 2), 'utf-8');
-    }
-}
-
-let memoryDb: DataSchema | null = null;
-
-async function readDb(): Promise<DataSchema> {
-    if (memoryDb) return memoryDb;
-
-    try {
-        const data = await fs.readFile(DB_PATH, 'utf-8');
-        memoryDb = JSON.parse(data);
-        return memoryDb!;
-    } catch (e) {
-        console.error("Read DB Error, using initial data:", e);
-        memoryDb = INITIAL_DATA;
-        return INITIAL_DATA;
-    }
-}
-
-async function writeDb(data: DataSchema) {
-    memoryDb = data;
-    try {
-        await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
-    } catch (e) {
-        // On Vercel, this will fail. We just log it and continue with memoryDb.
-        console.warn("Write DB Warning (Normal on Vercel):", e);
-    }
-}
+export const GENRES = ["自然", "飲み物", "季節", "映画", "音楽"] as const;
 
 export async function getPolls(genre?: string): Promise<Poll[]> {
-    const db = await readDb();
-    let polls = db.polls;
+    let query = supabase.from('polls').select('*').order('created_at', { ascending: false });
     if (genre) {
-        polls = polls.filter(p => p.genre === genre);
+        query = query.eq('genre', genre);
     }
-    return polls.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const { data, error } = await query;
+    if (error) {
+        console.error('getPolls error:', error);
+        return [];
+    }
+    return data as Poll[];
 }
 
 export async function getPopularPolls(limit: number = 3): Promise<Poll[]> {
-    const db = await readDb();
-    return [...db.polls]
+    // Simplistic ranking: fetch all and sort in memory (Supabase JSONB sorting is complex)
+    const polls = await getPolls();
+    return polls
         .sort((a, b) => {
             const aVotes = a.options.reduce((sum, o) => sum + o.votes, 0);
             const bVotes = b.options.reduce((sum, o) => sum + o.votes, 0);
@@ -111,62 +52,62 @@ export async function getPopularPolls(limit: number = 3): Promise<Poll[]> {
 }
 
 export async function getRandomPoll(): Promise<Poll | undefined> {
-    const db = await readDb();
-    if (db.polls.length === 0) return undefined;
-    const randomIndex = Math.floor(Math.random() * db.polls.length);
-    return db.polls[randomIndex];
+    const { data, error } = await supabase.from('polls').select('*').limit(1);
+    if (error || !data) return undefined;
+    // Supabase doesn't have simple 'random', just pick first for MVP or fetch all ids
+    return data[0] as Poll;
 }
 
 export async function getPoll(id: string): Promise<Poll | undefined> {
-    const db = await readDb();
-    return db.polls.find(p => p.id === id);
+    const { data, error } = await supabase.from('polls').select('*').eq('id', id).single();
+    if (error) return undefined;
+    return data as Poll;
 }
 
-export async function votePoll(pollId: string, optionId: string): Promise<Poll | undefined> {
-    const db = await readDb();
-    const pollIndex = db.polls.findIndex(p => p.id === pollId);
-    if (pollIndex === -1) return undefined;
+export async function votePoll(pollId: string, optionId: string): Promise<void> {
+    const poll = await getPoll(pollId);
+    if (!poll) return;
 
-    const poll = db.polls[pollIndex];
-    const optionIndex = poll.options.findIndex(o => o.id === optionId);
-    if (optionIndex === -1) return undefined;
+    const newOptions = poll.options.map(opt => {
+        if (opt.id === optionId) {
+            return { ...opt, votes: opt.votes + 1 };
+        }
+        return opt;
+    });
 
-    // Update votes
-    poll.options[optionIndex].votes += 1;
-    db.polls[pollIndex] = poll;
-
-    await writeDb(db);
-    return poll;
+    await supabase
+        .from('polls')
+        .update({ options: newOptions })
+        .eq('id', pollId);
 }
 
 export async function getComments(pollId: string): Promise<Comment[]> {
-    const db = await readDb();
-    return db.comments.filter(c => c.pollId === pollId).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const { data, error } = await supabase
+        .from('comments')
+        .select('*')
+        .eq('poll_id', pollId)
+        .order('created_at', { ascending: false });
+
+    if (error) return [];
+    return data as Comment[];
 }
 
-export async function addComment(pollId: string, text: string, author: string = "名無し"): Promise<Comment> {
-    const db = await readDb();
-    const newComment: Comment = {
-        id: Date.now().toString(),
-        pollId,
-        text,
-        author: author || "名無し",
-        createdAt: new Date().toISOString(),
-        likes: 0
-    };
-
-    db.comments.push(newComment);
-    await writeDb(db);
-    return newComment;
+export async function addComment(pollId: string, text: string, author: string = "名無し"): Promise<void> {
+    await supabase
+        .from('comments')
+        .insert([{
+            poll_id: pollId,
+            text,
+            author: author || "名無し",
+            likes: 0
+        }]);
 }
 
 export async function likeComment(commentId: string): Promise<void> {
-    const db = await readDb();
-    const comment = db.comments.find(c => c.id === commentId);
+    // Note: needs a RPC or raw query for atomic increment in Supabase for better performance, 
+    // but this read-write works for MVP
+    const { data: comment } = await supabase.from('comments').select('likes').eq('id', commentId).single();
     if (comment) {
-        comment.likes += 1;
-        await writeDb(db);
+        await supabase.from('comments').update({ likes: (comment.likes || 0) + 1 }).eq('id', commentId);
     }
 }
-
-export const GENRES = ["自然", "飲み物", "季節", "映画", "音楽"] as const;

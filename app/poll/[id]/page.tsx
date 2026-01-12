@@ -103,7 +103,7 @@ export default async function PollPage(props: Props) {
                                 <span className="w-1.5 h-6 bg-blue-600 rounded-full" />
                                 投票データ
                             </h4>
-                            <VoteVisualization options={poll.options} />
+                            <VoteVisualization pollId={poll.id} initialOptions={poll.options} />
 
                             <div className="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-100">
                                 <p className="text-xs text-slate-500 leading-relaxed">
