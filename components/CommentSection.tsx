@@ -75,7 +75,7 @@ export function CommentSection({ pollId, comments }: { pollId: string, comments:
                             <div className="flex-1">
                                 <div className="flex items-center justify-between mb-1">
                                     <span className="font-bold text-slate-700">{comment.author || '名無し'}</span>
-                                    <span className="text-xs text-slate-400">{new Date(comment.createdAt).toLocaleString()}</span>
+                                    <span className="text-xs text-slate-400">{new Date(comment.created_at).toLocaleString()}</span>
                                 </div>
                                 <div className="bg-slate-50 rounded-r-2xl rounded-bl-2xl p-4 text-slate-700 leading-relaxed text-sm">
                                     {comment.text}

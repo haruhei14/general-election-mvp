@@ -45,7 +45,7 @@ export function PollCard({ poll }: { poll: Poll }) {
                 <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100">
                     {poll.genre}
                 </span>
-                <span className="text-xs text-slate-400">{new Date(poll.createdAt).toLocaleDateString()}</span>
+                <span className="text-xs text-slate-400">{new Date(poll.created_at).toLocaleDateString()}</span>
             </div>
 
             <Link href={`/poll/${poll.id}`} className="group block mb-4 flex-grow">
