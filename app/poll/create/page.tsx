@@ -2,7 +2,7 @@
 
 import { GENRES } from '@/lib/data';
 import { submitPoll } from '@/lib/actions';
-import { PlusCircle, Image as ImageIcon, ArrowLeft } from 'lucide-react';
+import { PlusCircle, Image as ImageIcon, ArrowLeft, Trash2, ShieldAlert } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,7 +10,28 @@ import { useRouter } from 'next/navigation';
 export default function CreatePollPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [title, setTitle] = useState('');
+    const [options, setOptions] = useState(['', '']); // Start with 2 empty options
     const router = useRouter();
+
+    const addOption = () => {
+        if (options.length < 10) {
+            setOptions([...options, '']);
+        }
+    };
+
+    const removeOption = (index: number) => {
+        if (options.length > 2) {
+            const newOptions = [...options];
+            newOptions.splice(index, 1);
+            setOptions(newOptions);
+        }
+    };
+
+    const handleOptionChange = (index: number, value: string) => {
+        const newOptions = [...options];
+        newOptions[index] = value;
+        setOptions(newOptions);
+    };
 
     const handleSubmit = async (formData: FormData) => {
         setIsSubmitting(true);
@@ -41,6 +62,19 @@ export default function CreatePollPage() {
                 <p className="text-slate-500 mb-10">
                     みんなが気になるお題を作成して、意見を聞いてみよう！
                 </p>
+
+                {/* Safety Warning */}
+                <div className="bg-red-50 border border-red-100 rounded-2xl p-6 mb-10 flex items-start gap-4">
+                    <ShieldAlert className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                        <h4 className="font-bold text-red-900 text-sm">投稿に関するご注意</h4>
+                        <p className="text-xs text-red-700 leading-relaxed">
+                            公序良俗に反する投稿（下ネタ、差別的な表現、特定の個人や団体への攻撃など）は固く禁止しています。
+                            これらを含むお題や選択肢は自動フィルタによって作成できないほか、運営によって削除される場合があります。
+                            みんなが楽しく参加できるお題づくりにご協力ください。
+                        </p>
+                    </div>
+                </div>
 
                 <form action={handleSubmit} className="space-y-8">
                     {/* Title */}
@@ -88,30 +122,44 @@ export default function CreatePollPage() {
                         </select>
                     </div>
 
-                    {/* Options */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">
-                                選択肢 A <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                name="option1"
-                                required
-                                placeholder="例: きのこの山"
-                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                            />
+                    {/* Dynamic Options */}
+                    <div className="space-y-4">
+                        <label className="block text-sm font-bold text-slate-700">
+                            選択肢 <span className="text-slate-400 text-xs font-normal">（2〜10個）</span>
+                        </label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {options.map((option, idx) => (
+                                <div key={idx} className="relative group">
+                                    <input
+                                        name={`option${idx + 1}`}
+                                        required={idx < 2}
+                                        placeholder={`選択肢 ${idx + 1}${idx < 2 ? ' *' : ''}`}
+                                        value={option}
+                                        onChange={(e) => handleOptionChange(idx, e.target.value)}
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 pr-10 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                    />
+                                    {options.length > 2 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => removeOption(idx)}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
                         </div>
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">
-                                選択肢 B <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                name="option2"
-                                required
-                                placeholder="例: たけのこの里"
-                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                            />
-                        </div>
+                        {options.length < 10 && (
+                            <button
+                                type="button"
+                                onClick={addOption}
+                                className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl text-slate-400 font-bold text-sm hover:border-blue-400 hover:text-blue-500 transition-all flex items-center justify-center gap-2 group"
+                            >
+                                <PlusCircle className="w-4 h-4 group-hover:rotate-90 transition-transform" />
+                                選択肢を追加する
+                            </button>
+                        )}
                     </div>
 
                     {/* Description */}
