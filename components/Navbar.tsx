@@ -53,7 +53,7 @@ export function Navbar() {
 
                 <nav className="flex items-center gap-4 md:gap-8">
                     {/* Achievement Badge */}
-                    <div className="hidden xs:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100 shadow-sm">
+                    <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100 shadow-sm">
                         <Award className={`w-4 h-4 ${rank.color}`} />
                         <div className="flex flex-col items-start leading-none">
                             <span className={`text-[10px] font-bold uppercase tracking-tighter ${rank.color}`}>

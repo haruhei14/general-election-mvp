@@ -65,8 +65,12 @@ export async function getPoll(id: string): Promise<Poll | undefined> {
 }
 
 export async function votePoll(pollId: string, optionId: string): Promise<void> {
+    console.log(`Attempting to vote on poll ${pollId} for option ${optionId}`);
     const poll = await getPoll(pollId);
-    if (!poll) return;
+    if (!poll) {
+        console.warn(`Poll ${pollId} not found for voting.`);
+        return;
+    }
 
     const newOptions = poll.options.map(opt => {
         if (opt.id === optionId) {
@@ -75,10 +79,16 @@ export async function votePoll(pollId: string, optionId: string): Promise<void> 
         return opt;
     });
 
-    await supabase
+    const { error } = await supabase
         .from('polls')
         .update({ options: newOptions })
         .eq('id', pollId);
+
+    if (error) {
+        console.error(`Error voting on poll ${pollId}:`, error);
+    } else {
+        console.log(`Successfully voted on poll ${pollId} for option ${optionId}.`);
+    }
 }
 
 export async function getComments(pollId: string): Promise<Comment[]> {
