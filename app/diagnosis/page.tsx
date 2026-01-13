@@ -16,6 +16,11 @@ export default function DiagnosisPage() {
     const currentQuestion = DIAGNOSIS_QUESTIONS[currentIndex];
     const progress = ((currentIndex) / DIAGNOSIS_QUESTIONS.length) * 100;
 
+    // ページタイトルを設定
+    useEffect(() => {
+        document.title = `価値観診断（${currentIndex + 1}/10）｜なんでも総選挙`;
+    }, [currentIndex]);
+
     const handleAnswer = (optionId: string, score: number) => {
         if (isAnimating) return;
 

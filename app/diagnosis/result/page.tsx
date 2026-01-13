@@ -24,7 +24,9 @@ export default function DiagnosisResultPage() {
             const parsedAnswers = JSON.parse(stored) as Answer[];
             setAnswers(parsedAnswers);
             const scores = parsedAnswers.map(a => a.score);
-            setDiagnosisType(getDiagnosisType(scores));
+            const type = getDiagnosisType(scores);
+            setDiagnosisType(type);
+            document.title = `診断結果：${type.emoji}${type.name}タイプ｜なんでも総選挙`;
         }
     }, []);
 
