@@ -6,13 +6,31 @@ import { cn } from '@/lib/utils';
 // Genre gradient mapping
 const GENRE_GRADIENTS: Record<string, string> = {
     '日常・生活': 'from-amber-400 to-orange-500',
+    '日常・価値観': 'from-amber-400 to-orange-500',
     '食べ物': 'from-red-400 to-pink-500',
     '価値観': 'from-violet-500 to-purple-600',
     'エンタメ': 'from-pink-400 to-rose-500',
     '仕事・学び': 'from-blue-400 to-cyan-500',
+    '仕事・社会人': 'from-blue-400 to-cyan-500',
     'テクノロジー': 'from-cyan-400 to-blue-500',
     '人間関係': 'from-green-400 to-emerald-500',
     '究極の選択': 'from-slate-600 to-slate-800',
+    '趣味・娯楽': 'from-pink-400 to-rose-500',
+};
+
+// Genre image mapping (subtle background)
+const GENRE_IMAGES: Record<string, string> = {
+    '食べ物': '/genres/genre_food_1768265037980.png',
+    'エンタメ': '/genres/genre_entertainment_1768265053034.png',
+    '趣味・娯楽': '/genres/genre_entertainment_1768265053034.png',
+    '仕事・学び': '/genres/genre_work_1768265070719.png',
+    '仕事・社会人': '/genres/genre_work_1768265070719.png',
+    '日常・生活': '/genres/genre_lifestyle_1768265086811.png',
+    '日常・価値観': '/genres/genre_lifestyle_1768265086811.png',
+    'テクノロジー': '/genres/genre_technology_1768265111976.png',
+    '人間関係': '/genres/genre_relationships_1768265132983.png',
+    '究極の選択': '/genres/genre_ultimate_choice_1768265148540.png',
+    '価値観': '/genres/genre_values_1768265161976.png',
 };
 
 export default function GenresPage() {
@@ -43,8 +61,16 @@ export default function GenresPage() {
                             GENRE_GRADIENTS[genre] || 'from-slate-400 to-slate-600'
                         )} />
 
-                        {/* Overlay Pattern */}
-                        <div className="absolute inset-0 bg-black/10" />
+                        {/* Background Image (subtle, transparent) */}
+                        {GENRE_IMAGES[genre] && (
+                            <div
+                                className="absolute inset-0 bg-cover bg-center opacity-20 group-hover:opacity-30 transition-opacity duration-500"
+                                style={{ backgroundImage: `url(${GENRE_IMAGES[genre]})` }}
+                            />
+                        )}
+
+                        {/* Overlay for better text readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
 
                         {/* Content */}
                         <div className="relative z-10 h-full flex flex-col justify-end p-4">
