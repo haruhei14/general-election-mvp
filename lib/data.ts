@@ -23,6 +23,7 @@ export type Comment = {
     author: string;
     created_at: string;
     likes: number;
+    parent_id?: string | null;
 };
 
 export const GENRES = ["食べ物", "日常・価値観", "仕事・社会人", "趣味・娯楽", "日常・生活", "価値観", "エンタメ", "仕事・学び", "テクノロジー", "人間関係", "究極の選択"] as const;
@@ -110,14 +111,15 @@ export async function getComments(pollId: string): Promise<Comment[]> {
     return data as Comment[];
 }
 
-export async function addComment(pollId: string, text: string, author: string = "名無し"): Promise<void> {
+export async function addComment(pollId: string, text: string, author: string = "名無し", parentId?: string): Promise<void> {
     await supabase
         .from('comments')
         .insert([{
             poll_id: pollId,
             text,
             author: author || "名無し",
-            likes: 0
+            likes: 0,
+            parent_id: parentId || null
         }]);
 }
 

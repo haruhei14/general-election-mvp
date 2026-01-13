@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache';
-import { votePoll, addComment, createPoll } from './data';
+import { votePoll, addComment, createPoll, likeComment } from './data';
 
 // --- Profanity Filter ---
 const PROHIBITED_WORDS = [
@@ -76,6 +76,7 @@ export async function submitComment(formData: FormData) {
     const pollId = formData.get('pollId') as string;
     const text = formData.get('text') as string;
     const author = formData.get('author') as string;
+    const parentId = formData.get('parentId') as string | null;
 
     if (!pollId || !text) return;
 
@@ -84,6 +85,12 @@ export async function submitComment(formData: FormData) {
         throw new Error('不適切な投稿は制限されています。');
     }
 
-    await addComment(pollId, text, author);
+    await addComment(pollId, text, author, parentId || undefined);
     revalidatePath(`/poll/${pollId}`);
 }
+
+export async function likeCommentAction(commentId: string, pollId: string) {
+    await likeComment(commentId);
+    revalidatePath(`/poll/${pollId}`);
+}
+
