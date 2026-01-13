@@ -155,7 +155,7 @@ export function DailyPollSection({ poll }: { poll: Poll }) {
 
                                 {/* 詳細ページへ */}
                                 <Link
-                                    href={`/poll/${poll.id}`}
+                                    href={`/poll/${localPoll.id}`}
                                     className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-all text-sm"
                                 >
                                     <BarChart2 className="w-4 h-4" />
