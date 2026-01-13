@@ -21,7 +21,7 @@ export function DailyPollSection({ poll }: { poll: Poll }) {
                 </div>
                 <div className="flex-grow min-w-0">
                     <p className="text-blue-600 text-xs font-bold mb-1">📅 今日の一問</p>
-                    <h3 className="text-lg md:text-xl font-black text-slate-800 truncate">
+                    <h3 className="text-lg md:text-xl font-black text-slate-800 leading-snug">
                         {poll.title}
                     </h3>
                 </div>

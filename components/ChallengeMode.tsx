@@ -96,7 +96,7 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
                         <Shuffle className="w-5 h-5" />
                     </span>
                     <span className="truncate">
-                        {isVoted ? `投票済み：${currentPoll.title}` : '今日のお題'}
+                        {isVoted ? `投票済み：${currentPoll.title}` : 'ランダム総選挙'}
                     </span>
                 </h2>
             </div>
