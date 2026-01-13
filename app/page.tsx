@@ -5,13 +5,18 @@ import { DailyPollSection } from '@/components/DailyPollSection';
 import Link from 'next/link';
 import { Sparkles, ChevronRight, TrendingUp, PenSquare, Calendar } from 'lucide-react';
 
-// 今日の日付をシードとしてランダムなお題を選ぶ
+// 今日の日付をシードとして確定的にお題を選ぶ（毎日0時に切り替わる）
 function getDailyPoll(polls: Poll[]): Poll | undefined {
   if (polls.length === 0) return undefined;
+  // IDでソートして順序を固定
+  const sortedPolls = [...polls].sort((a, b) => a.id.localeCompare(b.id));
   const today = new Date();
-  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-  const index = seed % polls.length;
-  return polls[index];
+  // 日本時間で計算（UTC+9）
+  const jstOffset = 9 * 60 * 60 * 1000;
+  const jstDate = new Date(today.getTime() + jstOffset);
+  const seed = jstDate.getUTCFullYear() * 10000 + (jstDate.getUTCMonth() + 1) * 100 + jstDate.getUTCDate();
+  const index = seed % sortedPolls.length;
+  return sortedPolls[index];
 }
 
 export default async function Home() {
