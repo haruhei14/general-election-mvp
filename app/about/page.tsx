@@ -39,8 +39,7 @@ export default function AboutPage() {
                     </h2>
                     <div className="space-y-4 text-slate-700 leading-relaxed">
                         <p>
-                            「唐揚げにレモンをかける？かけない？」<br />
-                            「朝ごはんはパン派？ごはん派？」
+                            「唐揚げにレモンをかける？かけない？」「朝ごはんはパン派？ごはん派？」
                         </p>
                         <p>
                             日常の中で何気なく交わされる、こんな会話。

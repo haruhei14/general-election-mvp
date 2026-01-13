@@ -31,8 +31,7 @@ export default function ContactPage() {
                 <div>
                     <h2 className="text-lg font-bold text-slate-800 mb-4">メールでのお問い合わせ</h2>
                     <p className="text-slate-600 mb-6">
-                        以下のメールアドレスまでお問い合わせください。<br />
-                        通常、3営業日以内にご返信いたします。
+                        以下のメールアドレスまでお問い合わせください。通常、3営業日以内にご返信いたします。
                     </p>
                     <a
                         href="mailto:haruhe14@gmail.com"
@@ -66,9 +65,8 @@ export default function ContactPage() {
             </div>
 
             <div className="mt-8 p-6 bg-slate-50 rounded-2xl text-center">
-                <p className="text-slate-500 text-sm">
-                    お問い合わせ内容によっては、返信にお時間をいただく場合がございます。<br />
-                    また、すべてのお問い合わせに返信をお約束するものではございませんので、予めご了承ください。
+                <p className="text-slate-500 text-sm leading-relaxed">
+                    お問い合わせ内容によっては、返信にお時間をいただく場合がございます。また、すべてのお問い合わせに返信をお約束するものではございませんので、予めご了承ください。
                 </p>
             </div>
         </div>
