@@ -204,6 +204,132 @@ const SEED_POLLS = [
             { id: 'opt-2', label: 'マルチプレイ', votes: 0 },
         ]
     },
+    // 🎬 エンタメ系（10問追加）
+    {
+        id: 'ghibli-best',
+        title: 'ジブリ作品で一番好きなのは？',
+        genre: 'エンタメ',
+        options: [
+            { id: 'opt-1', label: '千と千尋の神隠し', votes: 0 },
+            { id: 'opt-2', label: 'となりのトトロ', votes: 0 },
+            { id: 'opt-3', label: 'もののけ姫', votes: 0 },
+            { id: 'opt-4', label: '天空の城ラピュタ', votes: 0 },
+            { id: 'opt-5', label: 'ハウルの動く城', votes: 0 },
+            { id: 'opt-6', label: '風の谷のナウシカ', votes: 0 },
+            { id: 'opt-7', label: '魔女の宅急便', votes: 0 },
+            { id: 'opt-8', label: '紅の豚', votes: 0 },
+        ]
+    },
+    {
+        id: 'strongest-hero',
+        title: '最強のヒーローは？',
+        genre: 'エンタメ',
+        options: [
+            { id: 'opt-1', label: '孫悟空', votes: 0 },
+            { id: 'opt-2', label: 'ルフィ', votes: 0 },
+            { id: 'opt-3', label: 'ナルト', votes: 0 },
+            { id: 'opt-4', label: '竈門炭治郎', votes: 0 },
+            { id: 'opt-5', label: '五条悟', votes: 0 },
+            { id: 'opt-6', label: 'オールマイト', votes: 0 },
+        ]
+    },
+    {
+        id: 'best-variety',
+        title: '一番面白いバラエティ番組は？',
+        genre: 'エンタメ',
+        options: [
+            { id: 'opt-1', label: '水曜日のダウンタウン', votes: 0 },
+            { id: 'opt-2', label: 'アメトーーク', votes: 0 },
+            { id: 'opt-3', label: 'ロンドンハーツ', votes: 0 },
+            { id: 'opt-4', label: 'IPPONグランプリ', votes: 0 },
+            { id: 'opt-5', label: '有吉の壁', votes: 0 },
+        ]
+    },
+    {
+        id: 'favorite-game',
+        title: '一番ハマったゲームは？',
+        genre: 'エンタメ',
+        options: [
+            { id: 'opt-1', label: 'マインクラフト', votes: 0 },
+            { id: 'opt-2', label: 'ポケモン', votes: 0 },
+            { id: 'opt-3', label: 'スマブラ', votes: 0 },
+            { id: 'opt-4', label: 'マリオカート', votes: 0 },
+            { id: 'opt-5', label: 'あつまれどうぶつの森', votes: 0 },
+            { id: 'opt-6', label: 'スプラトゥーン', votes: 0 },
+            { id: 'opt-7', label: 'Apex Legends', votes: 0 },
+            { id: 'opt-8', label: 'フォートナイト', votes: 0 },
+        ]
+    },
+    {
+        id: 'rpg-class',
+        title: 'RPGで最初に選ぶのは？',
+        genre: 'エンタメ',
+        options: [
+            { id: 'opt-1', label: '戦士', votes: 0 },
+            { id: 'opt-2', label: '魔法使い', votes: 0 },
+            { id: 'opt-3', label: '僧侶', votes: 0 },
+            { id: 'opt-4', label: '盗賊', votes: 0 },
+            { id: 'opt-5', label: '弓使い', votes: 0 },
+        ]
+    },
+    {
+        id: 'karaoke-genre',
+        title: 'カラオケで歌うジャンルは？',
+        genre: 'エンタメ',
+        options: [
+            { id: 'opt-1', label: 'アニソン', votes: 0 },
+            { id: 'opt-2', label: 'J-POP', votes: 0 },
+            { id: 'opt-3', label: 'ボカロ', votes: 0 },
+            { id: 'opt-4', label: '懐メロ', votes: 0 },
+            { id: 'opt-5', label: '洋楽', votes: 0 },
+            { id: 'opt-6', label: 'K-POP', votes: 0 },
+        ]
+    },
+    {
+        id: 'youtube-genre',
+        title: '好きなYouTubeジャンルは？',
+        genre: 'エンタメ',
+        options: [
+            { id: 'opt-1', label: 'ゲーム実況', votes: 0 },
+            { id: 'opt-2', label: 'Vtuber', votes: 0 },
+            { id: 'opt-3', label: '料理', votes: 0 },
+            { id: 'opt-4', label: '検証・やってみた', votes: 0 },
+            { id: 'opt-5', label: '旅行・Vlog', votes: 0 },
+            { id: 'opt-6', label: '雑学・解説', votes: 0 },
+        ]
+    },
+    {
+        id: 'cat-vs-dog',
+        title: '猫派 vs 犬派',
+        genre: 'エンタメ',
+        options: [
+            { id: 'opt-1', label: '猫派', votes: 0 },
+            { id: 'opt-2', label: '犬派', votes: 0 },
+            { id: 'opt-3', label: '両方好き', votes: 0 },
+            { id: 'opt-4', label: 'どっちも苦手', votes: 0 },
+        ]
+    },
+    {
+        id: 'kinoko-takenoko',
+        title: 'きのこの山 vs たけのこの里',
+        genre: 'エンタメ',
+        options: [
+            { id: 'opt-1', label: 'きのこの山', votes: 0 },
+            { id: 'opt-2', label: 'たけのこの里', votes: 0 },
+            { id: 'opt-3', label: 'どっちも好き', votes: 0 },
+        ]
+    },
+    {
+        id: 'burger-chain',
+        title: '好きなハンバーガーチェーンは？',
+        genre: 'エンタメ',
+        options: [
+            { id: 'opt-1', label: 'マクドナルド', votes: 0 },
+            { id: 'opt-2', label: 'モスバーガー', votes: 0 },
+            { id: 'opt-3', label: 'ケンタッキー', votes: 0 },
+            { id: 'opt-4', label: 'ロッテリア', votes: 0 },
+        ]
+    },
 ];
 
 export async function POST() {
