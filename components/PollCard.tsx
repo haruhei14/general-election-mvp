@@ -42,6 +42,33 @@ function getMiniSummary(options: { votes: number }[], totalVotes: number): strin
     return 'いい勝負になっているね';
 }
 
+// Share Button Component
+function ShareButton({ poll, votedOptionId }: { poll: Poll; votedOptionId: string | null }) {
+    const selectedOption = poll.options.find(o => o.id === votedOptionId);
+    const optionLabel = selectedOption?.label || '';
+
+    const shareText = `「${poll.title}」\n私は「${optionLabel}」派でした！\nあなたはどっち？\n\n#なんでも総選挙`;
+    const shareUrl = typeof window !== 'undefined'
+        ? `${window.location.origin}/poll/${poll.id}`
+        : '';
+
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+
+    return (
+        <a
+            href={twitterUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-black text-white font-bold text-sm hover:bg-gray-800 transition-all active:scale-[0.98] shadow-md mb-3"
+        >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+            結果をXでシェア
+        </a>
+    );
+}
+
 export function PollCard({ poll, hideOptions = false, hideNextButton = false }: { poll: Poll, hideOptions?: boolean, hideNextButton?: boolean }) {
     const [hasVoted, setHasVoted] = useState(false);
     const [votedOptionId, setVotedOptionId] = useState<string | null>(null);
@@ -177,11 +204,14 @@ export function PollCard({ poll, hideOptions = false, hideNextButton = false }: 
                             総投票数: {totalVotes}票
                         </div>
 
+                        {/* Share Button */}
+                        <ShareButton poll={poll} votedOptionId={votedOptionId} />
+
                         {/* Next Poll Button */}
                         {!hideNextButton && (
                             <Link
                                 href="/api/poll/random"
-                                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-slate-900 text-white font-black text-base hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg"
+                                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-slate-900 text-white font-black text-base hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg mt-3"
                             >
                                 次のお題へ
                                 <ArrowRight className="w-5 h-5" />
