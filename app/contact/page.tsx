@@ -35,15 +35,13 @@ export default function ContactPage() {
                         通常、3営業日以内にご返信いたします。
                     </p>
                     <a
-                        href="mailto:contact@example.com"
+                        href="mailto:haruhe14@gmail.com"
                         className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl active:scale-[0.98]"
                     >
                         <Mail className="w-5 h-5" />
-                        contact@example.com
+                        haruhe14@gmail.com
                     </a>
-                    <p className="text-slate-400 text-sm mt-4">
-                        ※ メールアドレスは運営開始後に正式なものに変更予定です
-                    </p>
+
                 </div>
 
                 <hr className="border-slate-100" />
