@@ -110,7 +110,7 @@ export default async function Home() {
       )}
 
       {/* ランダム総選挙 - マージン追加 */}
-      <div className="mt-4">
+      <div className="mt-8">
         <ChallengeMode initialPolls={challengePolls} />
       </div>
 

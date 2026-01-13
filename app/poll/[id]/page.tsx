@@ -2,6 +2,7 @@ import { getPoll, getComments } from '@/lib/data';
 import { PollCard } from '@/components/PollCard';
 import { CommentSection } from '@/components/CommentSection';
 import { VoteVisualization } from '@/components/VoteChart';
+import { PollExplanationSection } from '@/components/PollExplanationSection';
 import { AdSense } from '@/components/AdSense';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -64,10 +65,13 @@ export default async function PollPage(props: Props) {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                 {/* Main Content */}
-                <div className="lg:col-span-8 space-y-10">
+                <div className="lg:col-span-8 space-y-8">
                     <div className="animate-in fade-in zoom-in-95 duration-700">
                         <PollCard poll={poll} />
                     </div>
+
+                    {/* 豆知識・解説セクション */}
+                    <PollExplanationSection poll={poll} />
 
                     <AdSense type="mid" />
 
