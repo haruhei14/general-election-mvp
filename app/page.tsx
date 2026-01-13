@@ -1,14 +1,26 @@
-import { getRandomPolls } from '@/lib/data';
+import { getPolls, getRandomPolls, Poll } from '@/lib/data';
 import { AdSense } from '@/components/AdSense';
 import { ChallengeMode } from '@/components/ChallengeMode';
+import { DailyPollSection } from '@/components/DailyPollSection';
 import Link from 'next/link';
-import { Sparkles, ChevronRight } from 'lucide-react';
+import { Sparkles, ChevronRight, TrendingUp, PenSquare, Calendar } from 'lucide-react';
+
+// 今日の日付をシードとしてランダムなお題を選ぶ
+function getDailyPoll(polls: Poll[]): Poll | undefined {
+  if (polls.length === 0) return undefined;
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+  const index = seed % polls.length;
+  return polls[index];
+}
 
 export default async function Home() {
   const challengePolls = await getRandomPolls(10);
+  const allPolls = await getPolls();
+  const dailyPoll = getDailyPoll(allPolls);
 
   return (
-    <div className="container-responsive py-8 space-y-12">
+    <div className="container-responsive py-8 space-y-8">
       {/* Hero / Ad Space */}
       <div className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-white shadow-2xl min-h-[280px] flex items-center">
         {/* Background Image with Overlay */}
@@ -33,27 +45,64 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* 価値観診断バナー */}
-      <Link
-        href="/diagnosis"
-        className="block bg-gradient-to-r from-violet-500 to-indigo-600 rounded-3xl p-6 md:p-8 text-white shadow-xl hover:shadow-2xl hover:scale-[1.01] transition-all group"
-      >
-        <div className="flex items-center justify-between gap-4">
+      {/* 3つのアクションボタン */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* 価値観診断 */}
+        <Link
+          href="/diagnosis"
+          className="block bg-gradient-to-r from-violet-500 to-indigo-600 rounded-2xl p-5 md:p-6 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all group"
+        >
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 md:w-16 md:h-16 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-7 h-7 md:w-8 md:h-8 text-white" />
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-6 h-6 text-white" />
             </div>
-            <div>
-              <p className="text-violet-100 text-xs md:text-sm font-bold mb-1">🧠 10問であなたを分析</p>
-              <h2 className="text-lg md:text-2xl font-black">価値観診断をやってみる</h2>
-              <p className="text-violet-200 text-xs md:text-sm mt-1 hidden md:block">
-                日常の選択であなたのタイプを診断。結果をシェアしよう！
-              </p>
+            <div className="flex-grow min-w-0">
+              <p className="text-violet-100 text-xs font-bold mb-0.5">🧠 10問であなたを分析</p>
+              <h2 className="text-base md:text-lg font-black truncate">価値観診断</h2>
             </div>
+            <ChevronRight className="w-5 h-5 text-white/60 group-hover:translate-x-1 transition-transform flex-shrink-0" />
           </div>
-          <ChevronRight className="w-6 h-6 text-white/60 group-hover:translate-x-1 transition-transform flex-shrink-0" />
-        </div>
-      </Link>
+        </Link>
+
+        {/* 急上昇の総選挙 */}
+        <Link
+          href="/ranking"
+          className="block bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl p-5 md:p-6 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <TrendingUp className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-grow min-w-0">
+              <p className="text-orange-100 text-xs font-bold mb-0.5">🔥 いま話題のお題</p>
+              <h2 className="text-base md:text-lg font-black truncate">急上昇ランキング</h2>
+            </div>
+            <ChevronRight className="w-5 h-5 text-white/60 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+          </div>
+        </Link>
+
+        {/* お題を作成 */}
+        <Link
+          href="/poll/create"
+          className="block bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl p-5 md:p-6 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <PenSquare className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-grow min-w-0">
+              <p className="text-emerald-100 text-xs font-bold mb-0.5">✨ みんなに質問しよう</p>
+              <h2 className="text-base md:text-lg font-black truncate">お題を作成する</h2>
+            </div>
+            <ChevronRight className="w-5 h-5 text-white/60 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+          </div>
+        </Link>
+      </div>
+
+      {/* 今日の一問 */}
+      {dailyPoll && (
+        <DailyPollSection poll={dailyPoll} />
+      )}
 
       {/* Today's Challenge - Main Focus */}
       <ChallengeMode initialPolls={challengePolls} />
