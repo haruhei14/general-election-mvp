@@ -109,8 +109,10 @@ export default async function Home() {
         <DailyPollSection poll={dailyPoll} />
       )}
 
-      {/* Today's Challenge - Main Focus */}
-      <ChallengeMode initialPolls={challengePolls} />
+      {/* ランダム総選挙 - マージン追加 */}
+      <div className="mt-4">
+        <ChallengeMode initialPolls={challengePolls} />
+      </div>
 
       {/* Footer Ad */}
       <AdSense type="responsive" className="mt-12" />

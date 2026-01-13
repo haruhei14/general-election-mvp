@@ -90,15 +90,18 @@ export function ChallengeMode({ initialPolls }: { initialPolls: Poll[] }) {
     return (
         <div className="space-y-10 animate-in fade-in duration-700">
             {/* Header: Always show context or specific title */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-col gap-2">
                 <h2 className="text-xl md:text-2xl font-black text-slate-800 flex items-center gap-3">
                     <span className="p-2 bg-purple-100 text-purple-600 rounded-xl flex-shrink-0">
                         <Shuffle className="w-5 h-5" />
                     </span>
-                    <span className="truncate">
-                        {isVoted ? `投票済み：${currentPoll.title}` : 'ランダム総選挙'}
-                    </span>
+                    ランダム総選挙
                 </h2>
+                {isVoted && (
+                    <p className="text-slate-500 text-sm ml-12">
+                        ✓ 投票済み：{currentPoll.title}
+                    </p>
+                )}
             </div>
 
             <div className={cn(
