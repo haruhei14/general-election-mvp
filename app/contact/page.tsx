@@ -1,9 +1,19 @@
 import Link from 'next/link';
 import { ArrowLeft, Mail, MessageCircle } from 'lucide-react';
+import { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = {
     title: 'お問い合わせ | なんでも総選挙',
     description: 'なんでも総選挙へのお問い合わせページです。ご質問、ご意見、不具合報告などお気軽にご連絡ください。',
+    openGraph: {
+        title: 'お問い合わせ | なんでも総選挙',
+        description: 'なんでも総選挙へのお問い合わせページです。',
+        images: [{ url: 'https://www.nandemo-vote.com/api/og?title=お問い合わせ', width: 1200, height: 630 }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        images: ['https://www.nandemo-vote.com/api/og?title=お問い合わせ'],
+    },
 };
 
 export default function ContactPage() {

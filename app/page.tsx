@@ -25,6 +25,7 @@ function getDateBasedPoll(polls: Poll[]): Poll | undefined {
 export async function generateMetadata(): Promise<Metadata> {
   const trendPoll = await getLatestDailyPoll();
   const dailyTitle = trendPoll?.title || '今日のお題に投票しよう';
+  const ogImageUrl = `https://www.nandemo-vote.com/api/og?title=${encodeURIComponent('なんでも総選挙')}`;
 
   return {
     title: 'なんでも総選挙 | みんなの意見が見える投票サイト',
@@ -35,11 +36,13 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: 'なんでも総選挙',
       locale: 'ja_JP',
       type: 'website',
+      images: [{ url: ogImageUrl, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
       title: 'なんでも総選挙',
       description: `【今日の一問】${dailyTitle}`,
+      images: [ogImageUrl],
     },
   };
 }

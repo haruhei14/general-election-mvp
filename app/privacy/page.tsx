@@ -1,9 +1,19 @@
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = {
     title: 'プライバシーポリシー | なんでも総選挙',
     description: 'なんでも総選挙のプライバシーポリシーです。個人情報の取り扱い、Cookie、広告配信について説明しています。',
+    openGraph: {
+        title: 'プライバシーポリシー | なんでも総選挙',
+        description: 'なんでも総選挙のプライバシーポリシーです。',
+        images: [{ url: 'https://www.nandemo-vote.com/api/og?title=プライバシーポリシー', width: 1200, height: 630 }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        images: ['https://www.nandemo-vote.com/api/og?title=プライバシーポリシー'],
+    },
 };
 
 export default function PrivacyPage() {

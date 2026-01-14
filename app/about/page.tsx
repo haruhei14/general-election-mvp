@@ -1,9 +1,19 @@
 import Link from 'next/link';
 import { ArrowLeft, Vote, Heart, Users, Sparkles } from 'lucide-react';
+import { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = {
     title: 'サイトについて | なんでも総選挙',
     description: 'なんでも総選挙は、誰もが自由に選挙（ランキング）を作成し、意見を共有できるプラットフォームです。',
+    openGraph: {
+        title: 'サイトについて | なんでも総選挙',
+        description: 'なんでも総選挙は、誰もが自由に選挙を作成し、意見を共有できるプラットフォームです。',
+        images: [{ url: 'https://www.nandemo-vote.com/api/og?title=サイトについて', width: 1200, height: 630 }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        images: ['https://www.nandemo-vote.com/api/og?title=サイトについて'],
+    },
 };
 
 export default function AboutPage() {
