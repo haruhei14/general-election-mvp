@@ -27,6 +27,9 @@ export const metadata: Metadata = {
     title: 'なんでも総選挙',
     images: ['https://www.nandemo-vote.com/api/og?title=なんでも総選挙'],
   },
+  verification: {
+    google: 'dmb5tVfiy0ceJnxjtQaGnC8pXcZWuXRhKnzjKtdEFwo',
+  },
 };
 
 import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google';
