@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { submitVote } from '@/lib/actions';
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { Check, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight, Hash } from 'lucide-react';
 
 // Count-up animation hook
 function useCountUp(end: number, duration: number = 600, shouldStart: boolean = false) {
@@ -167,6 +167,22 @@ export function PollCard({ poll, hideOptions = false, hideNextButton = false }: 
                 <h3 className="text-xl md:text-2xl font-black text-slate-800 mb-6 leading-snug">
                     {poll.title}
                 </h3>
+
+                {/* Tags */}
+                {poll.tags && poll.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-6">
+                        {poll.tags.map(tag => (
+                            <Link
+                                key={tag}
+                                href={`/polls?tag=${encodeURIComponent(tag)}`}
+                                className="flex items-center gap-1 px-2.5 py-1 bg-violet-50 text-violet-600 rounded-full text-xs font-bold hover:bg-violet-100 transition-colors"
+                            >
+                                <Hash className="w-3 h-3" />
+                                {tag}
+                            </Link>
+                        ))}
+                    </div>
+                )}
 
                 {/* Options */}
                 {hideOptions && !hasVoted ? (

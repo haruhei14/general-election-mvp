@@ -1,6 +1,6 @@
-import { getPolls, GENRES } from '@/lib/data';
+import { getPolls, getPollsByTag, GENRES } from '@/lib/data';
 import Link from 'next/link';
-import { Clock, TrendingUp, List } from 'lucide-react';
+import { Clock, TrendingUp, List, Hash } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 
@@ -18,9 +18,11 @@ export const metadata: Metadata = {
     },
 };
 
-export default async function PollsPage(props: { searchParams: Promise<{ sort?: string; genre?: string }> }) {
-    const { sort, genre } = await props.searchParams;
-    const allPolls = await getPolls(genre);
+export default async function PollsPage(props: { searchParams: Promise<{ sort?: string; genre?: string; tag?: string }> }) {
+    const { sort, genre, tag } = await props.searchParams;
+
+    // タグ指定がある場合はタグでフィルタリング
+    const allPolls = tag ? await getPollsByTag(tag) : await getPolls(genre);
 
     // Sort logic
     const sortedPolls = sort === 'popular'
@@ -78,6 +80,23 @@ export default async function PollsPage(props: { searchParams: Promise<{ sort?: 
                             <span className="text-slate-400">|</span>
                             <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
                                 {genre}
+                            </span>
+                            <Link
+                                href={sort ? `/polls?sort=${sort}` : '/polls'}
+                                className="text-slate-400 hover:text-slate-600 text-sm"
+                            >
+                                ✕ 解除
+                            </Link>
+                        </div>
+                    )}
+
+                    {/* Tag Filter */}
+                    {tag && (
+                        <div className="flex items-center gap-2">
+                            <span className="text-slate-400">|</span>
+                            <span className="px-3 py-1 bg-violet-100 text-violet-700 rounded-full text-sm font-bold flex items-center gap-1">
+                                <Hash className="w-3 h-3" />
+                                {tag}
                             </span>
                             <Link
                                 href={sort ? `/polls?sort=${sort}` : '/polls'}

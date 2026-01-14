@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { X, List, Tags, PenLine, BarChart3, Trophy, TrendingUp, Sparkles, MessageCircle } from 'lucide-react';
+import { X, List, Tags, PenLine, BarChart3, Trophy, TrendingUp, Sparkles, MessageCircle, Hash } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const MENU_ITEMS = [
@@ -11,6 +11,7 @@ const MENU_ITEMS = [
     { href: '/comments', label: '最近のコメント', icon: MessageCircle, category: 'browse' },
     { href: '/polls', label: 'お題一覧', icon: List, category: 'browse' },
     { href: '/genres', label: 'ジャンル一覧', icon: Tags, category: 'browse' },
+    { href: '/tags', label: 'タグ一覧', icon: Hash, category: 'browse' },
     { href: '/ranking', label: '人気ランキング', icon: TrendingUp, category: 'browse' },
     { href: '/poll/create', label: 'お題を作成する', icon: PenLine, category: 'action' },
     { href: '/my-votes', label: 'マイレポート', icon: BarChart3, category: 'action' },

@@ -24,6 +24,7 @@ export type Poll = {
     created_at: string;
     explanation?: PollExplanation | null;
     poll_type?: 'seed' | 'user' | 'daily_trend';
+    tags?: string[];
 };
 
 export type Comment = {
@@ -162,4 +163,35 @@ export async function getLatestDailyPoll(): Promise<Poll | undefined> {
 
     if (error || !data) return undefined;
     return data as Poll;
+}
+
+// 全タグを取得（重複なし、50音順）
+export async function getAllTags(): Promise<{ tag: string; count: number }[]> {
+    const polls = await getPolls();
+    const tagCounts: Record<string, number> = {};
+
+    polls.forEach(poll => {
+        if (poll.tags && Array.isArray(poll.tags)) {
+            poll.tags.forEach(tag => {
+                tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+            });
+        }
+    });
+
+    // 50音順にソート
+    return Object.entries(tagCounts)
+        .map(([tag, count]) => ({ tag, count }))
+        .sort((a, b) => a.tag.localeCompare(b.tag, 'ja'));
+}
+
+// タグでお題を検索
+export async function getPollsByTag(tag: string): Promise<Poll[]> {
+    const { data, error } = await supabase
+        .from('polls')
+        .select('*')
+        .contains('tags', [tag])
+        .order('created_at', { ascending: false });
+
+    if (error || !data) return [];
+    return data as Poll[];
 }
