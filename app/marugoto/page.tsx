@@ -6,13 +6,18 @@ export const dynamic = 'force-dynamic';
 
 export default function MarugotoIndexPage() {
     return (
-        <div className="min-h-screen bg-slate-50 relative overflow-hidden font-serif">
-            {/* Background Pattern - Grand Prix Style */}
+        <div className="min-h-screen relative overflow-hidden font-serif">
+            {/* Background - Red Curtain Awards Ceremony Style */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-slate-50 to-slate-100 opacity-80" />
-                <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-slate-900/5 to-transparent" />
-                {/* Subtle Grid or Rays */}
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]" />
+                <img
+                    src="/red-curtain-bg.png"
+                    alt=""
+                    className="w-full h-full object-cover"
+                />
+                {/* Dark overlay for text readability */}
+                <div className="absolute inset-0 bg-black/40" />
+                {/* Spotlight effect */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center_top,_rgba(255,215,0,0.15)_0%,_transparent_60%)]" />
             </div>
 
             <div className="container-responsive py-12 relative z-10">

@@ -63,168 +63,183 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
 
     if (isFinished) {
         return (
-            <div className="max-w-2xl mx-auto pb-20">
-                {/* Result Header - Grand Prix Style */}
-                <div className="text-center mb-10 relative">
-                    <div className="inline-block mb-2">
-                        <Trophy className="w-12 h-12 text-yellow-500 mx-auto drop-shadow-lg" />
-                    </div>
-                    <h2 className="text-3xl md:text-4xl font-black text-slate-800 mb-2 tracking-tight">
-                        診断結果発表
-                    </h2>
-                    <p className="text-slate-500 font-serif italic">The Grand Prix of Your Choice</p>
+            <div className="relative min-h-screen">
+                {/* Background - Red Curtain Awards Ceremony Style */}
+                <div className="fixed inset-0 z-0 pointer-events-none">
+                    <img
+                        src="/red-curtain-bg.png"
+                        alt=""
+                        className="w-full h-full object-cover"
+                    />
+                    {/* Dark overlay for text readability */}
+                    <div className="absolute inset-0 bg-black/50" />
+                    {/* Spotlight effect */}
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center_top,_rgba(255,215,0,0.2)_0%,_transparent_50%)]" />
                 </div>
 
-                {/* Result Detail List - Moved to Top & Styled as Podium */}
-                <div className="space-y-12 mb-16">
-                    {polls.map((poll, idx) => {
-                        const myChoiceId = answers[poll.id];
-                        const myChoice = poll.options.find(o => o.id === myChoiceId);
-                        const totalVotes = poll.options.reduce((sum, o) => sum + o.votes, 0);
+                <div className="relative z-10 max-w-2xl mx-auto pb-20 px-4">
+                    {/* Result Header - Grand Prix Style */}
+                    <div className="text-center mb-10 pt-8 relative">
+                        <div className="inline-block mb-2">
+                            <Trophy className="w-12 h-12 text-yellow-500 mx-auto drop-shadow-lg" />
+                        </div>
+                        <h2 className="text-3xl md:text-4xl font-black text-slate-800 mb-2 tracking-tight">
+                            診断結果発表
+                        </h2>
+                        <p className="text-slate-500 font-serif italic">The Grand Prix of Your Choice</p>
+                    </div>
 
-                        // Sort options by votes for ranking
-                        const sortedOptions = [...poll.options].sort((a, b) => b.votes - a.votes);
+                    {/* Result Detail List - Moved to Top & Styled as Podium */}
+                    <div className="space-y-12 mb-16">
+                        {polls.map((poll, idx) => {
+                            const myChoiceId = answers[poll.id];
+                            const myChoice = poll.options.find(o => o.id === myChoiceId);
+                            const totalVotes = poll.options.reduce((sum, o) => sum + o.votes, 0);
 
-                        // Assign ranks including ties handling if needed, simple index for now
-                        const top3 = sortedOptions.slice(0, 3);
-                        // Ensure 3 items for podium layout logic even if less options
-                        const [first, second, third] = top3;
+                            // Sort options by votes for ranking
+                            const sortedOptions = [...poll.options].sort((a, b) => b.votes - a.votes);
 
-                        return (
-                            <div key={poll.id} className="relative bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-8 overflow-hidden">
-                                {/* Background Decorative Elements */}
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/5 rounded-bl-full pointer-events-none" />
+                            // Assign ranks including ties handling if needed, simple index for now
+                            const top3 = sortedOptions.slice(0, 3);
+                            // Ensure 3 items for podium layout logic even if less options
+                            const [first, second, third] = top3;
 
-                                <div className="text-center mb-8 relative z-10">
-                                    <div className="text-xs font-bold text-slate-400 tracking-widest mb-2 uppercase">QUESTION {idx + 1}</div>
-                                    <h4 className="text-xl md:text-2xl font-bold text-slate-800">{poll.title}</h4>
-                                </div>
+                            return (
+                                <div key={poll.id} className="relative bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-8 overflow-hidden">
+                                    {/* Background Decorative Elements */}
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/5 rounded-bl-full pointer-events-none" />
 
-                                {/* Podium Display */}
-                                <div className="flex items-end justify-center gap-2 md:gap-4 mb-8 h-48 md:h-56 pb-2 border-b border-slate-100 px-2">
-                                    {/* 2nd Place */}
-                                    {second && (
-                                        <div className="flex flex-col items-center w-1/3 max-w-[120px] group">
-                                            <div className="w-full bg-gradient-to-t from-slate-400 to-slate-300 rounded-t-xl shadow-lg relative h-28 md:h-36 flex flex-col items-center justify-between pt-6 pb-3">
-                                                {/* Medal */}
-                                                <div className="absolute -top-4 w-8 h-8 rounded-full bg-gradient-to-br from-slate-200 to-slate-400 border-2 border-white shadow-md flex items-center justify-center text-sm">
-                                                    🥈
-                                                </div>
-                                                {/* Label inside podium */}
-                                                <div className="text-center px-2 flex-1 flex flex-col justify-center">
-                                                    <span className="text-xs md:text-sm font-bold text-white drop-shadow-sm line-clamp-2">{second.label}</span>
-                                                </div>
-                                                {/* Percentage and Rank */}
-                                                <div className="text-center">
-                                                    <div className="text-lg md:text-xl font-black text-white/80">{totalVotes > 0 ? Math.round((second.votes / totalVotes) * 100) : 0}%</div>
-                                                    <div className="text-xl font-black text-white/40">2</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* 1st Place */}
-                                    {first && (
-                                        <div className="flex flex-col items-center w-1/3 max-w-[130px] z-10 group">
-                                            <div className="w-full bg-gradient-to-t from-yellow-500 to-yellow-400 rounded-t-xl shadow-xl relative h-36 md:h-44 flex flex-col items-center justify-between pt-6 pb-3">
-                                                {/* Crown */}
-                                                <div className="absolute -top-5 w-10 h-10 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500 border-2 border-white shadow-lg flex items-center justify-center text-lg">
-                                                    👑
-                                                </div>
-                                                {/* Label inside podium */}
-                                                <div className="text-center px-2 flex-1 flex flex-col justify-center">
-                                                    <span className="text-sm md:text-base font-bold text-white drop-shadow-md line-clamp-2">{first.label}</span>
-                                                </div>
-                                                {/* Percentage and Rank */}
-                                                <div className="text-center">
-                                                    <div className="text-xl md:text-2xl font-black text-white">{totalVotes > 0 ? Math.round((first.votes / totalVotes) * 100) : 0}%</div>
-                                                    <div className="text-2xl font-black text-white/50">1</div>
-                                                </div>
-                                                {/* Texture */}
-                                                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-overlay rounded-t-xl" />
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* 3rd Place */}
-                                    {third && (
-                                        <div className="flex flex-col items-center w-1/3 max-w-[120px] group">
-                                            <div className="w-full bg-gradient-to-t from-orange-400 to-orange-300 rounded-t-xl shadow-lg relative h-20 md:h-28 flex flex-col items-center justify-between pt-5 pb-2">
-                                                {/* Medal */}
-                                                <div className="absolute -top-4 w-8 h-8 rounded-full bg-gradient-to-br from-orange-200 to-orange-400 border-2 border-white shadow-md flex items-center justify-center text-sm">
-                                                    🥉
-                                                </div>
-                                                {/* Label inside podium */}
-                                                <div className="text-center px-2 flex-1 flex flex-col justify-center">
-                                                    <span className="text-xs md:text-sm font-bold text-white drop-shadow-sm line-clamp-2">{third.label}</span>
-                                                </div>
-                                                {/* Percentage and Rank */}
-                                                <div className="text-center">
-                                                    <div className="text-lg md:text-xl font-black text-white/80">{totalVotes > 0 ? Math.round((third.votes / totalVotes) * 100) : 0}%</div>
-                                                    <div className="text-xl font-black text-white/40">3</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* My Answer Highlight */}
-                                <div className="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-3">
-                                    <div className="bg-slate-800 text-white text-[10px] font-bold px-2 py-1 rounded">YOU</div>
-                                    <div className="flex-1">
-                                        <div className="text-xs text-slate-500 font-bold">あなたの回答</div>
-                                        <div className="text-sm font-bold text-slate-800">{myChoice?.label}</div>
+                                    <div className="text-center mb-8 relative z-10">
+                                        <div className="text-xs font-bold text-slate-400 tracking-widest mb-2 uppercase">QUESTION {idx + 1}</div>
+                                        <h4 className="text-xl md:text-2xl font-bold text-slate-800">{poll.title}</h4>
                                     </div>
-                                    {/* Rank Badge for My Choice */}
-                                    {top3.find(o => o.id === myChoiceId) ? (
-                                        <div className="text-xs font-bold text-yellow-600 bg-yellow-50 px-2 py-1 rounded-full border border-yellow-100">
-                                            TOP 3入り！
+
+                                    {/* Podium Display */}
+                                    <div className="flex items-end justify-center gap-2 md:gap-4 mb-8 h-48 md:h-56 pb-2 border-b border-slate-100 px-2">
+                                        {/* 2nd Place */}
+                                        {second && (
+                                            <div className="flex flex-col items-center w-1/3 max-w-[120px] group">
+                                                <div className="w-full bg-gradient-to-t from-slate-400 to-slate-300 rounded-t-xl shadow-lg relative h-28 md:h-36 flex flex-col items-center justify-between pt-6 pb-3">
+                                                    {/* Medal */}
+                                                    <div className="absolute -top-4 w-8 h-8 rounded-full bg-gradient-to-br from-slate-200 to-slate-400 border-2 border-white shadow-md flex items-center justify-center text-sm">
+                                                        🥈
+                                                    </div>
+                                                    {/* Label inside podium */}
+                                                    <div className="text-center px-2 flex-1 flex flex-col justify-center">
+                                                        <span className="text-xs md:text-sm font-bold text-white drop-shadow-sm line-clamp-2">{second.label}</span>
+                                                    </div>
+                                                    {/* Percentage and Rank */}
+                                                    <div className="text-center">
+                                                        <div className="text-lg md:text-xl font-black text-white/80">{totalVotes > 0 ? Math.round((second.votes / totalVotes) * 100) : 0}%</div>
+                                                        <div className="text-xl font-black text-white/40">2</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* 1st Place */}
+                                        {first && (
+                                            <div className="flex flex-col items-center w-1/3 max-w-[130px] z-10 group">
+                                                <div className="w-full bg-gradient-to-t from-yellow-500 to-yellow-400 rounded-t-xl shadow-xl relative h-36 md:h-44 flex flex-col items-center justify-between pt-6 pb-3">
+                                                    {/* Crown */}
+                                                    <div className="absolute -top-5 w-10 h-10 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500 border-2 border-white shadow-lg flex items-center justify-center text-lg">
+                                                        👑
+                                                    </div>
+                                                    {/* Label inside podium */}
+                                                    <div className="text-center px-2 flex-1 flex flex-col justify-center">
+                                                        <span className="text-sm md:text-base font-bold text-white drop-shadow-md line-clamp-2">{first.label}</span>
+                                                    </div>
+                                                    {/* Percentage and Rank */}
+                                                    <div className="text-center">
+                                                        <div className="text-xl md:text-2xl font-black text-white">{totalVotes > 0 ? Math.round((first.votes / totalVotes) * 100) : 0}%</div>
+                                                        <div className="text-2xl font-black text-white/50">1</div>
+                                                    </div>
+                                                    {/* Texture */}
+                                                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-overlay rounded-t-xl" />
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* 3rd Place */}
+                                        {third && (
+                                            <div className="flex flex-col items-center w-1/3 max-w-[120px] group">
+                                                <div className="w-full bg-gradient-to-t from-orange-400 to-orange-300 rounded-t-xl shadow-lg relative h-20 md:h-28 flex flex-col items-center justify-between pt-5 pb-2">
+                                                    {/* Medal */}
+                                                    <div className="absolute -top-4 w-8 h-8 rounded-full bg-gradient-to-br from-orange-200 to-orange-400 border-2 border-white shadow-md flex items-center justify-center text-sm">
+                                                        🥉
+                                                    </div>
+                                                    {/* Label inside podium */}
+                                                    <div className="text-center px-2 flex-1 flex flex-col justify-center">
+                                                        <span className="text-xs md:text-sm font-bold text-white drop-shadow-sm line-clamp-2">{third.label}</span>
+                                                    </div>
+                                                    {/* Percentage and Rank */}
+                                                    <div className="text-center">
+                                                        <div className="text-lg md:text-xl font-black text-white/80">{totalVotes > 0 ? Math.round((third.votes / totalVotes) * 100) : 0}%</div>
+                                                        <div className="text-xl font-black text-white/40">3</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* My Answer Highlight */}
+                                    <div className="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-3">
+                                        <div className="bg-slate-800 text-white text-[10px] font-bold px-2 py-1 rounded">YOU</div>
+                                        <div className="flex-1">
+                                            <div className="text-xs text-slate-500 font-bold">あなたの回答</div>
+                                            <div className="text-sm font-bold text-slate-800">{myChoice?.label}</div>
                                         </div>
-                                    ) : (
-                                        <div className="text-xs font-bold text-slate-400 px-2 py-1">
-                                            {sortedOptions.findIndex(o => o.id === myChoiceId) + 1}位
-                                        </div>
-                                    )}
+                                        {/* Rank Badge for My Choice */}
+                                        {top3.find(o => o.id === myChoiceId) ? (
+                                            <div className="text-xs font-bold text-yellow-600 bg-yellow-50 px-2 py-1 rounded-full border border-yellow-100">
+                                                TOP 3入り！
+                                            </div>
+                                        ) : (
+                                            <div className="text-xs font-bold text-slate-400 px-2 py-1">
+                                                {sortedOptions.findIndex(o => o.id === myChoiceId) + 1}位
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
-                </div>
-
-                {/* AI Analysis Column - Moved Below Results */}
-                <div className="bg-white rounded-3xl shadow-xl border border-yellow-500/20 p-6 md:p-8 mb-12 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
-                    <div className="flex items-center gap-2 mb-6">
-                        <Sparkles className="w-5 h-5 text-purple-500" />
-                        <span className="font-bold text-slate-700 tracking-wider">AI ANALYST REPORT</span>
+                            );
+                        })}
                     </div>
-                    <h3 className="text-2xl font-black text-slate-800 mb-6 pb-4 border-b border-slate-100">
-                        {theme.aiColumn.title}
-                    </h3>
-                    <div className="text-slate-600 leading-relaxed whitespace-pre-wrap font-medium">
-                        {theme.aiColumn.content}
+
+                    {/* AI Analysis Column - Moved Below Results */}
+                    <div className="bg-white rounded-3xl shadow-xl border border-yellow-500/20 p-6 md:p-8 mb-12 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+                        <div className="flex items-center gap-2 mb-6">
+                            <Sparkles className="w-5 h-5 text-purple-500" />
+                            <span className="font-bold text-slate-700 tracking-wider">AI ANALYST REPORT</span>
+                        </div>
+                        <h3 className="text-2xl font-black text-slate-800 mb-6 pb-4 border-b border-slate-100">
+                            {theme.aiColumn.title}
+                        </h3>
+                        <div className="text-slate-600 leading-relaxed whitespace-pre-wrap font-medium">
+                            {theme.aiColumn.content}
+                        </div>
                     </div>
-                </div>
 
-                {/* Footer Actions */}
-                <div className="grid gap-4">
-                    <Link href="/marugoto" className="block w-full text-center py-4 rounded-xl bg-slate-100 font-bold text-slate-600 hover:bg-slate-200 transition-colors">
-                        他のテーマを探す
-                    </Link>
+                    {/* Footer Actions */}
+                    <div className="grid gap-4">
+                        <Link href="/marugoto" className="block w-full text-center py-4 rounded-xl bg-slate-100 font-bold text-slate-600 hover:bg-slate-200 transition-colors">
+                            他のテーマを探す
+                        </Link>
 
-                    {/* Suggestion Form Placeholder */}
-                    <div className="mt-8 p-6 bg-slate-50 rounded-xl border border-dashed border-slate-300 text-center">
-                        <MessageSquarePlus className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-                        <h4 className="font-bold text-slate-700 mb-1">次のお題をリクエスト！</h4>
-                        <p className="text-xs text-slate-500 mb-4">こんなテーマでやってほしい！という要望があれば教えてください。</p>
-                        <textarea
-                            className="w-full p-3 rounded-lg border border-slate-200 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            rows={2}
-                            placeholder="例：NARUTO、ジブリ、プロ野球..."
-                        />
-                        <button className="px-6 py-2 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-slate-700">
-                            送信する
-                        </button>
+                        {/* Suggestion Form Placeholder */}
+                        <div className="mt-8 p-6 bg-slate-50 rounded-xl border border-dashed border-slate-300 text-center">
+                            <MessageSquarePlus className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                            <h4 className="font-bold text-slate-700 mb-1">次のお題をリクエスト！</h4>
+                            <p className="text-xs text-slate-500 mb-4">こんなテーマでやってほしい！という要望があれば教えてください。</p>
+                            <textarea
+                                className="w-full p-3 rounded-lg border border-slate-200 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                rows={2}
+                                placeholder="例：NARUTO、ジブリ、プロ野球..."
+                            />
+                            <button className="px-6 py-2 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-slate-700">
+                                送信する
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
