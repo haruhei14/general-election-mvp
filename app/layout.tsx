@@ -16,10 +16,16 @@ export const metadata: Metadata = {
     siteName: 'なんでも総選挙',
     locale: 'ja_JP',
     type: 'website',
+    images: [{
+      url: 'https://www.nandemo-vote.com/api/og?title=なんでも総選挙',
+      width: 1200,
+      height: 630
+    }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'なんでも総選挙',
+    images: ['https://www.nandemo-vote.com/api/og?title=なんでも総選挙'],
   },
 };
 
