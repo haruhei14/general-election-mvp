@@ -165,6 +165,8 @@ export async function getLatestDailyPoll(): Promise<Poll | undefined> {
     return data as Poll;
 }
 
+import { getReading } from './tag-utils';
+
 // 全タグを取得（重複なし、50音順）
 export async function getAllTags(): Promise<{ tag: string; count: number }[]> {
     const polls = await getPolls();
@@ -178,10 +180,14 @@ export async function getAllTags(): Promise<{ tag: string; count: number }[]> {
         }
     });
 
-    // 50音順にソート
+    // 読み仮名で50音順にソート
     return Object.entries(tagCounts)
         .map(([tag, count]) => ({ tag, count }))
-        .sort((a, b) => a.tag.localeCompare(b.tag, 'ja'));
+        .sort((a, b) => {
+            const readingA = getReading(a.tag);
+            const readingB = getReading(b.tag);
+            return readingA.localeCompare(readingB, 'ja');
+        });
 }
 
 // タグでお題を検索

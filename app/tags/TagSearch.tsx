@@ -4,28 +4,37 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Search, Hash } from 'lucide-react';
 
+import { getReading, getGroupChar } from '@/lib/tag-utils';
+
 type TagWithCount = {
     tag: string;
     count: number;
 };
+
+const GROUP_ORDER = ['あ行', 'か行', 'さ行', 'た行', 'な行', 'は行', 'ま行', 'や行', 'ら行', 'わ行', 'その他'];
 
 export default function TagSearch({ tags }: { tags: TagWithCount[] }) {
     const [searchQuery, setSearchQuery] = useState('');
 
     // フィルタリング
     const filteredTags = tags.filter(t =>
-        t.tag.toLowerCase().includes(searchQuery.toLowerCase())
+        t.tag.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        getReading(t.tag).includes(searchQuery.toLowerCase()) // 読み仮名検索対応
     );
 
     // 50音のグループ分け
     const groupedTags = filteredTags.reduce((acc, t) => {
-        const firstChar = t.tag.charAt(0);
-        if (!acc[firstChar]) {
-            acc[firstChar] = [];
+        const reading = getReading(t.tag);
+        const group = getGroupChar(reading);
+        if (!acc[group]) {
+            acc[group] = [];
         }
-        acc[firstChar].push(t);
+        acc[group].push(t);
         return acc;
     }, {} as Record<string, TagWithCount[]>);
+
+    // グループの表示順序を調整
+    const sortedGroups = GROUP_ORDER.filter(group => groupedTags[group] && groupedTags[group].length > 0);
 
     return (
         <>
@@ -34,7 +43,7 @@ export default function TagSearch({ tags }: { tags: TagWithCount[] }) {
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <input
                     type="text"
-                    placeholder="タグを検索..."
+                    placeholder="タグを検索（読み仮名でも検索可能）"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl text-lg font-medium focus:ring-2 focus:ring-violet-500 focus:border-violet-500 outline-none transition-all"
@@ -44,11 +53,11 @@ export default function TagSearch({ tags }: { tags: TagWithCount[] }) {
             {/* Tags Grid */}
             {filteredTags.length > 0 ? (
                 <div className="space-y-8">
-                    {Object.entries(groupedTags).map(([char, charTags]) => (
-                        <div key={char}>
-                            <h2 className="text-lg font-black text-slate-300 mb-3">{char}</h2>
+                    {sortedGroups.map((group) => (
+                        <div key={group}>
+                            <h2 className="text-lg font-black text-slate-300 mb-3 border-b-2 border-slate-100 pb-1">{group}</h2>
                             <div className="flex flex-wrap gap-2">
-                                {charTags.map(({ tag, count }) => (
+                                {groupedTags[group].map(({ tag, count }) => (
                                     <Link
                                         key={tag}
                                         href={`/polls?tag=${encodeURIComponent(tag)}`}
