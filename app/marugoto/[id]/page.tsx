@@ -5,11 +5,12 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
 interface Props {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const theme = MARUGOTO_THEMES.find(t => t.id === params.id);
+    const { id } = await params;
+    const theme = MARUGOTO_THEMES.find(t => t.id === id);
     if (!theme) return {};
 
     return {
@@ -19,7 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function MarugotoDetailPage({ params }: Props) {
-    const theme = MARUGOTO_THEMES.find(t => t.id === params.id);
+    const { id } = await params;
+    const theme = MARUGOTO_THEMES.find(t => t.id === id);
 
     if (!theme) {
         notFound();
