@@ -120,7 +120,19 @@ export async function GET(request: Request) {
                             boxShadow: '0 10px 40px rgba(59, 130, 246, 0.3)',
                         }}
                     >
-                        <span style={{ color: 'white', fontSize: 48 }}>✓</span>
+                        {/* SVGでチェックマークを描画 */}
+                        <svg
+                            width="44"
+                            height="44"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
                     </div>
 
                     {/* メインタイトル */}
