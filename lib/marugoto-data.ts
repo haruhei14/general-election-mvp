@@ -4,6 +4,7 @@ export type MarugotoTheme = {
     title: string;
     description: string;
     icon: string; // emoji or lucide icon name (handled in component)
+    image?: string; // Custom theme image path
     color: string; // Tailwind class for gradient
     questionIds: string[]; // List of poll IDs
     aiColumn: {
@@ -19,6 +20,7 @@ export const MARUGOTO_THEMES: MarugotoTheme[] = [
         title: 'ワンピース',
         description: '誰もが知る王道の名作。あなたの「推し」や「価値観」を10問で徹底解剖！',
         icon: 'Anchor', // Lucide icon
+        image: '/onepiece-theme-card.png',
         color: 'from-blue-500 to-cyan-400', // 海のイメージ
         isNew: true,
         questionIds: [
