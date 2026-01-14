@@ -56,27 +56,22 @@ export default function MarugotoIndexPage() {
                                 )}
 
                                 {/* Card Header / Image */}
-                                <div className={`relative h-48 overflow-hidden bg-gradient-to-br ${theme.color}`}>
+                                <div className={`relative h-52 overflow-hidden`}>
                                     {theme.image ? (
                                         <div className="absolute inset-0">
-                                            {/* Use image as full cover if generated, for now use gradient + icon overlay */}
-                                            <div className={`w-full h-full bg-gradient-to-br ${theme.color} opacity-90 absolute inset-0 z-10 transition-opacity group-hover:opacity-75`} />
-                                            {/* Placeholder Texture */}
-                                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 z-10" />
-
-                                            {/* Iconic Representation */}
-                                            <div className="absolute inset-0 flex items-center justify-center z-20">
-                                                <Icon className="w-24 h-24 text-white drop-shadow-lg transform group-hover:scale-110 transition-transform duration-500" />
-                                            </div>
+                                            <img
+                                                src={theme.image}
+                                                alt={theme.title}
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                            {/* Gradient Overlay for readability */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                                         </div>
                                     ) : (
-                                        <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className={`absolute inset-0 bg-gradient-to-br ${theme.color} flex items-center justify-center`}>
                                             <Icon className="w-20 h-20 text-white/90" />
                                         </div>
                                     )}
-
-                                    {/* Texture Overlay */}
-                                    <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />
                                 </div>
 
                                 {/* Content */}
