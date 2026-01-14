@@ -3,6 +3,7 @@ import { AdSense } from '@/components/AdSense';
 import { ChallengeMode } from '@/components/ChallengeMode';
 import { DailyPollSection } from '@/components/DailyPollSection';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Sparkles, ChevronRight, TrendingUp, PenSquare } from 'lucide-react';
 import { Metadata } from 'next';
 
@@ -63,10 +64,16 @@ export default async function Home() {
       {/* Hero / Ad Space */}
       <div className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-white shadow-2xl min-h-[280px] flex items-center">
         {/* Background Image with Overlay */}
-        <div
-          className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-1000 hover:scale-105"
-          style={{ backgroundImage: 'url(/hero-bg.png)' }}
-        />
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/hero-bg.png"
+            alt="Hero Background"
+            fill
+            className="object-cover object-center transition-transform duration-1000 hover:scale-105"
+            priority
+          />
+        </div>
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-blue-900/90 to-indigo-900/40" />
 
         <div className="relative z-10 max-w-2xl px-2 md:px-0">

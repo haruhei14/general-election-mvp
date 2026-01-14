@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
         rules: {
             userAgent: '*',
             allow: '/',
-            disallow: '/private/', // 管理画面などがあれば除外
+            disallow: '/admin/', // 管理画面を除外
         },
         sitemap: `${baseUrl}/sitemap.xml`,
     };
