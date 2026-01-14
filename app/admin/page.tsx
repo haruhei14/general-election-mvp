@@ -47,9 +47,9 @@ export default function AdminPage() {
             <h1 className="text-2xl font-black text-slate-800 mb-8">🔧 管理ページ</h1>
 
             <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
-                <h2 className="font-bold text-slate-700">第1弾：30問登録</h2>
+                <h2 className="font-bold text-slate-700">ベースデータ登録（第1弾 + まるごと総選挙）</h2>
                 <p className="text-sm text-slate-500">
-                    MVPの30問をデータベースに登録します。既に登録済みのお題はスキップされます。
+                    MVP30問および「まるごと総選挙（ワンピース）」のデータを登録・更新します。
                 </p>
 
                 <button
@@ -57,7 +57,7 @@ export default function AdminPage() {
                     disabled={isLoading}
                     className="w-full py-3 px-6 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-all"
                 >
-                    {isLoading ? '登録中...' : '第1弾を登録する'}
+                    {isLoading ? '登録中...' : 'データを同期する'}
                 </button>
 
                 {status && (
