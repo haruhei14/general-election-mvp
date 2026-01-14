@@ -63,9 +63,20 @@ export default function MarugotoIndexPage() {
                                 </div>
 
                                 <div className="flex-grow min-w-0">
-                                    <p className="text-yellow-200 text-xs font-bold mb-0.5">🎌 誰もが知る少年漫画の金字塔</p>
-                                    <h2 className="text-xl md:text-2xl font-black truncate tracking-wide" style={{ fontFamily: 'serif', textShadow: '2px 2px 0 rgba(0,0,0,0.3)' }}>
-                                        {theme.title}
+                                    <p className="text-yellow-200 text-xs font-bold mb-1">🎌 誰もが知る少年漫画の金字塔</p>
+                                    <h2 className="flex flex-col leading-none">
+                                        <span
+                                            className="text-2xl md:text-3xl font-black italic tracking-tighter"
+                                            style={{
+                                                fontFamily: 'Impact, sans-serif',
+                                                color: '#FFD700',
+                                                textShadow: '3px 3px 0 #8B0000, -1px -1px 0 #8B0000, 1px -1px 0 #8B0000, -1px 1px 0 #8B0000',
+                                                letterSpacing: '-0.05em'
+                                            }}
+                                        >
+                                            ONE PIECE
+                                        </span>
+                                        <span className="text-white/70 text-xs font-bold tracking-wider mt-1">ワンピース総選挙</span>
                                     </h2>
                                 </div>
 
