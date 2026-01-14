@@ -62,12 +62,31 @@ const SEED_POLLS = [
             background: 'LINEの普及とともに生まれた現代特有の悩み。「既読」機能は元々、災害時の安否確認のために作られたと言われています。',
             psychology: '既読無視は「読んだのに返さない＝無視」、未読無視は「読みもしない＝拒絶/後回し」と捉えられ、人によって不快感のポイントが異なります。',
             modern: 'Z世代の間では「既読＝了解」という合図として捉え、返信をしない「既読スルー」がマナー違反ではないとする風潮も一部であります。',
-            trivia: '既読をつけてから返信するまでの「許容時間」も年々短くなっているという調査結果があります。'
+            trivia: '既読をつけてから返信するまでの「許容時間」も年々短くなっているという調査結果があります。',
+            summary: ''
         },
         options: [
             { id: 'opt-1', label: '既読無視の方がマシ', votes: 800 },
             { id: 'opt-2', label: '未読無視の方がマシ', votes: 1500 },
             { id: 'opt-3', label: 'どっちも最悪', votes: 2000 },
+        ]
+    },
+    {
+        id: 'taipa-performance',
+        title: '「タイパ至上主義」は正解か？',
+        genre: '価値観',
+        description: '映画の倍速視聴、1分動画の流行…。「タイパ（効率）」を求める今の生き方は、豊かだと思う？',
+        explanation: {
+            background: '近年、若年層を中心に「タイパ（タイムパフォーマンス：時間対効果）」という言葉が急速に浸透しました。かつての「コスパ（コストパフォーマンス）」がお金の節約を重視したのに対し、タイパは「時間の節約」を最優先します。動画配信サービスの倍速視聴や、要約サイトの活用、さらには「ネタバレ」を先に読んでからコンテンツを消費するか決めるという行動まで、効率性が現代人の美徳となりつつあります。',
+            psychology: '心理学的に見ると、タイパ重視の行動は「情報収集」としては非常に優れていますが、一方で「情緒的な体験」を損なうリスクも指摘されています。物語の起承転結を効率よく把握することはできても、間の取り方や静寂、色彩の移り変わりといった「非効率な余白」に宿る感動を味わうには、脳が情報を処理する一定の「時間」が必要です。倍速で映画を観る行為は、食事をサプリメントで済ませることに似ており、栄養（知識）は摂れても、味わい（情緒）が欠落しているという批判もあります。',
+            modern: '一方で、タイパを追求しすぎた結果、常に「何かを消費していなければならない」という焦燥感に駆られる人々も増えています。効率化によって浮いたはずの時間を、さらに別の効率化されたコンテンツの消費に充てるという無限ループです。その反動として、最近では焚き火を眺めるだけの動画や、あえて手間をかけるキャンプ、レコード鑑賞といった「スローな体験」が、むしろ最高の贅沢（ラグジュアリー）として再定義され始めています。',
+            trivia: '映画を倍速で見ることの是非について、映画監督やクリエイターからは「意図した演出が伝わらない」と否定的な意見が多い一方、視聴者からは「駄作を避けるための自衛策」という意見もあります。ちなみに、倍速視聴の技術自体は1990年代から存在しましたが、一般化したのはここ数年です。',
+            summary: 'これらは情報化社会を賢く生き抜くための武器ですが、人生における全ての時間を効率化してしまったとき、私たちの心には何が残るのでしょうか。効率を追い求めて多くの知識を得る人生か、あえて無駄を愛し、一つの体験を深く味わう人生か。この投票を通じて、あなたが本当に大切にしたい「時間の質」を再考するきっかけになれば幸いです。'
+        },
+        options: [
+            { id: 'opt-1', label: '豊かだと思う（合理的）', votes: 1200 },
+            { id: 'opt-2', label: '豊かではない（情緒が大切）', votes: 1500 },
+            { id: 'opt-3', label: 'どちらとも言えない', votes: 800 },
         ]
     }
 ];
@@ -90,7 +109,29 @@ export async function POST() {
             }
 
             if (existing) {
-                results.push({ id: poll.id, status: 'skipped (exists)' });
+                // 特定のお題は情報を強制アップデート（poll_typeの修正など）
+                if (poll.id === 'taipa-performance' || poll.id === 'read-ignore-v2') {
+                    console.log(`Updating existing poll ${poll.id} to fix poll_type...`);
+                    const { error: updateError } = await supabase
+                        .from('polls')
+                        .update({
+                            poll_type: 'daily_trend',
+                            explanation: poll.explanation,
+                            title: poll.title,
+                            description: poll.description,
+                            // optionsは投票数がリセットされる恐れがあるので更新しない
+                        })
+                        .eq('id', poll.id);
+
+                    if (updateError) {
+                        console.error(`Error updating poll ${poll.id}:`, updateError);
+                        results.push({ id: poll.id, status: 'update_failed', error: updateError });
+                    } else {
+                        results.push({ id: poll.id, status: 'updated' });
+                    }
+                } else {
+                    results.push({ id: poll.id, status: 'skipped (exists)' });
+                }
                 continue;
             }
 
@@ -102,8 +143,8 @@ export async function POST() {
                 description: poll.description,
                 image_url: '',
                 options: poll.options,
-                // explanation: poll.explanation, // DBカラムが存在しない可能性があるので一旦コメントアウト
-                votes: poll.options.reduce((sum, o) => sum + o.votes, 0)
+                explanation: poll.explanation,
+                poll_type: 'daily_trend' // これがないと「今日の一問」に出ない
             }]);
 
             // optionsテーブルではなく、pollsテーブルのoptions jsonカラムに入れている仕様前提

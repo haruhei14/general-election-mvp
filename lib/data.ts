@@ -12,6 +12,7 @@ export type PollExplanation = {
     psychology?: string;
     modern?: string;
     trivia?: string;
+    summary?: string;
 };
 
 export type Poll = {

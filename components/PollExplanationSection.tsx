@@ -13,14 +13,15 @@ function getExplanationContent(poll: Poll) {
             background: poll.explanation.background || '',
             psychology: poll.explanation.psychology || '',
             modern: poll.explanation.modern || '',
-            trivia: poll.explanation.trivia || ''
+            trivia: poll.explanation.trivia || '',
+            summary: poll.explanation.summary || ''
         };
     }
 
     const genre = poll.genre || 'その他';
 
     // ジャンル別のテンプレート解説
-    const explanations: Record<string, { background: string; psychology: string; modern: string; trivia: string }> = {
+    const explanations: Record<string, { background: string; psychology: string; modern: string; trivia: string; summary?: string }> = {
         '食べ物': {
             background: '食の好みは、私たちの成長環境や文化的背景を映し出す鏡です。幼少期の食体験は味覚の形成に大きな影響を与え、「おふくろの味」として記憶に刻まれます。また、地域によって同じ料理でも味付けや食べ方が異なることは、日本の食文化の豊かさを示しています。現代では、SNSによる「映え」文化も食の選択に影響を与えています。',
             psychology: '食べ物の好みは単なる味覚だけでなく、心理的な安心感や過去の記憶と結びついています。コンフォートフードと呼ばれる「心が落ち着く食べ物」は、ストレス時に選ばれやすく、これは食と感情の深い結びつきを示しています。また、新しい食べ物に挑戦するかどうかは、性格特性の「開放性」とも関連があります。',
@@ -37,7 +38,7 @@ function getExplanationContent(poll: Poll) {
             background: '日常生活の小さな習慣や選択は、実は深い文化的・歴史的背景を持っています。例えば、入浴の習慣は日本独特のもので、世界的に見ると毎日湯船に浸かる国は少数派です。こうした日常の「当たり前」こそが、その社会の価値観を最も端的に表しています。',
             psychology: '日常のルーティンは心理的な安定感をもたらします。朝のコーヒー、夜の入浴など、決まったパターンがあることで脳は安心し、他の重要な判断にエネルギーを割くことができます。これを「決定疲れ」の軽減と呼びます。スティーブ・ジョブズが同じ服を着続けたのも、この理由からでした。',
             modern: 'リモートワークの普及により、通勤という「儀式」がなくなり、オンとオフの切り替えに苦労する人が増えています。その結果、モーニングルーティンやナイトルーティンへの関心が高まり、YouTubeでは「vlog」として日常を共有するコンテンツが人気を集めています。',
-            trivia: '日本人の平均睡眠時間は約7時間22分で、OECD加盟国の中で最も短いです。また、日本人が1日にスマホを触る回数は平均約150回、使用時間は約3時間と言われています。'
+            trivia: '日本日本人睡眠時間は約7時間22分で、OECD加盟国の中で最も短いです。また、日本人が1日にスマホを触る回数は平均約150回、使用時間は約3時間と言われています。'
         }
     };
 
@@ -106,6 +107,14 @@ export function PollExplanationSection({ poll }: { poll: Poll }) {
                         title="豆知識"
                         content={explanation.trivia}
                     />
+                    {explanation.summary && (
+                        <ExplanationBlock
+                            // まとめは緑色の本アイコンで差別化
+                            icon={<BookOpen className="w-5 h-5 text-green-500" />}
+                            title="まとめ"
+                            content={explanation.summary}
+                        />
+                    )}
                 </div>
             </div>
         </div>
@@ -113,13 +122,15 @@ export function PollExplanationSection({ poll }: { poll: Poll }) {
 }
 
 function ExplanationBlock({ icon, title, content }: { icon: React.ReactNode; title: string; content: string }) {
+    if (!content) return null; // コンテンツがない場合は表示しない
+
     return (
         <div className="bg-slate-50 rounded-xl p-4 md:p-5">
             <h4 className="flex items-center gap-2 font-bold text-slate-800 mb-2 text-sm">
                 {icon}
                 {title}
             </h4>
-            <p className="text-slate-600 text-sm leading-relaxed">
+            <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
                 {content}
             </p>
         </div>
