@@ -9,7 +9,13 @@ export async function POST(request: NextRequest) {
     try {
         // 認証チェック
         const authHeader = request.headers.get('authorization');
-        if (!CRON_SECRET || authHeader !== `Bearer ${CRON_SECRET}`) {
+        const cronSecret = process.env.CRON_SECRET;
+
+        console.log('Auth header received:', authHeader ? 'present' : 'missing');
+        console.log('CRON_SECRET env:', cronSecret ? 'set' : 'not set');
+
+        if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+            console.log('Auth failed. Expected:', `Bearer ${cronSecret?.substring(0, 5)}...`);
             return NextResponse.json(
                 { error: '認証に失敗しました' },
                 { status: 401 }
