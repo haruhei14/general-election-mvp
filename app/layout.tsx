@@ -10,6 +10,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'なんでも総選挙 | みんなの意見が見える投票サイト',
   description: '日常の些細な選択から究極の決断まで。みんなの投票で白黒つけよう！',
+  alternates: {
+    canonical: 'https://www.nandemo-vote.com',
+  },
   openGraph: {
     title: 'なんでも総選挙',
     description: 'みんなの意見が見える投票サイト',

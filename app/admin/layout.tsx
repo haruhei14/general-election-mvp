@@ -12,6 +12,10 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         images: ['https://www.nandemo-vote.com/api/og?title=なんでも総選挙'],
     },
+    robots: {
+        index: false,
+        follow: false,
+    },
 };
 
 export default function AdminLayout({
