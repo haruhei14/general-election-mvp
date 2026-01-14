@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Poll } from '@/lib/data';
 import { submitVote } from '@/lib/actions';
-import { Calendar, ChevronDown, Vote, Check, BarChart2 } from 'lucide-react';
+import { Calendar, ChevronDown, Vote, Check, BarChart2, Hash } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function DailyPollSection({ poll }: { poll: Poll }) {
@@ -65,6 +65,22 @@ export function DailyPollSection({ poll }: { poll: Poll }) {
                     <h3 className="text-lg md:text-xl font-black text-slate-800 leading-snug">
                         {poll.title}
                     </h3>
+                    {/* Tags */}
+                    {poll.tags && poll.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-2">
+                            {poll.tags.map(tag => (
+                                <Link
+                                    key={tag}
+                                    href={`/polls?tag=${encodeURIComponent(tag)}`}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="flex items-center gap-0.5 px-2 py-0.5 bg-violet-50 text-violet-600 rounded-full text-[10px] font-bold hover:bg-violet-100 transition-colors"
+                                >
+                                    <Hash className="w-2.5 h-2.5" />
+                                    {tag}
+                                </Link>
+                            ))}
+                        </div>
+                    )}
                 </div>
                 <div className={cn(
                     "w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center transition-transform flex-shrink-0",
