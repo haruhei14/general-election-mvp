@@ -15,7 +15,7 @@ export default function MarugotoIndexPage() {
                     className="w-full h-full object-cover"
                 />
                 {/* Dark overlay for text readability */}
-                <div className="absolute inset-0 bg-black/60" />
+                <div className="absolute inset-0 bg-black/30" />
                 {/* Spotlight effect */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center_top,_rgba(255,215,0,0.15)_0%,_transparent_60%)]" />
             </div>
