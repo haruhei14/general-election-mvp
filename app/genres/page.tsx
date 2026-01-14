@@ -31,6 +31,7 @@ const GENRE_GRADIENTS: Record<string, string> = {
     '人間関係': 'from-green-400 to-emerald-500',
     '究極の選択': 'from-slate-600 to-slate-800',
     '趣味・娯楽': 'from-pink-400 to-rose-500',
+    '学校': 'from-sky-400 to-indigo-500',
 };
 
 // Genre image mapping (subtle background)
@@ -46,6 +47,7 @@ const GENRE_IMAGES: Record<string, string> = {
     '人間関係': '/genres/genre_relationships_1768265132983.png',
     '究極の選択': '/genres/genre_ultimate_choice_1768265148540.png',
     '価値観': '/genres/genre_values_1768265161976.png',
+    '学校': '/genres/genre_work_1768265070719.png',
 };
 
 export default function GenresPage() {

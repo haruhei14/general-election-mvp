@@ -36,7 +36,7 @@ export type Comment = {
     parent_id?: string | null;
 };
 
-export const GENRES = ["食べ物", "日常・価値観", "仕事・社会人", "趣味・娯楽", "日常・生活", "価値観", "エンタメ", "仕事・学び", "テクノロジー", "人間関係", "究極の選択"] as const;
+export const GENRES = ["食べ物", "日常・価値観", "仕事・社会人", "趣味・娯楽", "日常・生活", "価値観", "エンタメ", "仕事・学び", "テクノロジー", "人間関係", "究極の選択", "学校"] as const;
 
 export async function getPolls(genre?: string): Promise<Poll[]> {
     let query = supabase.from('polls').select('*').order('created_at', { ascending: false });
