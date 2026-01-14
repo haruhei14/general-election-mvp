@@ -5,16 +5,26 @@ import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { X, List, Tags, PenLine, BarChart3, Trophy, TrendingUp, Sparkles, MessageCircle, Hash } from 'lucide-react';
+import { X, List, Tags, PenLine, BarChart3, Trophy, TrendingUp, Sparkles, MessageCircle, Hash, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const MENU_ITEMS = [
+
+interface MenuItem {
+    href: string;
+    label: string;
+    icon: any;
+    category: 'browse' | 'action';
+    badge?: string;
+}
+
+const MENU_ITEMS: MenuItem[] = [
     { href: '/polls?sort=newest', label: '新着のお題', icon: Sparkles, category: 'browse' },
     { href: '/comments', label: '最近のコメント', icon: MessageCircle, category: 'browse' },
     { href: '/polls', label: 'お題一覧', icon: List, category: 'browse' },
     { href: '/genres', label: 'ジャンル一覧', icon: Tags, category: 'browse' },
     { href: '/tags', label: 'タグ一覧', icon: Hash, category: 'browse' },
     { href: '/ranking', label: '人気ランキング', icon: TrendingUp, category: 'browse' },
+    { href: '/marugoto', label: 'まるごと総選挙', icon: CheckCircle2, category: 'browse', badge: 'NEW' },
     { href: '/poll/create', label: 'お題を作成する', icon: PenLine, category: 'action' },
     { href: '/my-votes', label: 'マイレポート', icon: BarChart3, category: 'action' },
     { href: '/achievements', label: 'ランク・実績', icon: Trophy, category: 'action' },

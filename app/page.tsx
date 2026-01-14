@@ -4,7 +4,7 @@ import { ChallengeMode } from '@/components/ChallengeMode';
 import { DailyPollSection } from '@/components/DailyPollSection';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Sparkles, ChevronRight, TrendingUp, PenSquare } from 'lucide-react';
+import { Sparkles, ChevronRight, TrendingUp, PenSquare, CheckCircle2 } from 'lucide-react';
 import { Metadata } from 'next';
 
 // キャッシュを無効化して常に最新データを取得
@@ -92,7 +92,8 @@ export default async function Home() {
       </div>
 
       {/* 3つのアクションボタン */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* 4つのアクションボタン */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {/* 価値観診断 */}
         <Link
           href="/diagnosis"
@@ -105,6 +106,29 @@ export default async function Home() {
             <div className="flex-grow min-w-0">
               <p className="text-violet-100 text-xs font-bold mb-0.5">🧠 10問であなたを分析</p>
               <h2 className="text-base md:text-lg font-black truncate">価値観診断</h2>
+            </div>
+            <ChevronRight className="w-5 h-5 text-white/60 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+          </div>
+        </Link>
+
+        {/* まるごと総選挙 */}
+        <Link
+          href="/marugoto"
+          className="block bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl p-5 md:p-6 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all group relative overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg shadow-sm animate-pulse">
+            One Piece追加！
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="relative">
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-ping" />
+                <CheckCircle2 className="w-6 h-6 text-white relative z-10" />
+              </div>
+            </div>
+            <div className="flex-grow min-w-0">
+              <p className="text-blue-100 text-xs font-bold mb-0.5">📦 パッケージで楽しむ</p>
+              <h2 className="text-base md:text-lg font-black truncate">まるごと総選挙</h2>
             </div>
             <ChevronRight className="w-5 h-5 text-white/60 group-hover:translate-x-1 transition-transform flex-shrink-0" />
           </div>

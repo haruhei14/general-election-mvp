@@ -24,7 +24,7 @@ export type Poll = {
     image_url?: string;
     created_at: string;
     explanation?: PollExplanation | null;
-    poll_type?: 'seed' | 'user' | 'daily_trend';
+    poll_type?: 'seed' | 'user' | 'daily_trend' | 'marugoto';
     tags?: string[];
 };
 
@@ -83,6 +83,19 @@ export async function getPoll(id: string): Promise<Poll | undefined> {
     const { data, error } = await supabase.from('polls').select('*').eq('id', id).single();
     if (error) return undefined;
     return data as Poll;
+}
+
+export async function getPollsByIds(ids: string[]): Promise<Poll[]> {
+    const { data, error } = await supabase
+        .from('polls')
+        .select('*')
+        .in('id', ids);
+
+    if (error || !data) return [];
+
+    // DBからの返却順は保証されないため、idsの順番に並び替える
+    const pollsMap = new Map(data.map((p: Poll) => [p.id, p]));
+    return ids.map(id => pollsMap.get(id)).filter((p): p is Poll => p !== undefined);
 }
 
 export async function votePoll(pollId: string, optionId: string): Promise<void> {
