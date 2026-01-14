@@ -3,10 +3,11 @@ import { PollCard } from '@/components/PollCard';
 import { CommentSection } from '@/components/CommentSection';
 import { VoteVisualization } from '@/components/VoteChart';
 import { PollExplanationSection } from '@/components/PollExplanationSection';
+import { ShareButtons } from '@/components/ShareButtons';
 import { AdSense } from '@/components/AdSense';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { Share2, ChevronLeft, ArrowRight } from 'lucide-react';
+import { Share2, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 
 type Props = {
@@ -91,17 +92,7 @@ export default async function PollPage(props: Props) {
                             <h4 className="font-bold text-slate-800">結果をシェアする</h4>
                         </div>
 
-                        <div className="space-y-4">
-                            <button className="w-full bg-[#1DA1F2] text-white py-3 rounded-xl font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2">
-                                X (Twitter) で投稿
-                            </button>
-                            <button className="w-full bg-[#06C755] text-white py-3 rounded-xl font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2">
-                                LINEで送る
-                            </button>
-                            <button className="w-full bg-slate-100 text-slate-700 py-3 rounded-xl font-bold hover:bg-slate-200 transition-all">
-                                URLをコピー
-                            </button>
-                        </div>
+                        <ShareButtons pollId={poll.id} pollTitle={poll.title} />
 
                         <div className="mt-10">
                             <h4 className="font-bold text-slate-800 mb-6 flex items-center gap-2">
