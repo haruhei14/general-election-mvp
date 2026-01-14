@@ -50,56 +50,78 @@ export default async function PollPage(props: Props) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.nandemo-vote.com';
 
     // 構造化データ (JSON-LD)
-    const jsonLd = {
-        '@context': 'https://schema.org',
-        '@graph': [
-            {
-                '@type': 'BreadcrumbList',
-                'itemListElement': [
-                    {
-                        '@type': 'ListItem',
-                        'position': 1,
-                        'name': 'ホーム',
-                        'item': baseUrl
-                    },
-                    {
-                        '@type': 'ListItem',
-                        'position': 2,
-                        'name': poll.genre,
-                        'item': `${baseUrl}/polls?genre=${encodeURIComponent(poll.genre)}`
-                    },
-                    {
-                        '@type': 'ListItem',
-                        'position': 3,
-                        'name': poll.title
-                    }
-                ]
-            },
-            {
-                '@type': 'Article',
-                'headline': poll.title,
-                'description': poll.description || `${poll.title}についての投票です。`,
-                'image': [`${baseUrl}/api/og?title=${encodeURIComponent(poll.title)}`],
-                'datePublished': poll.created_at,
-                'author': {
-                    '@type': 'Organization',
-                    'name': 'なんでも総選挙'
+    const jsonLd = [
+        {
+            '@context': 'https://schema.org',
+            '@graph': [
+                {
+                    '@type': 'BreadcrumbList',
+                    'itemListElement': [
+                        {
+                            '@type': 'ListItem',
+                            'position': 1,
+                            'name': 'ホーム',
+                            'item': baseUrl
+                        },
+                        {
+                            '@type': 'ListItem',
+                            'position': 2,
+                            'name': poll.genre,
+                            'item': `${baseUrl}/polls?genre=${encodeURIComponent(poll.genre)}`
+                        },
+                        {
+                            '@type': 'ListItem',
+                            'position': 3,
+                            'name': poll.title
+                        }
+                    ]
                 },
-                'interactionStatistic': {
-                    '@type': 'InteractionCounter',
-                    'interactionType': 'https://schema.org/VoteAction',
-                    'userInteractionCount': poll.options.reduce((sum, o) => sum + o.votes, 0)
+                {
+                    '@type': 'Article',
+                    'headline': poll.title,
+                    'description': poll.description || `${poll.title}についての投票です。`,
+                    'image': [`${baseUrl}/api/og?title=${encodeURIComponent(poll.title)}`],
+                    'datePublished': poll.created_at,
+                    'author': {
+                        '@type': 'Organization',
+                        'name': 'なんでも総選挙'
+                    },
+                    'interactionStatistic': {
+                        '@type': 'InteractionCounter',
+                        'interactionType': 'https://schema.org/VoteAction',
+                        'userInteractionCount': poll.options.reduce((sum, o) => sum + o.votes, 0)
+                    }
                 }
+            ]
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'QAPage',
+            'mainEntity': {
+                '@type': 'Question',
+                'name': poll.title,
+                'text': poll.description || `${poll.title}について、みんなの意見を投票で決めています。`,
+                'answerCount': poll.options.length,
+                'upvoteCount': poll.options.reduce((sum, o) => sum + o.votes, 0),
+                'suggestedAnswer': poll.options.map(option => ({
+                    '@type': 'Answer',
+                    'text': option.label,
+                    'upvoteCount': option.votes,
+                    'url': `${baseUrl}/poll/${poll.id}`
+                }))
             }
-        ]
-    };
+        }
+    ];
 
     return (
         <div className="container-responsive py-8 max-w-6xl">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
+            {jsonLd.map((data, index) => (
+                <script
+                    key={index}
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+                />
+            ))}
             {/* Navigation */}
             <div className="flex items-center gap-4 mb-8">
                 <Link

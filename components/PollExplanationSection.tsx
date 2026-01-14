@@ -58,10 +58,10 @@ export function PollExplanationSection({ poll }: { poll: Poll }) {
 
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-            {/* Header - クリックでアコーディオン開閉 */}
+            {/* Header - クリックでアコーディオン開閉（PCではカーソルポインターなし） */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full p-5 md:p-6 flex items-center gap-4 text-left hover:bg-slate-50 transition-colors"
+                className="w-full p-5 md:p-6 flex items-center gap-4 text-left hover:bg-slate-50 transition-colors md:cursor-default md:hover:bg-white"
             >
                 <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0">
                     <BookOpen className="w-6 h-6 text-white" />
@@ -73,40 +73,41 @@ export function PollExplanationSection({ poll }: { poll: Poll }) {
                     </h3>
                 </div>
                 <div className={cn(
-                    "w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center transition-transform flex-shrink-0",
+                    "w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center transition-transform flex-shrink-0 md:hidden",
                     isOpen && "rotate-180"
                 )}>
                     <ChevronDown className="w-5 h-5 text-slate-500" />
                 </div>
             </button>
 
-            {/* 展開コンテンツ */}
-            {isOpen && (
-                <div className="px-5 md:px-8 pb-6 animate-in slide-in-from-top-2 duration-300">
-                    <div className="border-t border-slate-100 pt-6 space-y-6">
-                        <ExplanationBlock
-                            icon={<History className="w-5 h-5 text-amber-500" />}
-                            title="背景と歴史"
-                            content={explanation.background}
-                        />
-                        <ExplanationBlock
-                            icon={<Brain className="w-5 h-5 text-violet-500" />}
-                            title="心理学的視点"
-                            content={explanation.psychology}
-                        />
-                        <ExplanationBlock
-                            icon={<TrendingUp className="w-5 h-5 text-blue-500" />}
-                            title="現代の傾向"
-                            content={explanation.modern}
-                        />
-                        <ExplanationBlock
-                            icon={<Lightbulb className="w-5 h-5 text-yellow-500" />}
-                            title="豆知識"
-                            content={explanation.trivia}
-                        />
-                    </div>
+            {/* 展開コンテンツ - スマホは開閉、PCは常時表示 */}
+            <div className={cn(
+                "px-5 md:px-8 pb-6 animate-in slide-in-from-top-2 duration-300",
+                !isOpen && "hidden md:block"
+            )}>
+                <div className="border-t border-slate-100 pt-6 space-y-6">
+                    <ExplanationBlock
+                        icon={<History className="w-5 h-5 text-amber-500" />}
+                        title="背景と歴史"
+                        content={explanation.background}
+                    />
+                    <ExplanationBlock
+                        icon={<Brain className="w-5 h-5 text-violet-500" />}
+                        title="心理学的視点"
+                        content={explanation.psychology}
+                    />
+                    <ExplanationBlock
+                        icon={<TrendingUp className="w-5 h-5 text-blue-500" />}
+                        title="現代の傾向"
+                        content={explanation.modern}
+                    />
+                    <ExplanationBlock
+                        icon={<Lightbulb className="w-5 h-5 text-yellow-500" />}
+                        title="豆知識"
+                        content={explanation.trivia}
+                    />
                 </div>
-            )}
+            </div>
         </div>
     );
 }
