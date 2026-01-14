@@ -6,6 +6,14 @@ export type PollOption = {
     votes: number;
 };
 
+// 解説データの型定義
+export type PollExplanation = {
+    background?: string;
+    psychology?: string;
+    modern?: string;
+    trivia?: string;
+};
+
 export type Poll = {
     id: string;
     title: string;
@@ -14,6 +22,8 @@ export type Poll = {
     genre: string;
     image_url?: string;
     created_at: string;
+    explanation?: PollExplanation | null;
+    poll_type?: 'seed' | 'user' | 'daily_trend';
 };
 
 export type Comment = {
@@ -138,4 +148,18 @@ export async function likeComment(commentId: string): Promise<void> {
     if (comment) {
         await supabase.from('comments').update({ likes: (comment.likes || 0) + 1 }).eq('id', commentId);
     }
+}
+
+// 最新のトレンドお題を取得（今日の一問用）
+export async function getLatestDailyPoll(): Promise<Poll | undefined> {
+    const { data, error } = await supabase
+        .from('polls')
+        .select('*')
+        .eq('poll_type', 'daily_trend')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+    if (error || !data) return undefined;
+    return data as Poll;
 }

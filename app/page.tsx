@@ -1,17 +1,16 @@
-import { getPolls, getRandomPolls, Poll } from '@/lib/data';
+import { getPolls, getRandomPolls, getLatestDailyPoll, Poll } from '@/lib/data';
 import { AdSense } from '@/components/AdSense';
 import { ChallengeMode } from '@/components/ChallengeMode';
 import { DailyPollSection } from '@/components/DailyPollSection';
 import Link from 'next/link';
-import { Sparkles, ChevronRight, TrendingUp, PenSquare, Calendar } from 'lucide-react';
+import { Sparkles, ChevronRight, TrendingUp, PenSquare } from 'lucide-react';
+import { Metadata } from 'next';
 
-// 今日の日付をシードとして確定的にお題を選ぶ（毎日0時に切り替わる）
-function getDailyPoll(polls: Poll[]): Poll | undefined {
+// 日付ベースでランダムお題を選ぶ（フォールバック用）
+function getDateBasedPoll(polls: Poll[]): Poll | undefined {
   if (polls.length === 0) return undefined;
-  // IDでソートして順序を固定
   const sortedPolls = [...polls].sort((a, b) => a.id.localeCompare(b.id));
   const today = new Date();
-  // 日本時間で計算（UTC+9）
   const jstOffset = 9 * 60 * 60 * 1000;
   const jstDate = new Date(today.getTime() + jstOffset);
   const seed = jstDate.getUTCFullYear() * 10000 + (jstDate.getUTCMonth() + 1) * 100 + jstDate.getUTCDate();
@@ -19,10 +18,39 @@ function getDailyPoll(polls: Poll[]): Poll | undefined {
   return sortedPolls[index];
 }
 
+// 動的SEOメタデータ
+export async function generateMetadata(): Promise<Metadata> {
+  const trendPoll = await getLatestDailyPoll();
+  const dailyTitle = trendPoll?.title || '今日のお題に投票しよう';
+
+  return {
+    title: 'なんでも総選挙 | みんなの意見が見える投票サイト',
+    description: `【今日の一問】${dailyTitle} - 日常の些細な選択から究極の決断まで。みんなの投票で白黒つけよう！`,
+    openGraph: {
+      title: 'なんでも総選挙',
+      description: `【今日の一問】${dailyTitle}`,
+      siteName: 'なんでも総選挙',
+      locale: 'ja_JP',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'なんでも総選挙',
+      description: `【今日の一問】${dailyTitle}`,
+    },
+  };
+}
+
 export default async function Home() {
   const challengePolls = await getRandomPolls(10);
-  const allPolls = await getPolls();
-  const dailyPoll = getDailyPoll(allPolls);
+
+  // トレンドお題を優先、なければ日付ベースのフォールバック
+  let dailyPoll = await getLatestDailyPoll();
+  if (!dailyPoll) {
+    const allPolls = await getPolls();
+    dailyPoll = getDateBasedPoll(allPolls);
+  }
+
 
   return (
     <div className="container-responsive py-8 space-y-8">

@@ -5,8 +5,18 @@ import { Poll } from '@/lib/data';
 import { BookOpen, ChevronDown, ChevronUp, Lightbulb, History, Brain, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// お題のジャンルに応じた解説を生成
+// お題のジャンルに応じた解説を生成（DBに解説があればそれを優先）
 function getExplanationContent(poll: Poll) {
+    // DBに解説データがあればそれを使用
+    if (poll.explanation) {
+        return {
+            background: poll.explanation.background || '',
+            psychology: poll.explanation.psychology || '',
+            modern: poll.explanation.modern || '',
+            trivia: poll.explanation.trivia || ''
+        };
+    }
+
     const genre = poll.genre || 'その他';
 
     // ジャンル別のテンプレート解説
