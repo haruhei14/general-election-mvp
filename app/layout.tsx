@@ -23,6 +23,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google';
+
 export default function RootLayout({
   children,
 }: {
@@ -30,6 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
+      <GoogleAnalytics gaId="G-BK9K2TSJP4" />
       <body className={cn(inter.className, "min-h-screen flex flex-col bg-slate-50")}>
         <Navbar />
         <main className="flex-1 w-full">
