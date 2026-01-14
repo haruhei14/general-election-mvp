@@ -71,8 +71,8 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
                         alt=""
                         className="w-full h-full object-cover"
                     />
-                    {/* Dark overlay for text readability */}
-                    <div className="absolute inset-0 bg-black/30" />
+                    {/* Light overlay for subtle darkening */}
+                    <div className="absolute inset-0 bg-black/15" />
                     {/* Spotlight effect */}
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center_top,_rgba(255,215,0,0.2)_0%,_transparent_50%)]" />
                 </div>

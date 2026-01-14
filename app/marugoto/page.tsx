@@ -14,8 +14,8 @@ export default function MarugotoIndexPage() {
                     alt=""
                     className="w-full h-full object-cover"
                 />
-                {/* Dark overlay for text readability */}
-                <div className="absolute inset-0 bg-black/30" />
+                {/* Light overlay for subtle darkening */}
+                <div className="absolute inset-0 bg-black/15" />
                 {/* Spotlight effect */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center_top,_rgba(255,215,0,0.15)_0%,_transparent_60%)]" />
             </div>
@@ -23,17 +23,17 @@ export default function MarugotoIndexPage() {
             <div className="container-responsive py-12 relative z-10">
                 {/* Header Section */}
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 bg-yellow-500/10 border border-yellow-500/30 rounded-full">
-                        <Star className="w-4 h-4 text-yellow-600 fill-yellow-600" />
-                        <span className="text-xs font-bold text-yellow-800 tracking-wider">PREMIUM CONTENTS</span>
+                    <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 bg-yellow-500/20 border border-yellow-400/50 rounded-full">
+                        <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                        <span className="text-xs font-bold text-yellow-300 tracking-wider">PREMIUM CONTENTS</span>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
-                        まるごと<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 via-amber-600 to-yellow-600">総選挙</span>
+                    <h1 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight leading-tight drop-shadow-lg">
+                        まるごと<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-300">総選挙</span>
                     </h1>
 
                     {/* Description - Left Aligned & Wrapped as requested */}
                     <div className="max-w-xl mx-auto px-4 md:px-0">
-                        <p className="text-slate-600 text-base md:text-lg leading-relaxed text-left">
+                        <p className="text-white/90 text-base md:text-lg leading-relaxed text-left drop-shadow-md">
                             1つのテーマについて、10問連続で答えるパッケージ型コンテンツ。<br />
                             あなたの「推し」や「価値観」を徹底分析し、みんなの結果と比較してみましょう。
                         </p>
