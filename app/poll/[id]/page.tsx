@@ -11,18 +11,39 @@ import { Share2, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 
 type Props = {
-    params: Promise<{ id: string }>
+    params: Promise<{ id: string }>,
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
     const { id } = await params;
+    const resolvedSearchParams = await searchParams;
     const poll = await getPoll(id);
 
     if (!poll) return { title: '404 - Not Found' };
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    // 新しいOGP APIを使用（日本語フォント対応・モダンデザイン）
-    const ogUrl = `${baseUrl}/api/og?title=${encodeURIComponent(poll.title)}`;
+
+    // 基本のOGP URL
+    let ogUrl = `${baseUrl}/api/og?title=${encodeURIComponent(poll.title)}`;
+
+    // シェア用パラメータ(s)がある場合はそれを使用、なければDBの最新データを使用
+    // フォーマット: Label:Votes,Label:Votes
+    let optionsStr = typeof resolvedSearchParams.s === 'string' ? resolvedSearchParams.s : '';
+
+    if (!optionsStr && poll.options && poll.options.length > 0) {
+        // 投票数順に上位2つを取得
+        const sortedOptions = [...poll.options].sort((a, b) => b.votes - a.votes).slice(0, 2);
+        // 合計票数が0でなければパラメータ生成（0票の場合はグラフなし）
+        const totalVotes = sortedOptions.reduce((sum, o) => sum + o.votes, 0);
+        if (totalVotes > 0) {
+            optionsStr = sortedOptions.map(o => `${o.label}:${o.votes}`).join(',');
+        }
+    }
+
+    if (optionsStr) {
+        ogUrl += `&options=${encodeURIComponent(optionsStr)}`;
+    }
 
     return {
         title: `${poll.title} | なんでも総選挙`,

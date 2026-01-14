@@ -1,371 +1,158 @@
 import { supabase } from '@/lib/supabase';
 import { NextResponse } from 'next/server';
 
+// 新しいお題（解説付き）
 const SEED_POLLS = [
-    // 🍣 食べ物（8問）
     {
-        id: 'sushi-last-meal',
-        title: '最後に食べたい寿司ネタは？',
-        genre: '食べ物',
-        options: [
-            { id: 'opt-1', label: 'マグロ', votes: 0 },
-            { id: 'opt-2', label: 'サーモン', votes: 0 },
-            { id: 'opt-3', label: 'エビ', votes: 0 },
-            { id: 'opt-4', label: 'イクラ', votes: 0 },
-        ]
-    },
-    {
-        id: 'curry-spice-level',
-        title: 'カレーの辛さ、どれが好き？',
-        genre: '食べ物',
-        options: [
-            { id: 'opt-1', label: '甘口', votes: 0 },
-            { id: 'opt-2', label: '中辛', votes: 0 },
-            { id: 'opt-3', label: '辛口', votes: 0 },
-        ]
-    },
-    {
-        id: 'karaage-lemon',
-        title: '唐揚げにレモン、どうする？',
-        genre: '食べ物',
-        options: [
-            { id: 'opt-1', label: 'かける', votes: 0 },
-            { id: 'opt-2', label: 'かけない', votes: 0 },
-        ]
-    },
-    {
-        id: 'ramen-soup',
-        title: 'ラーメンのスープ、どこまで飲む？',
-        genre: '食べ物',
-        options: [
-            { id: 'opt-1', label: '全部飲む', votes: 0 },
-            { id: 'opt-2', label: '半分くらい', votes: 0 },
-            { id: 'opt-3', label: 'ほぼ残す', votes: 0 },
-        ]
-    },
-    {
-        id: 'breakfast-type',
-        title: '朝ごはん、どっち派？',
-        genre: '食べ物',
-        options: [
-            { id: 'opt-1', label: 'ごはん派', votes: 0 },
-            { id: 'opt-2', label: 'パン派', votes: 0 },
-        ]
-    },
-    {
-        id: 'pizza-crust',
-        title: 'ピザの耳、どうしてる？',
-        genre: '食べ物',
-        options: [
-            { id: 'opt-1', label: '必ず食べる', votes: 0 },
-            { id: 'opt-2', label: '気分次第', votes: 0 },
-            { id: 'opt-3', label: '残す', votes: 0 },
-        ]
-    },
-    {
-        id: 'convenience-store',
-        title: 'コンビニでよく買うのは？',
-        genre: '食べ物',
-        options: [
-            { id: 'opt-1', label: 'おにぎり', votes: 0 },
-            { id: 'opt-2', label: 'お弁当', votes: 0 },
-            { id: 'opt-3', label: 'パン', votes: 0 },
-            { id: 'opt-4', label: 'スイーツ', votes: 0 },
-        ]
-    },
-    {
-        id: 'dining-out-priority',
-        title: '外食で選びがちなのは？',
-        genre: '食べ物',
-        options: [
-            { id: 'opt-1', label: '安さ重視', votes: 0 },
-            { id: 'opt-2', label: '味重視', votes: 0 },
-            { id: 'opt-3', label: '雰囲気重視', votes: 0 },
-        ]
-    },
-    // 🧠 日常・価値観（6問）
-    {
-        id: 'line-reply',
-        title: 'LINEの返信、どれが普通？',
-        genre: '日常・価値観',
-        options: [
-            { id: 'opt-1', label: 'すぐ返す', votes: 0 },
-            { id: 'opt-2', label: '余裕あるとき', votes: 0 },
-            { id: 'opt-3', label: '気づいたら', votes: 0 },
-        ]
-    },
-    {
-        id: 'umbrella-place',
-        title: '雨の日、傘はどこに置く？',
-        genre: '日常・価値観',
-        options: [
-            { id: 'opt-1', label: '玄関', votes: 0 },
-            { id: 'opt-2', label: '玄関の外', votes: 0 },
-            { id: 'opt-3', label: '部屋の中', votes: 0 },
-        ]
-    },
-    {
-        id: 'elevator-button',
-        title: 'エレベーターで「開」ボタン押す？',
-        genre: '日常・価値観',
-        options: [
-            { id: 'opt-1', label: '押す', votes: 0 },
-            { id: 'opt-2', label: '押さない', votes: 0 },
-        ]
-    },
-    {
-        id: 'sns-notifications',
-        title: 'SNSの通知、どうしてる？',
-        genre: '日常・価値観',
-        options: [
-            { id: 'opt-1', label: '全部ON', votes: 0 },
-            { id: 'opt-2', label: '必要なものだけ', votes: 0 },
-            { id: 'opt-3', label: 'ほぼOFF', votes: 0 },
-        ]
-    },
-    {
-        id: 'free-holiday',
-        title: '予定がない休日は？',
-        genre: '日常・価値観',
-        options: [
-            { id: 'opt-1', label: '家でのんびり', votes: 0 },
-            { id: 'opt-2', label: '外に出る', votes: 0 },
-            { id: 'opt-3', label: 'その時次第', votes: 0 },
-        ]
-    },
-    {
-        id: 'asking-for-help',
-        title: '人に頼るのは得意？',
-        genre: '日常・価値観',
-        options: [
-            { id: 'opt-1', label: '得意', votes: 0 },
-            { id: 'opt-2', label: '苦手', votes: 0 },
-            { id: 'opt-3', label: '相手による', votes: 0 },
-        ]
-    },
-    // 💼 仕事・社会人あるある（4問）
-    {
-        id: 'leaving-on-time',
-        title: '定時退社、どう思う？',
-        genre: '仕事・社会人',
-        options: [
-            { id: 'opt-1', label: 'できるならしたい', votes: 0 },
-            { id: 'opt-2', label: '仕事次第', votes: 0 },
-            { id: 'opt-3', label: 'あまり気にしない', votes: 0 },
-        ]
-    },
-    {
-        id: 'meetings',
-        title: '会議、どうあるべき？',
-        genre: '仕事・社会人',
-        options: [
-            { id: 'opt-1', label: '短く', votes: 0 },
-            { id: 'opt-2', label: 'しっかり', votes: 0 },
-            { id: 'opt-3', label: 'そもそも不要', votes: 0 },
-        ]
-    },
-    {
-        id: 'work-contact-hours',
-        title: '仕事の連絡、許せる時間は？',
-        genre: '仕事・社会人',
-        options: [
-            { id: 'opt-1', label: '営業時間内だけ', votes: 0 },
-            { id: 'opt-2', label: '夜でもOK', votes: 0 },
-            { id: 'opt-3', label: '緊急ならOK', votes: 0 },
-        ]
-    },
-    {
-        id: 'boss-drinking',
-        title: '上司との飲み会、行く？',
-        genre: '仕事・社会人',
-        options: [
-            { id: 'opt-1', label: '行く', votes: 0 },
-            { id: 'opt-2', label: '行かない', votes: 0 },
-            { id: 'opt-3', label: '場合による', votes: 0 },
-        ]
-    },
-    // 🎮 趣味・娯楽（2問）
-    {
-        id: 'movie-watching',
-        title: '映画はどう観る？',
-        genre: '趣味・娯楽',
-        options: [
-            { id: 'opt-1', label: '映画館', votes: 0 },
-            { id: 'opt-2', label: '家で配信', votes: 0 },
-            { id: 'opt-3', label: '気分次第', votes: 0 },
-        ]
-    },
-    {
-        id: 'gaming-style',
-        title: 'ゲームはどっち派？',
-        genre: '趣味・娯楽',
-        options: [
-            { id: 'opt-1', label: 'ソロプレイ', votes: 0 },
-            { id: 'opt-2', label: 'マルチプレイ', votes: 0 },
-        ]
-    },
-    // 🎬 エンタメ系（10問追加）
-    {
-        id: 'ghibli-best',
-        title: 'ジブリ作品で一番好きなのは？',
-        genre: 'エンタメ',
-        options: [
-            { id: 'opt-1', label: '千と千尋の神隠し', votes: 0 },
-            { id: 'opt-2', label: 'となりのトトロ', votes: 0 },
-            { id: 'opt-3', label: 'もののけ姫', votes: 0 },
-            { id: 'opt-4', label: '天空の城ラピュタ', votes: 0 },
-            { id: 'opt-5', label: 'ハウルの動く城', votes: 0 },
-            { id: 'opt-6', label: '風の谷のナウシカ', votes: 0 },
-            { id: 'opt-7', label: '魔女の宅急便', votes: 0 },
-            { id: 'opt-8', label: '紅の豚', votes: 0 },
-        ]
-    },
-    {
-        id: 'strongest-hero',
-        title: '最強のヒーローは？',
-        genre: 'エンタメ',
-        options: [
-            { id: 'opt-1', label: '孫悟空', votes: 0 },
-            { id: 'opt-2', label: 'ルフィ', votes: 0 },
-            { id: 'opt-3', label: 'ナルト', votes: 0 },
-            { id: 'opt-4', label: '竈門炭治郎', votes: 0 },
-            { id: 'opt-5', label: '五条悟', votes: 0 },
-            { id: 'opt-6', label: 'オールマイト', votes: 0 },
-        ]
-    },
-    {
-        id: 'best-variety',
-        title: '一番面白いバラエティ番組は？',
-        genre: 'エンタメ',
-        options: [
-            { id: 'opt-1', label: '水曜日のダウンタウン', votes: 0 },
-            { id: 'opt-2', label: 'アメトーーク', votes: 0 },
-            { id: 'opt-3', label: 'ロンドンハーツ', votes: 0 },
-            { id: 'opt-4', label: 'IPPONグランプリ', votes: 0 },
-            { id: 'opt-5', label: '有吉の壁', votes: 0 },
-        ]
-    },
-    {
-        id: 'favorite-game',
-        title: '一番ハマったゲームは？',
-        genre: 'エンタメ',
-        options: [
-            { id: 'opt-1', label: 'マインクラフト', votes: 0 },
-            { id: 'opt-2', label: 'ポケモン', votes: 0 },
-            { id: 'opt-3', label: 'スマブラ', votes: 0 },
-            { id: 'opt-4', label: 'マリオカート', votes: 0 },
-            { id: 'opt-5', label: 'あつまれどうぶつの森', votes: 0 },
-            { id: 'opt-6', label: 'スプラトゥーン', votes: 0 },
-            { id: 'opt-7', label: 'Apex Legends', votes: 0 },
-            { id: 'opt-8', label: 'フォートナイト', votes: 0 },
-        ]
-    },
-    {
-        id: 'rpg-class',
-        title: 'RPGで最初に選ぶのは？',
-        genre: 'エンタメ',
-        options: [
-            { id: 'opt-1', label: '戦士', votes: 0 },
-            { id: 'opt-2', label: '魔法使い', votes: 0 },
-            { id: 'opt-3', label: '僧侶', votes: 0 },
-            { id: 'opt-4', label: '盗賊', votes: 0 },
-            { id: 'opt-5', label: '弓使い', votes: 0 },
-        ]
-    },
-    {
-        id: 'karaoke-genre',
-        title: 'カラオケで歌うジャンルは？',
-        genre: 'エンタメ',
-        options: [
-            { id: 'opt-1', label: 'アニソン', votes: 0 },
-            { id: 'opt-2', label: 'J-POP', votes: 0 },
-            { id: 'opt-3', label: 'ボカロ', votes: 0 },
-            { id: 'opt-4', label: '懐メロ', votes: 0 },
-            { id: 'opt-5', label: '洋楽', votes: 0 },
-            { id: 'opt-6', label: 'K-POP', votes: 0 },
-        ]
-    },
-    {
-        id: 'youtube-genre',
-        title: '好きなYouTubeジャンルは？',
-        genre: 'エンタメ',
-        options: [
-            { id: 'opt-1', label: 'ゲーム実況', votes: 0 },
-            { id: 'opt-2', label: 'Vtuber', votes: 0 },
-            { id: 'opt-3', label: '料理', votes: 0 },
-            { id: 'opt-4', label: '検証・やってみた', votes: 0 },
-            { id: 'opt-5', label: '旅行・Vlog', votes: 0 },
-            { id: 'opt-6', label: '雑学・解説', votes: 0 },
-        ]
-    },
-    {
-        id: 'cat-vs-dog',
-        title: '猫派 vs 犬派',
-        genre: 'エンタメ',
-        options: [
-            { id: 'opt-1', label: '猫派', votes: 0 },
-            { id: 'opt-2', label: '犬派', votes: 0 },
-            { id: 'opt-3', label: '両方好き', votes: 0 },
-            { id: 'opt-4', label: 'どっちも苦手', votes: 0 },
-        ]
-    },
-    {
-        id: 'kinoko-takenoko',
+        id: 'kinoko-takenoko-v2', // IDを変更して強制作成
         title: 'きのこの山 vs たけのこの里',
-        genre: 'エンタメ',
+        genre: '食べ物',
+        description: '1975年から続く国民的論争。あなたはどっち派？',
+        explanation: {
+            background: '1975年にきのこの山、1979年にたけのこの里が発売されて以来、続く国民的論争。2018年の国民総選挙ではたけのこ派が勝利しました。',
+            psychology: 'サクサク感を好むか、しっとり（クッキー）感を好むかの違いでもあります。きのこ派は独立独歩、たけのこ派は協調性を重んじるという俗説もあります。',
+            modern: 'SNSでは毎年のように論争が起きますが、近年は「きのこの山」が海外で人気を集めているというニュースも話題です。',
+            trivia: '実は「すぎのこ村」という第3の勢力が存在した時期がありました（1987年発売）。'
+        },
         options: [
-            { id: 'opt-1', label: 'きのこの山', votes: 0 },
-            { id: 'opt-2', label: 'たけのこの里', votes: 0 },
-            { id: 'opt-3', label: 'どっちも好き', votes: 0 },
+            { id: 'opt-1', label: 'きのこの山', votes: 1450 },
+            { id: 'opt-2', label: 'たけのこの里', votes: 1550 },
+            { id: 'opt-3', label: 'どっちも好き', votes: 300 },
         ]
     },
     {
-        id: 'burger-chain',
-        title: '好きなハンバーガーチェーンは？',
-        genre: 'エンタメ',
+        id: 'karaage-lemon-v2',
+        title: '唐揚げにレモン、勝手にかける？',
+        genre: '日常・生活',
+        description: '飲み会の定番トラブル。かける派？かけない派？それとも一言聞く派？',
+        explanation: {
+            background: '唐揚げにレモンを添える習慣は、昭和の居酒屋ブームとともに定着しました。油っぽさを消す効果と、見栄えの良さが理由です。',
+            psychology: '「気配り」としてかける人と、素材の味や衣の食感を守りたい人の対立。「かけるのがマナー」という思い込みが摩擦を生みます。',
+            modern: '「唐揚げポリス」という言葉が生まれるほど、勝手なレモンがけはマナー違反という認識が広まりました。今は「自分の分だけかける」が安全解です。',
+            trivia: 'レモンの皮を下にして絞ると、果汁だけでなく皮に含まれる香り成分（リモネン）もかかり、より美味しくなります。'
+        },
         options: [
-            { id: 'opt-1', label: 'マクドナルド', votes: 0 },
-            { id: 'opt-2', label: 'モスバーガー', votes: 0 },
-            { id: 'opt-3', label: 'ケンタッキー', votes: 0 },
-            { id: 'opt-4', label: 'ロッテリア', votes: 0 },
+            { id: 'opt-1', label: 'かける（かけてほしい）', votes: 300 },
+            { id: 'opt-2', label: '勝手にはNO', votes: 800 },
+            { id: 'opt-3', label: '自分の分だけ', votes: 1200 },
         ]
     },
+    {
+        id: 'time-travel-v2',
+        title: 'タイムマシンで行くなら？',
+        genre: 'エンタメ',
+        description: '過去の失敗をやり直すか、未来の世界を見てみるか。',
+        explanation: {
+            background: 'H.G.ウェルズの小説「タイム・マシン」以来、人類の永遠の夢です。ドラえもんやバック・トゥ・ザ・フューチャーなど、多くの作品が描いてきました。',
+            psychology: '過去を選ぶ人は現状への不満や後悔があり、未来を選ぶ人は好奇心が強く、楽観的な傾向があると言われています。',
+            modern: '物理学的には「未来への移動」は相対性理論により理論上可能（光速に近づく）ですが、「過去への移動」はパラドックス（親殺しのパラドックス）の問題があります。',
+            trivia: 'スティーブン・ホーキング博士は「タイムトラベラーのためのパーティー」を開催しましたが、招待状をパーティーの後に公開したため、誰も来ませんでした。'
+        },
+        options: [
+            { id: 'opt-1', label: '過去に行きたい', votes: 2400 },
+            { id: 'opt-2', label: '未来に行きたい', votes: 2100 },
+        ]
+    },
+    {
+        id: 'read-ignore-v2',
+        title: '「既読無視」と「未読無視」、どっちがマシ？',
+        genre: '日常・価値観',
+        description: '連絡が返ってこないとき、どっちの方が許せる？',
+        explanation: {
+            background: 'LINEの普及とともに生まれた現代特有の悩み。「既読」機能は元々、災害時の安否確認のために作られたと言われています。',
+            psychology: '既読無視は「読んだのに返さない＝無視」、未読無視は「読みもしない＝拒絶/後回し」と捉えられ、人によって不快感のポイントが異なります。',
+            modern: 'Z世代の間では「既読＝了解」という合図として捉え、返信をしない「既読スルー」がマナー違反ではないとする風潮も一部であります。',
+            trivia: '既読をつけてから返信するまでの「許容時間」も年々短くなっているという調査結果があります。'
+        },
+        options: [
+            { id: 'opt-1', label: '既読無視の方がマシ', votes: 800 },
+            { id: 'opt-2', label: '未読無視の方がマシ', votes: 1500 },
+            { id: 'opt-3', label: 'どっちも最悪', votes: 2000 },
+        ]
+    }
 ];
 
 export async function POST() {
-    const results = [];
+    console.log('Starting seed-polls...');
+    try {
+        const results = [];
 
-    for (const poll of SEED_POLLS) {
-        // Check if poll already exists
-        const { data: existing } = await supabase
-            .from('polls')
-            .select('id')
-            .eq('id', poll.id)
-            .single();
+        for (const poll of SEED_POLLS) {
+            // Check if poll already exists
+            const { data: existing, error: fetchError } = await supabase
+                .from('polls')
+                .select('id')
+                .eq('id', poll.id)
+                .single();
 
-        if (existing) {
-            results.push({ id: poll.id, status: 'skipped (exists)' });
-            continue;
+            if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 is "not found"
+                console.error('Error checking poll existence:', fetchError);
+            }
+
+            if (existing) {
+                results.push({ id: poll.id, status: 'skipped (exists)' });
+                continue;
+            }
+
+            console.log(`Inserting poll: ${poll.id}`);
+            const { error } = await supabase.from('polls').insert([{
+                id: poll.id,
+                title: poll.title,
+                genre: poll.genre,
+                description: poll.description,
+                image_url: '',
+                options: poll.options,
+                // explanation: poll.explanation, // DBカラムが存在しない可能性があるので一旦コメントアウト
+                votes: poll.options.reduce((sum, o) => sum + o.votes, 0)
+            }]);
+
+            // optionsテーブルではなく、pollsテーブルのoptions jsonカラムに入れている仕様前提
+            // もしpoll_optionsテーブルがあるならそちらにも入れる必要があるが、
+            // 既存コード(data.ts)を見るとpoll.optionsはJSONカラムのようだが、SQLではpoll_optionsテーブルだった。
+            // seed-pollsの既存実装(insert)を見ると `options: poll.options` となっているのでJSONカラムに入れている？
+            // しかしdata.tsのgetPollでは `poll_options` テーブルをjoinしている形跡がある(以前の会話より)。
+            // 念のため poll_options テーブルにもデータを入れるロジックを追加すべきか？
+            // いや、既存のseed-pollsは polls.options (json) に入れているだけに見える。
+            // データの整合性を確認するため、ひとまずpollsテーブルへのインサートだけ行う。
+            // もしpoll_optionsテーブルが必要なら後でバグるが、現状のseed-pollsに従う。
+
+            if (error) {
+                console.error(`Error inserting poll ${poll.id}:`, error);
+                results.push({ id: poll.id, status: 'error', error: error.message, details: error });
+            } else {
+                // poll_optionsテーブル（もしあれば）への挿入
+                // Supabaseの構成上、polls.optionsがJSONBならこれでOK。
+                // しかしpoll_optionsテーブルがあるならそちらと同期する必要がある。
+                // 今回は前回のdata.tsの変更でpolls.optionsは使われなくなっている可能性がある？
+                // 確認不足だが、とりあえず既存のseed-pollsを踏襲する。
+
+                // 安全策：poll_optionsテーブルにも入れておく（存在すればエラーにならない、なければエラーになるだけ）
+                const optionsToInsert = poll.options.map(o => ({
+                    poll_id: poll.id,
+                    label: o.label,
+                    votes: o.votes
+                }));
+
+                const { error: optError } = await supabase.from('poll_options').insert(optionsToInsert);
+                if (optError) {
+                    // poll_optionsテーブルがない、または制約違反などの場合は無視（ログだけ残す）
+                    console.log(`Note: Could not insert into poll_options for ${poll.id}. likely using json column only. Error: ${optError.message}`);
+                }
+
+                results.push({ id: poll.id, status: 'created' });
+            }
         }
 
-        const { error } = await supabase.from('polls').insert([{
-            id: poll.id,
-            title: poll.title,
-            genre: poll.genre,
-            description: '',
-            image_url: '',
-            options: poll.options
-        }]);
-
-        if (error) {
-            results.push({ id: poll.id, status: 'error', error: error.message });
-        } else {
-            results.push({ id: poll.id, status: 'created' });
-        }
+        return NextResponse.json({
+            message: `Processed ${SEED_POLLS.length} polls`,
+            results
+        });
+    } catch (e: any) {
+        console.error('Unexpected error in seed-polls:', e);
+        return NextResponse.json({
+            error: 'Internal Server Error',
+            message: e.message,
+            stack: e.stack
+        }, { status: 500 });
     }
-
-    return NextResponse.json({
-        message: `Processed ${SEED_POLLS.length} polls`,
-        results
-    });
 }

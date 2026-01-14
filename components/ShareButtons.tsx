@@ -14,12 +14,10 @@ interface ShareButtonsProps {
 export function ShareButtons({ pollId, pollTitle }: ShareButtonsProps) {
     const [copied, setCopied] = useState(false);
 
-    // 現在のページURLを取得
+    // 現在のページURLを取得（常に正規URLを使用）
     const getShareUrl = () => {
-        if (typeof window !== 'undefined') {
-            return window.location.href;
-        }
-        return `https://www.nandemo-vote.com/poll/${pollId}`;
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.nandemo-vote.com';
+        return `${baseUrl}/poll/${pollId}`;
     };
 
     // X (Twitter) でシェア
