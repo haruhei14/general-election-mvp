@@ -15,9 +15,9 @@ const SEED_POLLS = [
             trivia: '実は「すぎのこ村」という第3の勢力が存在した時期がありました（1987年発売）。'
         },
         options: [
-            { id: 'opt-1', label: 'きのこの山', votes: 1450 },
-            { id: 'opt-2', label: 'たけのこの里', votes: 1550 },
-            { id: 'opt-3', label: 'どっちも好き', votes: 300 },
+            { id: 'opt-1', label: 'きのこの山', votes: 0 },
+            { id: 'opt-2', label: 'たけのこの里', votes: 0 },
+            { id: 'opt-3', label: 'どっちも好き', votes: 0 },
         ]
     },
     {
@@ -32,9 +32,9 @@ const SEED_POLLS = [
             trivia: 'レモンの皮を下にして絞ると、果汁だけでなく皮に含まれる香り成分（リモネン）もかかり、より美味しくなります。'
         },
         options: [
-            { id: 'opt-1', label: 'かける（かけてほしい）', votes: 300 },
-            { id: 'opt-2', label: '勝手にはNO', votes: 800 },
-            { id: 'opt-3', label: '自分の分だけ', votes: 1200 },
+            { id: 'opt-1', label: 'かける（かけてほしい）', votes: 0 },
+            { id: 'opt-2', label: '勝手にはNO', votes: 0 },
+            { id: 'opt-3', label: '自分の分だけ', votes: 0 },
         ]
     },
     {
@@ -49,8 +49,8 @@ const SEED_POLLS = [
             trivia: 'スティーブン・ホーキング博士は「タイムトラベラーのためのパーティー」を開催しましたが、招待状をパーティーの後に公開したため、誰も来ませんでした。'
         },
         options: [
-            { id: 'opt-1', label: '過去に行きたい', votes: 2400 },
-            { id: 'opt-2', label: '未来に行きたい', votes: 2100 },
+            { id: 'opt-1', label: '過去に行きたい', votes: 0 },
+            { id: 'opt-2', label: '未来に行きたい', votes: 0 },
         ]
     },
     {
@@ -66,9 +66,9 @@ const SEED_POLLS = [
             summary: ''
         },
         options: [
-            { id: 'opt-1', label: '既読無視の方がマシ', votes: 800 },
-            { id: 'opt-2', label: '未読無視の方がマシ', votes: 1500 },
-            { id: 'opt-3', label: 'どっちも最悪', votes: 2000 },
+            { id: 'opt-1', label: '既読無視の方がマシ', votes: 0 },
+            { id: 'opt-2', label: '未読無視の方がマシ', votes: 0 },
+            { id: 'opt-3', label: 'どっちも最悪', votes: 0 },
         ]
     },
     {
@@ -84,9 +84,9 @@ const SEED_POLLS = [
             summary: 'これらは情報化社会を賢く生き抜くための武器ですが、人生における全ての時間を効率化してしまったとき、私たちの心には何が残るのでしょうか。効率を追い求めて多くの知識を得る人生か、あえて無駄を愛し、一つの体験を深く味わう人生か。この投票を通じて、あなたが本当に大切にしたい「時間の質」を再考するきっかけになれば幸いです。'
         },
         options: [
-            { id: 'opt-1', label: '豊かだと思う（合理的）', votes: 1200 },
-            { id: 'opt-2', label: '豊かではない（情緒が大切）', votes: 1500 },
-            { id: 'opt-3', label: 'どちらとも言えない', votes: 800 },
+            { id: 'opt-1', label: '豊かだと思う（合理的）', votes: 0 },
+            { id: 'opt-2', label: '豊かではない（情緒が大切）', votes: 0 },
+            { id: 'opt-3', label: 'どちらとも言えない', votes: 0 },
         ]
     }
 ];
@@ -110,28 +110,26 @@ export async function POST() {
 
             if (existing) {
                 // 特定のお題は情報を強制アップデート（poll_typeの修正など）
-                if (poll.id === 'taipa-performance' || poll.id === 'read-ignore-v2') {
-                    console.log(`Updating existing poll ${poll.id} to fix poll_type...`);
-                    const { error: updateError } = await supabase
-                        .from('polls')
-                        .update({
-                            poll_type: 'daily_trend',
-                            explanation: poll.explanation,
-                            title: poll.title,
-                            description: poll.description,
-                            // optionsは投票数がリセットされる恐れがあるので更新しない
-                        })
-                        .eq('id', poll.id);
+                // ユーザー要望により、全てのシードデータの投票数をリセットする（optionsを上書き）
+                console.log(`Resetting poll votes/data for ${poll.id}...`);
+                const { error: updateError } = await supabase
+                    .from('polls')
+                    .update({
+                        poll_type: 'daily_trend',
+                        explanation: poll.explanation,
+                        title: poll.title,
+                        description: poll.description,
+                        options: poll.options // 投票数を0にリセット
+                    })
+                    .eq('id', poll.id);
 
-                    if (updateError) {
-                        console.error(`Error updating poll ${poll.id}:`, updateError);
-                        results.push({ id: poll.id, status: 'update_failed', error: updateError });
-                    } else {
-                        results.push({ id: poll.id, status: 'updated' });
-                    }
+                if (updateError) {
+                    console.error(`Error updating poll ${poll.id}:`, updateError);
+                    results.push({ id: poll.id, status: 'update_failed', error: updateError });
                 } else {
-                    results.push({ id: poll.id, status: 'skipped (exists)' });
+                    results.push({ id: poll.id, status: 'updated (reset votes)' });
                 }
+
                 continue;
             }
 
