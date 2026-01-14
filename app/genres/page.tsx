@@ -2,6 +2,21 @@ import { GENRES } from '@/lib/data';
 import Link from 'next/link';
 import { Tags, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'ジャンル一覧 | なんでも総選挙',
+    description: '食べ物、エンタメ、価値観など、様々なジャンルからお題を探せます。',
+    openGraph: {
+        title: 'ジャンル一覧 | なんでも総選挙',
+        description: '様々なジャンルからお題を探そう',
+        images: [{ url: 'https://www.nandemo-vote.com/api/og?title=ジャンル一覧', width: 1200, height: 630 }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        images: ['https://www.nandemo-vote.com/api/og?title=ジャンル一覧'],
+    },
+};
 
 // Genre gradient mapping
 const GENRE_GRADIENTS: Record<string, string> = {

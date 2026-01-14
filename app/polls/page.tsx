@@ -2,6 +2,21 @@ import { getPolls, GENRES } from '@/lib/data';
 import Link from 'next/link';
 import { Clock, TrendingUp, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'お題一覧 | なんでも総選挙',
+    description: 'すべてのお題を一覧で表示。新着順や人気順でソートできます。',
+    openGraph: {
+        title: 'お題一覧 | なんでも総選挙',
+        description: 'すべてのお題を一覧で表示',
+        images: [{ url: 'https://www.nandemo-vote.com/api/og?title=お題一覧', width: 1200, height: 630 }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        images: ['https://www.nandemo-vote.com/api/og?title=お題一覧'],
+    },
+};
 
 export default async function PollsPage(props: { searchParams: Promise<{ sort?: string; genre?: string }> }) {
     const { sort, genre } = await props.searchParams;

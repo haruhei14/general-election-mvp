@@ -2,6 +2,21 @@ import { getPolls } from '@/lib/data';
 import Link from 'next/link';
 import { Trophy, TrendingUp, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: '人気ランキング | なんでも総選挙',
+    description: '投票数が多い人気のお題TOP20をランキング形式で紹介！',
+    openGraph: {
+        title: '人気ランキング | なんでも総選挙',
+        description: '投票数が多い人気のお題TOP20',
+        images: [{ url: 'https://www.nandemo-vote.com/api/og?title=人気ランキング', width: 1200, height: 630 }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        images: ['https://www.nandemo-vote.com/api/og?title=人気ランキング'],
+    },
+};
 
 export default async function RankingPage() {
     const allPolls = await getPolls();
