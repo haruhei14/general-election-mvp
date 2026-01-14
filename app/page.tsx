@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { Sparkles, ChevronRight, TrendingUp, PenSquare } from 'lucide-react';
 import { Metadata } from 'next';
 
+// キャッシュを無効化して常に最新データを取得
+export const dynamic = 'force-dynamic';
+
 // 日付ベースでランダムお題を選ぶ（フォールバック用）
 function getDateBasedPoll(polls: Poll[]): Poll | undefined {
   if (polls.length === 0) return undefined;
