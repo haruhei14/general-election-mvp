@@ -32,6 +32,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
+      <head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1271313998587085" crossOrigin="anonymous"></script>
+      </head>
       <GoogleAnalytics gaId="G-BK9K2TSJP4" />
       <body className={cn(inter.className, "min-h-screen flex flex-col bg-slate-50")}>
         <Navbar />
