@@ -20,7 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!poll) return { title: '404 - Not Found' };
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const ogUrl = `${baseUrl}/og/${id}`;
+    // 新しいOGP APIを使用（日本語フォント対応・モダンデザイン）
+    const ogUrl = `${baseUrl}/api/og?title=${encodeURIComponent(poll.title)}`;
 
     return {
         title: `${poll.title} | なんでも総選挙`,
