@@ -1,6 +1,21 @@
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { MessageCircle, Clock } from 'lucide-react';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: '最近のコメント | なんでも総選挙',
+    description: 'みんなの意見やコメントをチェック！',
+    openGraph: {
+        title: '最近のコメント | なんでも総選挙',
+        description: 'みんなの意見をチェック',
+        images: [{ url: 'https://www.nandemo-vote.com/api/og?title=最近のコメント', width: 1200, height: 630 }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        images: ['https://www.nandemo-vote.com/api/og?title=最近のコメント'],
+    },
+};
 
 type Comment = {
     id: string;
