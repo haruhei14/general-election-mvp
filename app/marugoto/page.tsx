@@ -40,70 +40,49 @@ export default function MarugotoIndexPage() {
                     </div>
                 </div>
 
-                {/* Theme Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto px-4">
-                    {/* Active Themes */}
-                    {MARUGOTO_THEMES.map((theme) => {
-                        // Icon Mapping
-                        const Icon = theme.icon === 'Anchor' ? Anchor : Layers;
+                {/* Theme Buttons - Compact Style */}
+                <div className="grid grid-cols-1 gap-4 max-w-xl mx-auto px-4">
+                    {/* One Piece Theme Button */}
+                    {MARUGOTO_THEMES.map((theme) => (
+                        <Link
+                            key={theme.id}
+                            href={`/marugoto/${theme.id}`}
+                            className="group relative block bg-gradient-to-r from-red-600 via-red-500 to-yellow-500 rounded-2xl p-5 md:p-6 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden"
+                        >
+                            {/* NEW Badge */}
+                            {theme.isNew && (
+                                <div className="absolute top-0 right-0 bg-yellow-400 text-red-900 text-[10px] font-bold px-2 py-1 rounded-bl-lg shadow-sm">
+                                    NEW!
+                                </div>
+                            )}
 
-                        return (
-                            <Link
-                                key={theme.id}
-                                href={`/marugoto/${theme.id}`}
-                                className="group relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 block ring-1 ring-slate-900/5"
-                            >
-                                {/* NEW Badge */}
-                                {theme.isNew && (
-                                    <div className="absolute top-4 right-4 z-20 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse">
-                                        NEW!
-                                    </div>
-                                )}
-
-                                {/* Card Header / Image */}
-                                <div className={`relative h-52 overflow-hidden`}>
-                                    {theme.image ? (
-                                        <div className="absolute inset-0">
-                                            <img
-                                                src={theme.image}
-                                                alt={theme.title}
-                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                            />
-                                            {/* Gradient Overlay for readability */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                                        </div>
-                                    ) : (
-                                        <div className={`absolute inset-0 bg-gradient-to-br ${theme.color} flex items-center justify-center`}>
-                                            <Icon className="w-20 h-20 text-white/90" />
-                                        </div>
-                                    )}
+                            <div className="flex items-center gap-4">
+                                {/* Icon - Straw Hat Style */}
+                                <div className="w-14 h-14 bg-yellow-400/30 rounded-xl flex items-center justify-center flex-shrink-0 border-2 border-yellow-400/50">
+                                    <span className="text-3xl">🏴‍☠️</span>
                                 </div>
 
-                                {/* Content */}
-                                <div className="p-8 relative">
-                                    <h2 className="text-2xl font-bold text-slate-800 mb-3 group-hover:text-blue-700 transition-colors">
+                                <div className="flex-grow min-w-0">
+                                    <p className="text-yellow-200 text-xs font-bold mb-0.5">🎌 誰もが知る少年漫画の金字塔</p>
+                                    <h2 className="text-xl md:text-2xl font-black truncate tracking-wide" style={{ fontFamily: 'serif', textShadow: '2px 2px 0 rgba(0,0,0,0.3)' }}>
                                         {theme.title}
                                     </h2>
-                                    <p className="text-slate-600 text-sm leading-relaxed mb-6">
-                                        {theme.description}
-                                    </p>
-
-                                    <div className="flex items-center justify-end">
-                                        <span className="inline-flex items-center font-bold text-sm text-slate-900 group-hover:underline decoration-2 underline-offset-4">
-                                            投票をはじめる
-                                            <ChevronRight className="w-4 h-4 ml-1" />
-                                        </span>
-                                    </div>
                                 </div>
-                            </Link>
-                        );
-                    })}
+
+                                <ChevronRight className="w-6 h-6 text-white/80 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                            </div>
+                        </Link>
+                    ))}
 
                     {/* Coming Soon */}
-                    <div className="relative bg-slate-100 rounded-3xl overflow-hidden border-2 border-dashed border-slate-300 flex flex-col items-center justify-center p-8 text-center min-h-[300px] opacity-70">
-                        <Layers className="w-12 h-12 text-slate-300 mb-4" />
-                        <h3 className="text-xl font-bold text-slate-400 mb-2">Coming Soon...</h3>
-                        <p className="text-sm text-slate-400">新しいテーマを準備中！</p>
+                    <div className="relative bg-white/10 rounded-2xl p-5 border-2 border-dashed border-white/30 flex items-center gap-4 opacity-60">
+                        <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Layers className="w-7 h-7 text-white/50" />
+                        </div>
+                        <div className="flex-grow">
+                            <p className="text-white/50 text-xs font-bold mb-0.5">Coming Soon...</p>
+                            <h3 className="text-lg font-bold text-white/40">新しいテーマを準備中</h3>
+                        </div>
                     </div>
                 </div>
             </div>
