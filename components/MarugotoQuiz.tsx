@@ -21,6 +21,11 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
     // Local copy of polls to reflect vote updates immediately for result view
     const [polls, setPolls] = useState<Poll[]>(initialPolls);
 
+    // Theme request form state
+    const [requestText, setRequestText] = useState('');
+    const [requestStatus, setRequestStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+    const [requestMessage, setRequestMessage] = useState('');
+
     const currentPoll = polls[currentIndex];
     const progress = ((currentIndex + (isFinished ? 1 : 0)) / polls.length) * 100;
 
@@ -236,19 +241,67 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
                             他のテーマを探す
                         </Link>
 
-                        {/* Suggestion Form Placeholder */}
+                        {/* Suggestion Form */}
                         <div className="mt-8 p-6 bg-slate-50 rounded-xl border border-dashed border-slate-300 text-center">
                             <MessageSquarePlus className="w-8 h-8 text-slate-400 mx-auto mb-2" />
                             <h4 className="font-bold text-slate-700 mb-1">次のお題をリクエスト！</h4>
                             <p className="text-xs text-slate-500 mb-4">こんなテーマでやってほしい！という要望があれば教えてください。</p>
-                            <textarea
-                                className="w-full p-3 rounded-lg border border-slate-200 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                rows={2}
-                                placeholder="例：NARUTO、ジブリ、プロ野球..."
-                            />
-                            <button className="px-6 py-2 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-slate-700">
-                                送信する
-                            </button>
+
+                            {requestStatus === 'success' ? (
+                                <div className="py-4 text-green-600 font-bold flex items-center justify-center gap-2">
+                                    <Check className="w-5 h-5" />
+                                    <span>リクエストを受け付けました！</span>
+                                </div>
+                            ) : (
+                                <form onSubmit={async (e) => {
+                                    e.preventDefault();
+                                    if (!requestText.trim() || requestStatus === 'sending') return;
+
+                                    setRequestStatus('sending');
+                                    setRequestMessage('');
+
+                                    try {
+                                        const res = await fetch('/api/theme-request', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ requestText: requestText.trim(), source: 'marugoto' })
+                                        });
+
+                                        const data = await res.json();
+
+                                        if (res.ok) {
+                                            setRequestStatus('success');
+                                            setRequestText('');
+                                        } else {
+                                            setRequestStatus('error');
+                                            setRequestMessage(data.error || '送信に失敗しました');
+                                        }
+                                    } catch (err) {
+                                        setRequestStatus('error');
+                                        setRequestMessage('ネットワークエラーが発生しました');
+                                    }
+                                }}>
+                                    <textarea
+                                        className="w-full p-3 rounded-lg border border-slate-200 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        rows={2}
+                                        placeholder="例：NARUTO、ジブリ、プロ野球..."
+                                        value={requestText}
+                                        onChange={(e) => setRequestText(e.target.value)}
+                                        maxLength={500}
+                                        disabled={requestStatus === 'sending'}
+                                    />
+                                    {requestStatus === 'error' && (
+                                        <p className="text-red-500 text-xs mb-2">{requestMessage}</p>
+                                    )}
+                                    <button
+                                        type="submit"
+                                        disabled={!requestText.trim() || requestStatus === 'sending'}
+                                        className="px-6 py-2 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                    >
+                                        {requestStatus === 'sending' ? '送信中...' : '送信する'}
+                                    </button>
+                                </form>
+                            )}
                         </div>
                     </div>
                 </div>
