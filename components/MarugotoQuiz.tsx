@@ -81,12 +81,12 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
                     {/* Result Header - Grand Prix Style */}
                     <div className="text-center mb-10 pt-8 relative">
                         <div className="inline-block mb-2">
-                            <Trophy className="w-12 h-12 text-yellow-500 mx-auto drop-shadow-lg" />
+                            <Trophy className="w-12 h-12 text-yellow-400 mx-auto drop-shadow-lg" />
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-black text-slate-800 mb-2 tracking-tight">
+                        <h2 className="text-3xl md:text-4xl font-black text-white mb-2 tracking-tight drop-shadow-lg">
                             診断結果発表
                         </h2>
-                        <p className="text-slate-500 font-serif italic">The Grand Prix of Your Choice</p>
+                        <p className="text-yellow-300/80 font-serif italic drop-shadow-md">The Grand Prix of Your Choice</p>
                     </div>
 
                     {/* Result Detail List - Moved to Top & Styled as Podium */}
