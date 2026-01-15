@@ -1,8 +1,37 @@
 import Link from 'next/link';
 import { MARUGOTO_THEMES } from '@/lib/marugoto-data';
 import { ChevronRight, Anchor, Star, Layers } from 'lucide-react';
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+// SEOメタデータ
+export const metadata: Metadata = {
+    title: 'まるごと総選挙 | テーマ別10問クイズ',
+    description: '1つのテーマについて10問連続で答えるパッケージ型コンテンツ。ワンピース、back numberなど人気テーマであなたの「推し」や「価値観」を徹底分析！みんなの結果と比較してみましょう。',
+    keywords: ['総選挙', 'クイズ', '診断', 'ワンピース', 'back number', 'アンケート', '投票'],
+    openGraph: {
+        title: 'まるごと総選挙 | テーマ別10問クイズ',
+        description: '1つのテーマについて10問連続で答えるパッケージ型コンテンツ。あなたの「推し」や「価値観」を徹底分析！',
+        type: 'website',
+        url: 'https://nandemo-vote.com/marugoto',
+        siteName: 'なんでも総選挙',
+        images: [
+            {
+                url: 'https://nandemo-vote.com/red-curtain-bg.png',
+                width: 1200,
+                height: 630,
+                alt: 'まるごと総選挙',
+            },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'まるごと総選挙 | テーマ別10問クイズ',
+        description: '1つのテーマについて10問連続で答えるパッケージ型コンテンツ。あなたの「推し」や「価値観」を徹底分析！',
+    },
+};
+
 
 export default function MarugotoIndexPage() {
     return (

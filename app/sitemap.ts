@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getPolls } from '@/lib/data';
+import { MARUGOTO_THEMES } from '@/lib/marugoto-data';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,14 +21,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         '/about',        // サイトについて
         '/privacy',      // プライバシーポリシー
         '/contact',      // お問い合わせ
+        '/marugoto',     // まるごと総選挙
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date(),
         changeFrequency: 'daily' as const,
-        priority: route === '' ? 1.0 : 0.8,
+        priority: route === '' ? 1.0 : route === '/marugoto' ? 0.9 : 0.8,
     }));
 
-    // 2. お題詳細ページ
+    // 2. まるごと総選挙テーマページ
+    const marugotoRoutes = MARUGOTO_THEMES.map((theme) => ({
+        url: `${baseUrl}/marugoto/${theme.id}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.85,
+    }));
+
+    // 3. お題詳細ページ
     const polls = await getPolls();
     const pollRoutes = polls.map((poll) => ({
         url: `${baseUrl}/poll/${poll.id}`,
@@ -36,5 +46,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
     }));
 
-    return [...staticRoutes, ...pollRoutes];
+    return [...staticRoutes, ...marugotoRoutes, ...pollRoutes];
 }

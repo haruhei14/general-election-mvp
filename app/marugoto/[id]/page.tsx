@@ -13,9 +13,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const theme = MARUGOTO_THEMES.find(t => t.id === id);
     if (!theme) return {};
 
+    const title = `${theme.title}総選挙 | まるごと総選挙`;
+    const description = `${theme.title}について10問連続で答える総選挙！${theme.description} みんなの結果と比較してあなたの推しや価値観を分析しよう。`;
+    const url = `https://nandemo-vote.com/marugoto/${id}`;
+
     return {
-        title: `${theme.title} | まるごと総選挙`,
-        description: theme.description,
+        title,
+        description,
+        keywords: [theme.title, '総選挙', 'クイズ', '診断', 'アンケート', '投票', 'ランキング'],
+        openGraph: {
+            title,
+            description,
+            type: 'website',
+            url,
+            siteName: 'なんでも総選挙',
+            images: [
+                {
+                    url: 'https://nandemo-vote.com/red-curtain-bg.png',
+                    width: 1200,
+                    height: 630,
+                    alt: `${theme.title}総選挙`,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+        },
     };
 }
 
