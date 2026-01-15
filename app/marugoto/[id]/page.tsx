@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : id === 'backnumber'
             ? 'https://nandemo-vote.com/ogp-backnumber.png'
             : id === 'm1'
-                ? 'https://nandemo-vote.com/ogp-marugoto.png' // TODO: M-1専用OGP画像を追加予定
+                ? 'https://nandemo-vote.com/ogp-m1.png'
                 : 'https://nandemo-vote.com/ogp-marugoto.png';
 
     return {

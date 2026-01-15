@@ -174,6 +174,12 @@ export default function MarugotoIndexPage() {
                             href={`/marugoto/${theme.id}`}
                             className="group relative block bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 rounded-2xl p-5 md:p-6 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden"
                         >
+                            {/* Background Image */}
+                            <div className="absolute inset-0 z-0">
+                                <img src="/m1-card-bg.png" alt="" className="w-full h-full object-cover opacity-30 mix-blend-overlay" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-red-800/80 via-orange-600/60 to-yellow-500/80" />
+                            </div>
+
                             {/* NEW Badge */}
                             {theme.isNew && (
                                 <div className="absolute top-0 right-0 bg-white text-red-600 text-[10px] font-bold px-2 py-1 rounded-bl-lg shadow-sm z-20">
@@ -183,7 +189,7 @@ export default function MarugotoIndexPage() {
 
                             <div className="flex items-center gap-4 relative z-10">
                                 {/* Icon - Mic Style */}
-                                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/30">
+                                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/30 backdrop-blur-sm">
                                     <span className="text-3xl">🎤</span>
                                 </div>
 
@@ -200,7 +206,7 @@ export default function MarugotoIndexPage() {
                                         >
                                             M-1グランプリ
                                         </span>
-                                        <span className="text-white/70 text-xs font-bold tracking-wider mt-1">M-1総選挙</span>
+                                        <span className="text-white/90 text-xs font-bold tracking-wider mt-1">M-1総選挙</span>
                                     </h2>
                                 </div>
 
