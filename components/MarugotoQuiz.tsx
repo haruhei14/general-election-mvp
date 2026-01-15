@@ -119,23 +119,25 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
                                     </div>
 
                                     {/* Podium Display */}
-                                    <div className="flex items-end justify-center gap-2 md:gap-4 mb-8 h-48 md:h-56 pb-2 border-b border-slate-100 px-2">
+                                    <div className="flex items-end justify-center gap-1 md:gap-3 mb-8 h-56 md:h-64 pb-2 border-b border-slate-100 px-1">
                                         {/* 2nd Place */}
                                         {second && (
-                                            <div className="flex flex-col items-center w-1/3 max-w-[120px] group">
-                                                <div className="w-full bg-gradient-to-t from-slate-400 to-slate-300 rounded-t-xl shadow-lg relative h-28 md:h-36 flex flex-col items-center justify-between pt-6 pb-3">
+                                            <div className="flex flex-col items-center w-1/3 max-w-[110px] group">
+                                                <div className="w-full bg-gradient-to-t from-slate-400 to-slate-300 rounded-t-xl shadow-lg relative h-32 md:h-40 flex flex-col items-center justify-between pt-5 pb-2">
                                                     {/* Medal */}
-                                                    <div className="absolute -top-4 w-8 h-8 rounded-full bg-gradient-to-br from-slate-200 to-slate-400 border-2 border-white shadow-md flex items-center justify-center text-sm">
+                                                    <div className="absolute -top-3 w-7 h-7 rounded-full bg-gradient-to-br from-slate-200 to-slate-400 border-2 border-white shadow-md flex items-center justify-center text-xs">
                                                         🥈
                                                     </div>
+                                                    {/* Rank Number */}
+                                                    <div className="text-white/30 text-2xl font-black">2</div>
                                                     {/* Label inside podium */}
-                                                    <div className="text-center px-2 flex-1 flex flex-col justify-center">
-                                                        <span className="text-xs md:text-sm font-bold text-white drop-shadow-sm line-clamp-2">{second.label}</span>
+                                                    <div className="text-center px-1 flex-1 flex flex-col justify-center overflow-hidden">
+                                                        <span className="text-[10px] md:text-xs font-bold text-white drop-shadow-sm line-clamp-2 leading-tight">{second.label}</span>
                                                     </div>
-                                                    {/* Percentage, Votes and Rank */}
+                                                    {/* Percentage and Votes */}
                                                     <div className="text-center">
-                                                        <div className="text-lg md:text-xl font-black text-white/80">{totalVotes > 0 ? Math.round((second.votes / totalVotes) * 100) : 0}%</div>
-                                                        <div className="text-[10px] text-white/60 font-bold">{second.votes.toLocaleString()}票</div>
+                                                        <div className="text-base md:text-lg font-black text-white/90">{totalVotes > 0 ? Math.round((second.votes / totalVotes) * 100) : 0}%</div>
+                                                        <div className="text-[9px] text-white/60 font-bold">{second.votes.toLocaleString()}票</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -143,20 +145,22 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
 
                                         {/* 1st Place */}
                                         {first && (
-                                            <div className="flex flex-col items-center w-1/3 max-w-[130px] z-10 group">
-                                                <div className="w-full bg-gradient-to-t from-yellow-500 to-yellow-400 rounded-t-xl shadow-xl relative h-36 md:h-44 flex flex-col items-center justify-between pt-6 pb-3">
+                                            <div className="flex flex-col items-center w-1/3 max-w-[120px] z-10 group">
+                                                <div className="w-full bg-gradient-to-t from-yellow-500 to-yellow-400 rounded-t-xl shadow-xl relative h-40 md:h-52 flex flex-col items-center justify-between pt-5 pb-2">
                                                     {/* Crown */}
-                                                    <div className="absolute -top-5 w-10 h-10 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500 border-2 border-white shadow-lg flex items-center justify-center text-lg">
+                                                    <div className="absolute -top-4 w-9 h-9 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500 border-2 border-white shadow-lg flex items-center justify-center text-base">
                                                         👑
                                                     </div>
+                                                    {/* Rank Number */}
+                                                    <div className="text-white/30 text-3xl font-black">1</div>
                                                     {/* Label inside podium */}
-                                                    <div className="text-center px-2 flex-1 flex flex-col justify-center">
-                                                        <span className="text-sm md:text-base font-bold text-white drop-shadow-md line-clamp-2">{first.label}</span>
+                                                    <div className="text-center px-1 flex-1 flex flex-col justify-center overflow-hidden">
+                                                        <span className="text-xs md:text-sm font-bold text-white drop-shadow-md line-clamp-2 leading-tight">{first.label}</span>
                                                     </div>
-                                                    {/* Percentage, Votes and Rank */}
+                                                    {/* Percentage and Votes */}
                                                     <div className="text-center">
-                                                        <div className="text-xl md:text-2xl font-black text-white">{totalVotes > 0 ? Math.round((first.votes / totalVotes) * 100) : 0}%</div>
-                                                        <div className="text-xs text-white/70 font-bold">{first.votes.toLocaleString()}票</div>
+                                                        <div className="text-lg md:text-xl font-black text-white">{totalVotes > 0 ? Math.round((first.votes / totalVotes) * 100) : 0}%</div>
+                                                        <div className="text-[10px] text-white/70 font-bold">{first.votes.toLocaleString()}票</div>
                                                     </div>
                                                     {/* Texture */}
                                                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-overlay rounded-t-xl" />
@@ -166,20 +170,22 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
 
                                         {/* 3rd Place */}
                                         {third && (
-                                            <div className="flex flex-col items-center w-1/3 max-w-[120px] group">
-                                                <div className="w-full bg-gradient-to-t from-orange-400 to-orange-300 rounded-t-xl shadow-lg relative h-20 md:h-28 flex flex-col items-center justify-between pt-5 pb-2">
+                                            <div className="flex flex-col items-center w-1/3 max-w-[110px] group">
+                                                <div className="w-full bg-gradient-to-t from-orange-400 to-orange-300 rounded-t-xl shadow-lg relative h-24 md:h-32 flex flex-col items-center justify-between pt-4 pb-2">
                                                     {/* Medal */}
-                                                    <div className="absolute -top-4 w-8 h-8 rounded-full bg-gradient-to-br from-orange-200 to-orange-400 border-2 border-white shadow-md flex items-center justify-center text-sm">
+                                                    <div className="absolute -top-3 w-7 h-7 rounded-full bg-gradient-to-br from-orange-200 to-orange-400 border-2 border-white shadow-md flex items-center justify-center text-xs">
                                                         🥉
                                                     </div>
+                                                    {/* Rank Number */}
+                                                    <div className="text-white/30 text-xl font-black">3</div>
                                                     {/* Label inside podium */}
-                                                    <div className="text-center px-2 flex-1 flex flex-col justify-center">
-                                                        <span className="text-xs md:text-sm font-bold text-white drop-shadow-sm line-clamp-2">{third.label}</span>
+                                                    <div className="text-center px-1 flex-1 flex flex-col justify-center overflow-hidden">
+                                                        <span className="text-[10px] md:text-xs font-bold text-white drop-shadow-sm line-clamp-2 leading-tight">{third.label}</span>
                                                     </div>
-                                                    {/* Percentage, Votes and Rank */}
+                                                    {/* Percentage and Votes */}
                                                     <div className="text-center">
-                                                        <div className="text-lg md:text-xl font-black text-white/80">{totalVotes > 0 ? Math.round((third.votes / totalVotes) * 100) : 0}%</div>
-                                                        <div className="text-[10px] text-white/60 font-bold">{third.votes.toLocaleString()}票</div>
+                                                        <div className="text-sm md:text-base font-black text-white/90">{totalVotes > 0 ? Math.round((third.votes / totalVotes) * 100) : 0}%</div>
+                                                        <div className="text-[9px] text-white/60 font-bold">{third.votes.toLocaleString()}票</div>
                                                     </div>
                                                 </div>
                                             </div>
