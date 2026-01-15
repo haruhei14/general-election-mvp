@@ -248,56 +248,95 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
 
     // Quiz View
     return (
-        <div className="max-w-xl mx-auto min-h-[60vh] flex flex-col justify-center">
-            {/* Progress */}
-            <div className="mb-8">
-                <div className="flex justify-between text-xs font-bold text-slate-500 mb-2">
-                    <span>CASE {currentIndex + 1} / {polls.length}</span>
-                    <span>{Math.round(progress)}%</span>
-                </div>
-                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <div
-                        className="h-full bg-blue-600 transition-all duration-500 ease-out"
-                        style={{ width: `${progress}%` }}
-                    />
-                </div>
+        <div className="relative min-h-screen">
+            {/* Background - Red Curtain (lighter for quiz) */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <img
+                    src="/red-curtain-bg.png"
+                    alt=""
+                    className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/20" />
             </div>
 
-            {/* Question Card */}
-            <div className="bg-white rounded-3xl shadow-xl p-6 md:p-10 relative overflow-hidden">
-                <div className={`absolute top-0 left-0 w-full h-2 bg-gradient-to-r ${theme.color}`} />
-
-                <h2 className="text-xl md:text-2xl font-bold text-slate-800 mb-2 leading-snug">
-                    {currentPoll.title}
-                </h2>
-                <p className="text-slate-500 text-sm mb-8">
-                    {currentPoll.description}
-                </p>
-
-                <div className="space-y-3">
-                    {currentPoll.options.map((option) => (
-                        <button
-                            key={option.id}
-                            onClick={() => handleVote(option.id)}
-                            disabled={isVoting}
-                            className={`w-full p-4 rounded-xl text-left font-bold transition-all duration-200 flex items-center justify-between group
-                                ${answers[currentPoll.id] === option.id
-                                    ? 'bg-blue-600 text-white shadow-lg scale-[1.02]'
-                                    : 'bg-slate-50 text-slate-700 hover:bg-slate-100 hover:scale-[1.01]'
-                                }
-                            `}
-                        >
-                            <span>{option.label}</span>
-                            {answers[currentPoll.id] === option.id && (
-                                <Check className="w-5 h-5 animate-scale-in" />
-                            )}
-                        </button>
-                    ))}
+            <div className="relative z-10 max-w-xl mx-auto min-h-screen flex flex-col justify-center px-4 py-8">
+                {/* Progress Section */}
+                <div className="mb-6">
+                    <div className="flex justify-between items-end mb-3">
+                        <div>
+                            <span className="text-yellow-400 text-xs font-bold tracking-wider">QUESTION</span>
+                            <div className="text-white text-2xl md:text-3xl font-black">
+                                第{currentIndex + 1}問 <span className="text-white/50 text-lg font-normal">/ 全{polls.length}問</span>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <div className="text-yellow-400 text-2xl font-black">{Math.round(progress)}%</div>
+                        </div>
+                    </div>
+                    {/* Progress Bar - Red/Gold Theme */}
+                    <div className="h-3 bg-black/30 rounded-full overflow-hidden backdrop-blur-sm border border-white/10">
+                        <div
+                            className="h-full bg-gradient-to-r from-red-500 via-yellow-400 to-yellow-300 transition-all duration-500 ease-out shadow-lg"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
                 </div>
-            </div>
 
-            <div className="mt-8 text-center text-xs text-slate-400">
-                直感で選んでください
+                {/* Question Card */}
+                <div className="bg-white rounded-2xl md:rounded-3xl shadow-2xl p-5 md:p-8 relative overflow-hidden">
+                    {/* Top Accent */}
+                    <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-red-600 via-red-500 to-yellow-500" />
+
+                    {/* Question Number Badge */}
+                    <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 bg-red-50 border border-red-200 rounded-full">
+                        <span className="text-red-600 text-xs font-bold">🏴‍☠️ CASE {currentIndex + 1}</span>
+                    </div>
+
+                    <h2 className="text-lg md:text-xl font-bold text-slate-800 mb-2 leading-relaxed">
+                        {currentPoll.title}
+                    </h2>
+                    <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                        {currentPoll.description}
+                    </p>
+
+                    {/* Answer Options */}
+                    <div className="space-y-3 md:space-y-4">
+                        {currentPoll.options.map((option, idx) => (
+                            <button
+                                key={option.id}
+                                onClick={() => handleVote(option.id)}
+                                disabled={isVoting}
+                                className={`w-full p-4 md:p-5 rounded-xl text-left font-bold transition-all duration-300 flex items-center gap-3 group
+                                    ${answers[currentPoll.id] === option.id
+                                        ? 'bg-gradient-to-r from-red-600 to-red-500 text-white shadow-lg scale-[1.02] ring-2 ring-red-300'
+                                        : 'bg-slate-50 text-slate-700 hover:bg-red-50 hover:border-red-200 border-2 border-transparent hover:scale-[1.01] active:scale-[0.99]'
+                                    }
+                                `}
+                            >
+                                {/* Option Letter */}
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black flex-shrink-0
+                                    ${answers[currentPoll.id] === option.id
+                                        ? 'bg-white/20 text-white'
+                                        : 'bg-slate-200 text-slate-500 group-hover:bg-red-100 group-hover:text-red-600'
+                                    }
+                                `}>
+                                    {String.fromCharCode(65 + idx)}
+                                </div>
+                                <span className="flex-grow text-sm md:text-base">{option.label}</span>
+                                {answers[currentPoll.id] === option.id && (
+                                    <Check className="w-5 h-5 flex-shrink-0" />
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Helper Text */}
+                <div className="mt-6 text-center">
+                    <p className="text-white/60 text-xs font-medium">
+                        💡 直感で選んでください
+                    </p>
+                </div>
             </div>
         </div>
     );
