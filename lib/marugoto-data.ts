@@ -22,7 +22,7 @@ export const MARUGOTO_THEMES: MarugotoTheme[] = [
         icon: 'Anchor', // Lucide icon
         image: '/onepiece-theme-card.png',
         color: 'from-blue-500 to-cyan-400', // 海のイメージ
-        isNew: true,
+        isNew: false,
         questionIds: [
             'marugoto_onepiece_q1',
             'marugoto_onepiece_q2',
@@ -45,6 +45,39 @@ export const MARUGOTO_THEMES: MarugotoTheme[] = [
 「上司にしたいキャラ」も興味深いポイントです。シャンクスのように「自由」を愛するリーダーか、白ひげのように「家族」を守るリーダーか、あるいはサカズキのように「徹底的」なルールを敷くリーダーか。これらはまさに、現代組織論におけるリーダーシップのスタイルそのものです。
 
 この「まるごと総選挙」を通じて、あなたの心の羅針盤（ログポース）がどこを指しているのか、改めて見つめ直すきっかけになれば幸いです。同じ「ワンピース好き」でも、見ている景色は一人ひとり全く違う。だからこそ、この大航海時代は面白いのです。`
+        }
+    },
+    {
+        id: 'backnumber',
+        title: 'back number',
+        description: '心に刺さる歌詞と切ないメロディ。あなたの好きな曲や思い出の1曲を10問で探る！',
+        icon: 'Music', // Lucide icon
+        color: 'from-slate-700 to-slate-500', // シンプルでモダンなグレー
+        isNew: true,
+        questionIds: [
+            'marugoto_backnumber_q1',
+            'marugoto_backnumber_q2',
+            'marugoto_backnumber_q3',
+            'marugoto_backnumber_q4',
+            'marugoto_backnumber_q5',
+            'marugoto_backnumber_q6',
+            'marugoto_backnumber_q7',
+            'marugoto_backnumber_q8',
+            'marugoto_backnumber_q9',
+            'marugoto_backnumber_q10',
+        ],
+        aiColumn: {
+            title: '【AI分析】back numberから見るあなたの恋愛観',
+            content: `back numberの楽曲は、恋愛における「リアルな感情」を赤裸々に描いています。
+あなたが選んだ曲からは、恋愛に対するスタンスや、普段は言葉にしない想いが見えてきます。
+
+「水平線」や「瞬き」を選んだあなたは、日常の中にある小さな幸せを大切にするタイプ。
+「花束」や「クリスマスソング」を選んだあなたは、どこか切なさを抱えながらも、誰かを深く愛することができる人。
+「高嶺の花子さん」や「大不正解」を選んだあなたは、片思いや報われない恋にも前向きに立ち向かう強さを持っています。
+
+清水依与吏が紡ぐ言葉たちは、聴く人それぞれの物語と重なり合い、「あ、これ私のことだ」と思わせる魔法を持っています。
+
+この総選挙を通じて、自分が何を求めているのか、どんな恋をしたいのか——少しだけ見えてきたのではないでしょうか。back numberの曲がこれからもあなたの日常に寄り添ってくれますように。`
         }
     }
 ];

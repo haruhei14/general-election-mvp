@@ -43,7 +43,7 @@ export default function MarugotoIndexPage() {
                 {/* Theme Buttons - Compact Style */}
                 <div className="grid grid-cols-1 gap-4 max-w-xl mx-auto px-4">
                     {/* One Piece Theme Button */}
-                    {MARUGOTO_THEMES.map((theme) => (
+                    {MARUGOTO_THEMES.filter(t => t.id === 'onepiece').map((theme) => (
                         <Link
                             key={theme.id}
                             href={`/marugoto/${theme.id}`}
@@ -81,6 +81,48 @@ export default function MarugotoIndexPage() {
                                 </div>
 
                                 <ChevronRight className="w-6 h-6 text-white/80 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                            </div>
+                        </Link>
+                    ))}
+
+                    {/* back number Theme Button */}
+                    {MARUGOTO_THEMES.filter(t => t.id === 'backnumber').map((theme) => (
+                        <Link
+                            key={theme.id}
+                            href={`/marugoto/${theme.id}`}
+                            className="group relative block bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 rounded-2xl p-5 md:p-6 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden border border-slate-500/30"
+                        >
+                            {/* NEW Badge */}
+                            {theme.isNew && (
+                                <div className="absolute top-0 right-0 bg-white text-slate-800 text-[10px] font-bold px-2 py-1 rounded-bl-lg shadow-sm">
+                                    NEW!
+                                </div>
+                            )}
+
+                            <div className="flex items-center gap-4">
+                                {/* Icon - Music Style */}
+                                <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20">
+                                    <span className="text-3xl">🎸</span>
+                                </div>
+
+                                <div className="flex-grow min-w-0">
+                                    <p className="text-slate-300 text-xs font-bold mb-1">🎵 心に刺さる切ないラブソング</p>
+                                    <h2 className="flex flex-col leading-none">
+                                        <span
+                                            className="text-xl md:text-2xl font-light tracking-tight"
+                                            style={{
+                                                fontFamily: 'system-ui, sans-serif',
+                                                color: '#FFFFFF',
+                                                letterSpacing: '-0.02em'
+                                            }}
+                                        >
+                                            back number
+                                        </span>
+                                        <span className="text-slate-400 text-xs font-bold tracking-wider mt-1">バックナンバー総選挙</span>
+                                    </h2>
+                                </div>
+
+                                <ChevronRight className="w-6 h-6 text-white/60 group-hover:translate-x-1 transition-transform flex-shrink-0" />
                             </div>
                         </Link>
                     ))}
