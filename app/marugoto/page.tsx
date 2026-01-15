@@ -175,9 +175,9 @@ export default function MarugotoIndexPage() {
                             className="group relative block bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 rounded-2xl p-5 md:p-6 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden"
                         >
                             {/* Background Image */}
-                            <div className="absolute inset-0 z-0">
-                                <img src="/m1-card-bg.png" alt="" className="w-full h-full object-cover opacity-30 mix-blend-overlay" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-red-800/80 via-orange-600/60 to-yellow-500/80" />
+                            <div className="absolute inset-0 z-0 bg-black/40">
+                                <img src="/m1-card-bg.png" alt="" className="w-full h-full object-cover opacity-80 mix-blend-overlay" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-red-900/40 via-orange-800/30 to-transparent" />
                             </div>
 
                             {/* NEW Badge */}
