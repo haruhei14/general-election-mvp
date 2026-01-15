@@ -111,7 +111,11 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
 
                                     <div className="text-center mb-8 relative z-10">
                                         <div className="text-xs font-bold text-slate-400 tracking-widest mb-2 uppercase">QUESTION {idx + 1}</div>
-                                        <h4 className="text-xl md:text-2xl font-bold text-slate-800">{poll.title}</h4>
+                                        <h4 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">{poll.title}</h4>
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full">
+                                            <span className="text-xs text-slate-500">総投票数:</span>
+                                            <span className="text-sm font-bold text-slate-700">{totalVotes.toLocaleString()}票</span>
+                                        </div>
                                     </div>
 
                                     {/* Podium Display */}
@@ -128,10 +132,10 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
                                                     <div className="text-center px-2 flex-1 flex flex-col justify-center">
                                                         <span className="text-xs md:text-sm font-bold text-white drop-shadow-sm line-clamp-2">{second.label}</span>
                                                     </div>
-                                                    {/* Percentage and Rank */}
+                                                    {/* Percentage, Votes and Rank */}
                                                     <div className="text-center">
                                                         <div className="text-lg md:text-xl font-black text-white/80">{totalVotes > 0 ? Math.round((second.votes / totalVotes) * 100) : 0}%</div>
-                                                        <div className="text-xl font-black text-white/40">2</div>
+                                                        <div className="text-[10px] text-white/60 font-bold">{second.votes.toLocaleString()}票</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -149,10 +153,10 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
                                                     <div className="text-center px-2 flex-1 flex flex-col justify-center">
                                                         <span className="text-sm md:text-base font-bold text-white drop-shadow-md line-clamp-2">{first.label}</span>
                                                     </div>
-                                                    {/* Percentage and Rank */}
+                                                    {/* Percentage, Votes and Rank */}
                                                     <div className="text-center">
                                                         <div className="text-xl md:text-2xl font-black text-white">{totalVotes > 0 ? Math.round((first.votes / totalVotes) * 100) : 0}%</div>
-                                                        <div className="text-2xl font-black text-white/50">1</div>
+                                                        <div className="text-xs text-white/70 font-bold">{first.votes.toLocaleString()}票</div>
                                                     </div>
                                                     {/* Texture */}
                                                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-overlay rounded-t-xl" />
@@ -172,10 +176,10 @@ export function MarugotoQuiz({ theme, initialPolls }: MarugotoQuizProps) {
                                                     <div className="text-center px-2 flex-1 flex flex-col justify-center">
                                                         <span className="text-xs md:text-sm font-bold text-white drop-shadow-sm line-clamp-2">{third.label}</span>
                                                     </div>
-                                                    {/* Percentage and Rank */}
+                                                    {/* Percentage, Votes and Rank */}
                                                     <div className="text-center">
                                                         <div className="text-lg md:text-xl font-black text-white/80">{totalVotes > 0 ? Math.round((third.votes / totalVotes) * 100) : 0}%</div>
-                                                        <div className="text-xl font-black text-white/40">3</div>
+                                                        <div className="text-[10px] text-white/60 font-bold">{third.votes.toLocaleString()}票</div>
                                                     </div>
                                                 </div>
                                             </div>
