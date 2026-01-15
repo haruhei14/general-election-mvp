@@ -557,6 +557,237 @@ const SEED_POLLS = [
             { id: '10', label: '日常を歌う等身大さ', votes: 0 },
             { id: '11', label: 'バンドサウンドの良さ', votes: 0 }
         ]
+    },
+    // ===== M-1グランプリ まるごと総選挙 =====
+    {
+        id: 'marugoto_m1_q1',
+        title: '歴代で最も面白かったM-1王者は？',
+        genre: 'お笑い',
+        description: '2001年から続くM-1の歴代チャンピオンたち。',
+        poll_type: 'marugoto',
+        explanation: { summary: '王者の選択から、あなたが求める「漫才の理想形」が見えてきます。' },
+        options: [
+            { id: '1', label: '中川家（2001年）', votes: 0 },
+            { id: '2', label: 'ますだおかだ（2002年）', votes: 0 },
+            { id: '3', label: 'フットボールアワー（2003年）', votes: 0 },
+            { id: '4', label: 'アンタッチャブル（2004年）', votes: 0 },
+            { id: '5', label: 'ブラックマヨネーズ（2005年）', votes: 0 },
+            { id: '6', label: 'チュートリアル（2006年）', votes: 0 },
+            { id: '7', label: 'サンドウィッチマン（2007年）', votes: 0 },
+            { id: '8', label: 'NON STYLE（2008年）', votes: 0 },
+            { id: '9', label: 'パンクブーブー（2009年）', votes: 0 },
+            { id: '10', label: '笑い飯（2010年）', votes: 0 },
+            { id: '11', label: 'トレンディエンジェル（2015年）', votes: 0 },
+            { id: '12', label: '銀シャリ（2016年）', votes: 0 },
+            { id: '13', label: 'とろサーモン（2017年）', votes: 0 },
+            { id: '14', label: '霜降り明星（2018年）', votes: 0 },
+            { id: '15', label: 'ミルクボーイ（2019年）', votes: 0 },
+            { id: '16', label: 'マヂカルラブリー（2020年）', votes: 0 },
+            { id: '17', label: '錦鯉（2021年）', votes: 0 },
+            { id: '18', label: 'ウエストランド（2022年）', votes: 0 },
+            { id: '19', label: '令和ロマン（2023年）', votes: 0 },
+            { id: '20', label: '令和ロマン（2024年）', votes: 0 }
+        ]
+    },
+    {
+        id: 'marugoto_m1_q2',
+        title: '優勝してほしかった「準優勝コンビ」は？',
+        genre: 'お笑い',
+        description: '惜しくも優勝を逃した実力派たち。',
+        poll_type: 'marugoto',
+        explanation: { summary: '準優勝コンビへの想いから、「報われてほしい」という感性が見えます。' },
+        options: [
+            { id: '1', label: 'オードリー', votes: 0 },
+            { id: '2', label: 'ナイツ', votes: 0 },
+            { id: '3', label: '和牛', votes: 0 },
+            { id: '4', label: 'かまいたち', votes: 0 },
+            { id: '5', label: 'スーパーマラドーナ', votes: 0 },
+            { id: '6', label: 'ジャルジャル', votes: 0 },
+            { id: '7', label: '見取り図', votes: 0 },
+            { id: '8', label: 'オズワルド', votes: 0 },
+            { id: '9', label: 'インディアンス', votes: 0 },
+            { id: '10', label: 'さや香', votes: 0 },
+            { id: '11', label: 'スリムクラブ', votes: 0 },
+            { id: '12', label: 'ハライチ', votes: 0 },
+            { id: '13', label: '銀シャリ（準優勝時）', votes: 0 },
+            { id: '14', label: 'モンスターエンジン', votes: 0 },
+            { id: '15', label: '笑い飯（準優勝時）', votes: 0 }
+        ]
+    },
+    {
+        id: 'marugoto_m1_q3',
+        title: '好きな漫才のスタイルは？',
+        genre: 'お笑い',
+        description: 'あなたの笑いの好みは？',
+        poll_type: 'marugoto',
+        explanation: { summary: '漫才スタイルの好みは、日常のコミュニケーションスタイルに通じます。' },
+        options: [
+            { id: '1', label: 'しゃべくり漫才（中川家、サンドウィッチマン）', votes: 0 },
+            { id: '2', label: 'コント漫才（アンタッチャブル、チュートリアル）', votes: 0 },
+            { id: '3', label: 'システム漫才（ミルクボーイ、オズワルド）', votes: 0 },
+            { id: '4', label: 'シュール系（マヂカルラブリー、ジャルジャル）', votes: 0 },
+            { id: '5', label: '正統派・王道（銀シャリ、和牛）', votes: 0 },
+            { id: '6', label: '毒舌・ブラック（ウエストランド）', votes: 0 },
+            { id: '7', label: 'ボケ大渋滞（笑い飯）', votes: 0 },
+            { id: '8', label: '動き重視（霜降り明星）', votes: 0 },
+            { id: '9', label: 'ツッコミ主導型', votes: 0 },
+            { id: '10', label: 'ワードセンス重視', votes: 0 }
+        ]
+    },
+    {
+        id: 'marugoto_m1_q4',
+        title: '印象に残っている「伝説のネタ」は？',
+        genre: 'お笑い',
+        description: 'M-1史に残る名ネタ・神回。',
+        poll_type: 'marugoto',
+        explanation: { summary: '心に残るネタは、あなたの「笑いの原点」かもしれません。' },
+        options: [
+            { id: '1', label: 'ミルクボーイ「コーンフレーク」', votes: 0 },
+            { id: '2', label: 'サンドウィッチマン「ピザ屋」', votes: 0 },
+            { id: '3', label: 'チュートリアル「チリンチリン」', votes: 0 },
+            { id: '4', label: 'ブラックマヨネーズ「ボーリング」', votes: 0 },
+            { id: '5', label: 'アンタッチャブル「結婚相談所」', votes: 0 },
+            { id: '6', label: '笑い飯「鳥人」', votes: 0 },
+            { id: '7', label: 'NON STYLE「M-1」', votes: 0 },
+            { id: '8', label: 'オードリー「ズレ漫才」', votes: 0 },
+            { id: '9', label: '和牛「ウェディングプランナー」', votes: 0 },
+            { id: '10', label: '霜降り明星「合コン」', votes: 0 },
+            { id: '11', label: 'ナイツ「ヤホー漫才」', votes: 0 },
+            { id: '12', label: '令和ロマン「源氏物語」', votes: 0 },
+            { id: '13', label: 'ウエストランド「あるなしクイズ」', votes: 0 },
+            { id: '14', label: 'マヂカルラブリー「つり革」', votes: 0 },
+            { id: '15', label: '錦鯉「合コン」', votes: 0 }
+        ]
+    },
+    {
+        id: 'marugoto_m1_q5',
+        title: '好きな審査員は？',
+        genre: 'お笑い',
+        description: '審査員の好みであなたの笑いへの姿勢がわかる。',
+        poll_type: 'marugoto',
+        explanation: { summary: '好きな審査員は、笑いに求める「評価軸」を表しています。' },
+        options: [
+            { id: '1', label: '松本人志', votes: 0 },
+            { id: '2', label: '上沼恵美子', votes: 0 },
+            { id: '3', label: '立川志らく', votes: 0 },
+            { id: '4', label: 'オール巨人', votes: 0 },
+            { id: '5', label: '中川家・礼二', votes: 0 },
+            { id: '6', label: 'サンドウィッチマン・富澤', votes: 0 },
+            { id: '7', label: '博多大吉', votes: 0 },
+            { id: '8', label: '海原ともこ', votes: 0 },
+            { id: '9', label: '山田邦子', votes: 0 },
+            { id: '10', label: 'ナイツ・塙', votes: 0 },
+            { id: '11', label: '島田紳助（初期）', votes: 0 },
+            { id: '12', label: '審査員より視聴者投票派', votes: 0 }
+        ]
+    },
+    {
+        id: 'marugoto_m1_q6',
+        title: '一番好きな「ツッコミ」芸人は？',
+        genre: 'お笑い',
+        description: 'M-1を彩るツッコミ職人たち。',
+        poll_type: 'marugoto',
+        explanation: { summary: 'ツッコミの好みは、あなたの「正論力」や「切り返し力」を表します。' },
+        options: [
+            { id: '1', label: '柴田英嗣（アンタッチャブル）', votes: 0 },
+            { id: '2', label: '伊達みきお（サンドウィッチマン）', votes: 0 },
+            { id: '3', label: '徳井義実（チュートリアル）', votes: 0 },
+            { id: '4', label: '吉田敬（ブラックマヨネーズ）', votes: 0 },
+            { id: '5', label: '井本貴史（ウエストランド）', votes: 0 },
+            { id: '6', label: '川西賢志郎（和牛）', votes: 0 },
+            { id: '7', label: '石井輝明（NON STYLE）', votes: 0 },
+            { id: '8', label: '若林正恭（オードリー）', votes: 0 },
+            { id: '9', label: '粗品（霜降り明星）', votes: 0 },
+            { id: '10', label: '高比良くるま（令和ロマン）', votes: 0 },
+            { id: '11', label: '駒場孝（ミルクボーイ）', votes: 0 },
+            { id: '12', label: '渡辺隆（錦鯉）', votes: 0 }
+        ]
+    },
+    {
+        id: 'marugoto_m1_q7',
+        title: '一番好きな「ボケ」芸人は？',
+        genre: 'お笑い',
+        description: 'M-1を彩るボケ職人たち。',
+        poll_type: 'marugoto',
+        explanation: { summary: 'ボケの好みは、あなたの「発想力」や「ユーモアの感性」を表します。' },
+        options: [
+            { id: '1', label: '山崎弘也（アンタッチャブル）', votes: 0 },
+            { id: '2', label: '富澤たけし（サンドウィッチマン）', votes: 0 },
+            { id: '3', label: '福田充徳（チュートリアル）', votes: 0 },
+            { id: '4', label: '小杉竜一（ブラックマヨネーズ）', votes: 0 },
+            { id: '5', label: '河本太（ウエストランド）', votes: 0 },
+            { id: '6', label: '水田信二（和牛）', votes: 0 },
+            { id: '7', label: '井上裕介（NON STYLE）', votes: 0 },
+            { id: '8', label: '春日俊彰（オードリー）', votes: 0 },
+            { id: '9', label: 'せいや（霜降り明星）', votes: 0 },
+            { id: '10', label: '松井ケムリ（令和ロマン）', votes: 0 },
+            { id: '11', label: '内海崇（ミルクボーイ）', votes: 0 },
+            { id: '12', label: '長谷川雅紀（錦鯉）', votes: 0 },
+            { id: '13', label: '村上（マヂカルラブリー）', votes: 0 },
+            { id: '14', label: '哲夫（笑い飯）', votes: 0 }
+        ]
+    },
+    {
+        id: 'marugoto_m1_q8',
+        title: 'M-1の「名場面」といえば？',
+        genre: 'お笑い',
+        description: '笑いだけじゃない、M-1の名シーン。',
+        poll_type: 'marugoto',
+        explanation: { summary: '選んだ名場面に、あなたがM-1に求める「ドラマ性」が表れます。' },
+        options: [
+            { id: '1', label: 'サンドウィッチマン敗者復活からの優勝', votes: 0 },
+            { id: '2', label: 'オードリー「ズレ者」で衝撃デビュー', votes: 0 },
+            { id: '3', label: '笑い飯10年連続決勝からの優勝', votes: 0 },
+            { id: '4', label: 'ミルクボーイ681点の衝撃', votes: 0 },
+            { id: '5', label: '錦鯉50歳での初優勝', votes: 0 },
+            { id: '6', label: '令和ロマン2連覇', votes: 0 },
+            { id: '7', label: 'スリムクラブ「ゆっくり漫才」', votes: 0 },
+            { id: '8', label: 'マヂカルラブリー「これは漫才か」論争', votes: 0 },
+            { id: '9', label: '上沼恵美子と芸人のバトル', votes: 0 },
+            { id: '10', label: 'ぼる塾「まあね」誕生', votes: 0 },
+            { id: '11', label: '敗者復活発表の緊張感', votes: 0 },
+            { id: '12', label: '優勝発表の瞬間', votes: 0 }
+        ]
+    },
+    {
+        id: 'marugoto_m1_q9',
+        title: 'M-1を見るときの楽しみ方は？',
+        genre: 'お笑い',
+        description: 'あなたのM-1の見方。',
+        poll_type: 'marugoto',
+        explanation: { summary: '楽しみ方から、笑いへの「向き合い方」が見えます。' },
+        options: [
+            { id: '1', label: '純粋にネタを楽しむ', votes: 0 },
+            { id: '2', label: '審査員の点数・コメントが気になる', votes: 0 },
+            { id: '3', label: '敗者復活から見る', votes: 0 },
+            { id: '4', label: 'SNSで実況しながら見る', votes: 0 },
+            { id: '5', label: '録画して後で見る', votes: 0 },
+            { id: '6', label: '家族や友人と一緒に見る', votes: 0 },
+            { id: '7', label: '一人で集中して見る', votes: 0 },
+            { id: '8', label: '自分も採点しながら見る', votes: 0 },
+            { id: '9', label: '推しコンビを応援する', votes: 0 },
+            { id: '10', label: '新しいコンビを発掘する', votes: 0 }
+        ]
+    },
+    {
+        id: 'marugoto_m1_q10',
+        title: 'M-1の魅力は？',
+        genre: 'お笑い',
+        description: 'あなたがM-1を好きな理由。',
+        poll_type: 'marugoto',
+        explanation: { summary: 'M-1の魅力の感じ方で、笑いへの価値観が分かります。' },
+        options: [
+            { id: '1', label: '一夜でスターが生まれるドラマ性', votes: 0 },
+            { id: '2', label: '4分間に全てを賭ける緊張感', votes: 0 },
+            { id: '3', label: '新しい笑いのスタイルに出会える', votes: 0 },
+            { id: '4', label: '審査員の鋭いコメント', votes: 0 },
+            { id: '5', label: '年末の風物詩・恒例行事として', votes: 0 },
+            { id: '6', label: '敗者復活からの逆転劇', votes: 0 },
+            { id: '7', label: '芸人の人生を背負った本気', votes: 0 },
+            { id: '8', label: '翌日の話題になる', votes: 0 },
+            { id: '9', label: 'お笑い好きの祭典', votes: 0 },
+            { id: '10', label: 'シンプルに漫才が面白い', votes: 0 }
+        ]
     }
 ];
 

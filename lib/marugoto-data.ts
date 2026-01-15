@@ -53,7 +53,7 @@ export const MARUGOTO_THEMES: MarugotoTheme[] = [
         description: '心に刺さる歌詞と切ないメロディ。あなたの好きな曲や思い出の1曲を10問で探る！',
         icon: 'Music', // Lucide icon
         color: 'from-slate-700 to-slate-500', // シンプルでモダンなグレー
-        isNew: true,
+        isNew: false,
         questionIds: [
             'marugoto_backnumber_q1',
             'marugoto_backnumber_q2',
@@ -78,6 +78,39 @@ export const MARUGOTO_THEMES: MarugotoTheme[] = [
 清水依与吏が紡ぐ言葉たちは、聴く人それぞれの物語と重なり合い、「あ、これ私のことだ」と思わせる魔法を持っています。
 
 この総選挙を通じて、自分が何を求めているのか、どんな恋をしたいのか——少しだけ見えてきたのではないでしょうか。back numberの曲がこれからもあなたの日常に寄り添ってくれますように。`
+        }
+    },
+    {
+        id: 'm1',
+        title: 'M-1グランプリ',
+        description: '漫才日本一を決める年末の祭典。あなたの笑いのセンスを10問で診断！',
+        icon: 'Mic', // Lucide icon
+        color: 'from-red-600 to-orange-500', // M-1のイメージカラー
+        isNew: true,
+        questionIds: [
+            'marugoto_m1_q1',
+            'marugoto_m1_q2',
+            'marugoto_m1_q3',
+            'marugoto_m1_q4',
+            'marugoto_m1_q5',
+            'marugoto_m1_q6',
+            'marugoto_m1_q7',
+            'marugoto_m1_q8',
+            'marugoto_m1_q9',
+            'marugoto_m1_q10',
+        ],
+        aiColumn: {
+            title: '【AI分析】M-1から見るあなたの笑いのセンス',
+            content: `M-1グランプリは、わずか4分間に芸人の全てが凝縮される究極の舞台です。
+あなたが選んだコンビや回答からは、笑いに対する感性や、日常での人との関わり方が見えてきます。
+
+「正統派漫才」を好むあなたは、物事の筋道を大切にし、オーソドックスな価値観を持つタイプかもしれません。
+「シュール系」や「独特の世界観」を好むあなたは、人と違う視点を持ち、新しいものを受け入れる柔軟性があります。
+「しゃべくり漫才」を好むあなたは、人との会話やコミュニケーションを楽しむ社交的なタイプ。
+
+好きな審査員からも面白い傾向が見えます。松本人志派は「独創性」重視、上沼恵美子派は「情熱」重視、立川志らく派は「技術」重視といった具合です。
+
+年末の風物詩となったM-1。笑いの好みは十人十色ですが、「面白い」と感じる瞬間こそがあなた自身を映し出しています。`
         }
     }
 ];

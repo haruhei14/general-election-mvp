@@ -167,6 +167,48 @@ export default function MarugotoIndexPage() {
                         </Link>
                     ))}
 
+                    {/* M-1 Theme Button */}
+                    {MARUGOTO_THEMES.filter(t => t.id === 'm1').map((theme) => (
+                        <Link
+                            key={theme.id}
+                            href={`/marugoto/${theme.id}`}
+                            className="group relative block bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 rounded-2xl p-5 md:p-6 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden"
+                        >
+                            {/* NEW Badge */}
+                            {theme.isNew && (
+                                <div className="absolute top-0 right-0 bg-white text-red-600 text-[10px] font-bold px-2 py-1 rounded-bl-lg shadow-sm z-20">
+                                    NEW!
+                                </div>
+                            )}
+
+                            <div className="flex items-center gap-4 relative z-10">
+                                {/* Icon - Mic Style */}
+                                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/30">
+                                    <span className="text-3xl">🎤</span>
+                                </div>
+
+                                <div className="flex-grow min-w-0">
+                                    <p className="text-yellow-100 text-xs font-bold mb-1 whitespace-nowrap">🏆 漫才日本一決定戦</p>
+                                    <h2 className="flex flex-col leading-none">
+                                        <span
+                                            className="text-xl md:text-2xl font-black tracking-tight"
+                                            style={{
+                                                fontFamily: 'system-ui, sans-serif',
+                                                color: '#FFFFFF',
+                                                textShadow: '2px 2px 0 rgba(0,0,0,0.3)'
+                                            }}
+                                        >
+                                            M-1グランプリ
+                                        </span>
+                                        <span className="text-white/70 text-xs font-bold tracking-wider mt-1">M-1総選挙</span>
+                                    </h2>
+                                </div>
+
+                                <ChevronRight className="w-6 h-6 text-white/80 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                            </div>
+                        </Link>
+                    ))}
+
                     {/* Coming Soon */}
                     <div className="relative bg-white/10 rounded-2xl p-5 border-2 border-dashed border-white/30 flex items-center gap-4 opacity-60">
                         <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
