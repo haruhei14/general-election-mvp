@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase';
 
 /**
  * お題リクエストを保存するAPI
@@ -32,12 +32,6 @@ export async function POST(request: Request) {
                 { status: 400 }
             );
         }
-
-        // Supabaseクライアント
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!
-        );
 
         // データ挿入
         const { data, error } = await supabase
