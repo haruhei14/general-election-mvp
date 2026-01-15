@@ -61,11 +61,7 @@ export default function AdminPage() {
         setRequestsError(null);
 
         try {
-            const res = await fetch('/api/theme-request/list', {
-                headers: {
-                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ADMIN_SECRET || 'admin-secret'}`
-                }
-            });
+            const res = await fetch('/api/theme-request/list');
 
             if (!res.ok) {
                 throw new Error('取得に失敗しました');
@@ -174,8 +170,8 @@ export default function AdminPage() {
                                         {req.request_text}
                                     </p>
                                     <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold flex-shrink-0 ${req.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                                            req.status === 'reviewed' ? 'bg-blue-100 text-blue-700' :
-                                                'bg-green-100 text-green-700'
+                                        req.status === 'reviewed' ? 'bg-blue-100 text-blue-700' :
+                                            'bg-green-100 text-green-700'
                                         }`}>
                                         {req.status === 'pending' ? '未対応' :
                                             req.status === 'reviewed' ? '確認済' : '実装済'}
