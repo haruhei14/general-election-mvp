@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         siteName: 'なんでも総選挙',
         images: [
             {
-                url: 'https://nandemo-vote.com/red-curtain-bg.png',
+                url: 'https://nandemo-vote.com/ogp-marugoto.png',
                 width: 1200,
                 height: 630,
                 alt: 'まるごと総選挙',

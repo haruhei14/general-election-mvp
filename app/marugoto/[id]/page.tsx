@@ -17,6 +17,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const description = `${theme.title}について10問連続で答える総選挙！${theme.description} みんなの結果と比較してあなたの推しや価値観を分析しよう。`;
     const url = `https://nandemo-vote.com/marugoto/${id}`;
 
+    // テーマ別OGP画像
+    const ogpImage = id === 'onepiece'
+        ? 'https://nandemo-vote.com/ogp-onepiece.png'
+        : id === 'backnumber'
+            ? 'https://nandemo-vote.com/ogp-backnumber.png'
+            : 'https://nandemo-vote.com/ogp-marugoto.png';
+
     return {
         title,
         description,
@@ -29,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             siteName: 'なんでも総選挙',
             images: [
                 {
-                    url: 'https://nandemo-vote.com/red-curtain-bg.png',
+                    url: ogpImage,
                     width: 1200,
                     height: 630,
                     alt: `${theme.title}総選挙`,
