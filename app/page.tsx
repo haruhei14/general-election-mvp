@@ -1,4 +1,5 @@
 import { getPolls, getRandomPolls, getLatestDailyPoll, Poll } from '@/lib/data';
+import { MARUGOTO_THEMES } from '@/lib/marugoto-data';
 import { AdSense } from '@/components/AdSense';
 import { ChallengeMode } from '@/components/ChallengeMode';
 import { DailyPollSection } from '@/components/DailyPollSection';
@@ -117,7 +118,7 @@ export default async function Home() {
           className="block bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl p-5 md:p-6 text-white shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all group relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg shadow-sm animate-pulse">
-            One Piece追加！
+            {MARUGOTO_THEMES.find(t => t.isNew)?.title}追加！
           </div>
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
