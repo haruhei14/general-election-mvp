@@ -19,13 +19,13 @@ type Props = {
 // お題IDに対応する画像ファイル名を直接指定
 // 画像は public/ フォルダに ogp-{id}.png の形式で配置
 const OGP_IMAGES: Record<string, string> = {
-    'disconnect-right-2026': 'https://www.nandemo-vote.com/ogp-disconnect-right.png',
+    'disconnect-right-2026': 'https://www.nandemo-vote.com/ogp-disconnect-right.png?v=1',
     // 今後追加するお題はここに1行追加するだけ
-    // 例: 'new-poll-id': 'https://www.nandemo-vote.com/ogp-new-poll-id.png',
+    // 例: 'new-poll-id': 'https://www.nandemo-vote.com/ogp-new-poll-id.png?v=1',
 };
 
 // デフォルト画像（マッピングにないお題用）
-const DEFAULT_OGP = 'https://www.nandemo-vote.com/ogp-marugoto.png';
+const DEFAULT_OGP = 'https://www.nandemo-vote.com/ogp-marugoto.png?v=1';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { id } = await params;
