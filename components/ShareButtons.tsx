@@ -5,13 +5,14 @@ import { useState } from 'react';
 interface ShareButtonsProps {
     pollId: string;
     pollTitle: string;
+    shareText?: string;
 }
 
 /**
  * SNSシェアボタンコンポーネント
  * Twitter、LINE、URLコピー機能を提供
  */
-export function ShareButtons({ pollId, pollTitle }: ShareButtonsProps) {
+export function ShareButtons({ pollId, pollTitle, shareText }: ShareButtonsProps) {
     const [copied, setCopied] = useState(false);
 
     // 現在のページURLを取得（常に正規URLを使用）
@@ -23,7 +24,7 @@ export function ShareButtons({ pollId, pollTitle }: ShareButtonsProps) {
     // X (Twitter) でシェア
     const shareOnTwitter = () => {
         const url = getShareUrl();
-        const text = `「${pollTitle}」に投票しました！あなたも参加してみて🗳️`;
+        const text = shareText || `「${pollTitle}」に投票しました！あなたも参加してみて🗳️`;
         const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
         window.open(twitterUrl, '_blank', 'width=600,height=400');
     };

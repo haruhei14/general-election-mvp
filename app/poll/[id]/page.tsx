@@ -25,7 +25,9 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
     // 基本のOGP URL
-    let ogUrl = `${baseUrl}/api/og?title=${encodeURIComponent(poll.title)}`;
+    let ogUrl = poll.image_url
+        ? (poll.image_url.startsWith('http') ? poll.image_url : `${baseUrl}${poll.image_url}`)
+        : `${baseUrl}/api/og?title=${encodeURIComponent(poll.title)}`;
 
     // シェア用パラメータ(s)がある場合はそれを使用、なければDBの最新データを使用
     // フォーマット: Label:Votes,Label:Votes
@@ -185,7 +187,16 @@ export default async function PollPage(props: Props) {
                             <h4 className="font-bold text-slate-800">結果をシェアする</h4>
                         </div>
 
-                        <ShareButtons pollId={poll.id} pollTitle={poll.title} />
+                        {/* Custom Share Text for Specific Polls */}
+                        {(() => {
+                            const shareText = poll.id === 'disconnect-right-2026'
+                                ? '休日の仕事LINE、正直どう思う？ #つながらない権利 #デジタルデトックス #なんでも総選挙'
+                                : undefined;
+
+                            return (
+                                <ShareButtons pollId={poll.id} pollTitle={poll.title} shareText={shareText} />
+                            );
+                        })()}
 
                         <div className="mt-10">
                             <h4 className="font-bold text-slate-800 mb-6 flex items-center gap-2">
