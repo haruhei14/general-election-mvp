@@ -22,7 +22,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 
     if (!poll) return { title: '404 - Not Found' };
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.nandemo-vote.com';
 
     // 基本のOGP URL
     let ogUrl = poll.image_url
