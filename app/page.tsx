@@ -14,7 +14,11 @@ export const dynamic = 'force-dynamic';
 // 日付ベースでランダムお題を選ぶ（フォールバック用）
 function getDateBasedPoll(polls: Poll[]): Poll | undefined {
   if (polls.length === 0) return undefined;
-  const sortedPolls = [...polls].sort((a, b) => a.id.localeCompare(b.id));
+  // daily_trend, seed, userのみを対象とし、marugotoなどは除外
+  const targetPolls = polls.filter(p => !p.poll_type || ['daily_trend', 'seed', 'user'].includes(p.poll_type));
+  if (targetPolls.length === 0) return undefined;
+
+  const sortedPolls = [...targetPolls].sort((a, b) => a.id.localeCompare(b.id));
   const today = new Date();
   const jstOffset = 9 * 60 * 60 * 1000;
   const jstDate = new Date(today.getTime() + jstOffset);
