@@ -9,6 +9,7 @@ const SEED_POLLS = [
         genre: '仕事・社会人',
         description: '「つながらない権利」をどう守る？ワークライフバランスの新常識。',
         poll_type: 'daily_trend',
+        tags: ['つながらない権利', '仕事', 'ワークライフバランス', '働き方改革'],
         image_url: '/ogp-disconnect-right.png',
         explanation: {
             background: '欧州では「勤務時間外のメール送受信を制限する」法律が施行されてきましたが、2026年、日本でも労働基準法改正議論の中で「つながらない権利」が焦点となっています。SNSでは「働き方改革の本質」という賛成派と、「現場では非現実的」という慎重派が議論しています。',
@@ -318,6 +319,7 @@ const SEED_POLLS = [
         genre: '音楽',
         description: '数々の名曲の中から、あなたのNo.1を選んでください。',
         poll_type: 'marugoto',
+        tags: ['back number', '音楽', 'J-POP', 'バンド'],
         explanation: { summary: 'back numberの楽曲はどれも心に響くものばかり。選んだ曲には、あなたの恋愛観や大切な思い出が反映されているかもしれません。' },
         options: [
             { id: '1', label: '高嶺の花子さん', votes: 0 },
@@ -348,6 +350,7 @@ const SEED_POLLS = [
         genre: '音楽',
         description: '聴くたびに涙が溢れる、あの曲。',
         poll_type: 'marugoto',
+        tags: ['back number', '音楽', '泣ける曲'],
         explanation: { summary: '泣ける曲を選ぶことで、あなたがどんな場面で心を動かされるかが見えてきます。別れの悲しみか、叶わぬ恋か、それとも日常の尊さか。' },
         options: [
             { id: '1', label: '花束', votes: 0 },
@@ -376,6 +379,7 @@ const SEED_POLLS = [
         genre: '音楽',
         description: '盛り上がる曲から切ない曲まで、あなたのレパートリーは？',
         poll_type: 'marugoto',
+        tags: ['back number', '音楽', 'カラオケ'],
         explanation: { summary: 'カラオケで選ぶ曲は、あなたが人前でどう見られたいかを反映しています。情熱的に歌い上げるか、しっとり聴かせるか。' },
         options: [
             { id: '1', label: '高嶺の花子さん', votes: 0 },
@@ -404,6 +408,7 @@ const SEED_POLLS = [
         genre: '音楽',
         description: '傷ついた心に寄り添ってくれる1曲。',
         poll_type: 'marugoto',
+        tags: ['back number', '音楽', '失恋'],
         explanation: { summary: '失恋時に聴く曲は、癒しを求めるか、悲しみに浸りたいか、前を向きたいか——あなたの失恋への向き合い方が分かります。' },
         options: [
             { id: '1', label: '花束', votes: 0 },
@@ -432,6 +437,7 @@ const SEED_POLLS = [
         genre: '音楽',
         description: '思い入れのあるアルバムは？',
         poll_type: 'marugoto',
+        tags: ['back number', '音楽', 'アルバム'],
         explanation: { summary: 'アルバム選びは、あなたがback numberと出会った時期や、一番聴き込んだ時期を反映しているかもしれません。' },
         options: [
             { id: '1', label: 'アンコール', votes: 0 },
@@ -457,6 +463,7 @@ const SEED_POLLS = [
         genre: '音楽',
         description: '想いを伝えるあの瞬間に添えたい1曲。',
         poll_type: 'marugoto',
+        tags: ['back number', '音楽', '告白', '恋愛'],
         explanation: { summary: '告白に選ぶ曲は、あなたがどんな愛の形を理想としているかを物語っています。情熱的？純粋？それとも少し不器用？' },
         options: [
             { id: '1', label: '花束', votes: 0 },
@@ -484,6 +491,7 @@ const SEED_POLLS = [
         genre: '音楽',
         description: '車窓を眺めながら流したい1曲。',
         poll_type: 'marugoto',
+        tags: ['back number', '音楽', 'ドライブ'],
         explanation: { summary: 'ドライブのお供に選ぶ曲は、あなたの理想のドライブシーンを映し出しています。爽やかな晴れの日か、しっとりした夜か。' },
         options: [
             { id: '1', label: 'SISTER', votes: 0 },
@@ -511,6 +519,7 @@ const SEED_POLLS = [
         genre: '音楽',
         description: '心の奥まで響く言葉を持つ曲。',
         poll_type: 'marugoto',
+        tags: ['back number', '音楽', '歌詞'],
         explanation: { summary: '刺さる歌詞を選ぶことで、あなたが今抱えている感情や、過去に経験した出来事が垣間見えます。' },
         options: [
             { id: '1', label: '水平線', votes: 0 },
@@ -537,25 +546,26 @@ const SEED_POLLS = [
         id: 'marugoto_backnumber_q9',
         title: '一番好きなタイアップ曲は？',
         genre: '音楽',
-        description: 'ドラマ・映画・アニメを彩った名曲たち。',
+        description: 'ドラマ・映画を彩った名曲たち。',
         poll_type: 'marugoto',
+        tags: ['back number', '音楽', 'タイアップ', 'ドラマ', '映画'],
         explanation: { summary: 'タイアップ曲は作品と曲が一体となって記憶に残ります。あなたの好きなタイアップから、思い出の作品が見えてきます。' },
         options: [
             { id: '1', label: '瞬き（8年越しの花嫁）', votes: 0 },
             { id: '2', label: 'ハッピーエンド（ぼく明日）', votes: 0 },
             { id: '3', label: '水平線（インターハイ2020）', votes: 0 },
-            { id: '4', label: '大不正解（銀魂）', votes: 0 },
+            { id: '4', label: '大不正解（銀魂2）', votes: 0 },
             { id: '5', label: 'クリスマスソング（5→9）', votes: 0 },
-            { id: '6', label: 'SISTER（同名ドラマ）', votes: 0 },
-            { id: '7', label: '花束（初めて恋をした日に読む話）', votes: 0 },
-            { id: '8', label: 'ヒロイン（ヒロイン失格）', votes: 0 },
-            { id: '9', label: '手紙（orange）', votes: 0 },
-            { id: '10', label: '黄色（推しの子）', votes: 0 },
-            { id: '11', label: '怪盗（SUITS2）', votes: 0 },
-            { id: '12', label: '秘密のキス（映画）', votes: 0 },
-            { id: '13', label: 'オールドファッション（大恋愛）', votes: 0 },
-            { id: '14', label: '幸せ（ナラタージュ）', votes: 0 },
-            { id: '15', label: 'ARTIST（レンアイ漫画家）', votes: 0 }
+            { id: '6', label: 'SISTER（ポカリCM）', votes: 0 },
+            { id: '7', label: 'ハッピーバースデー（初めて恋をした日に読む話）', votes: 0 },
+            { id: '8', label: '僕の名前を（オオカミ少女と黒王子）', votes: 0 },
+            { id: '9', label: '黄色（虹とオオカミには騙されない）', votes: 0 },
+            { id: '10', label: '怪盗（恋はDeepに）', votes: 0 },
+            { id: '11', label: 'オールドファッション（大恋愛）', votes: 0 },
+            { id: '12', label: 'エメラルド（危険なビーナス）', votes: 0 },
+            { id: '13', label: 'アイラブユー（舞いあがれ!）', votes: 0 },
+            { id: '14', label: 'ベルベットの詩（アキラとあきら）', votes: 0 },
+            { id: '15', label: '新しい恋人達に（海のはじまり）', votes: 0 }
         ]
     },
     {
@@ -564,6 +574,7 @@ const SEED_POLLS = [
         genre: '音楽',
         description: 'あなたがback numberを好きな理由は？',
         poll_type: 'marugoto',
+        tags: ['back number', '音楽', 'バンド'],
         explanation: { summary: '何に惹かれるかで、あなたが音楽に求めるものが見えてきます。声なのか、言葉なのか、それとも人柄なのか。' },
         options: [
             { id: '1', label: '清水依与吏の声', votes: 0 },
@@ -586,6 +597,7 @@ const SEED_POLLS = [
         genre: 'お笑い',
         description: '2001年から続くM-1の歴代チャンピオンたち。',
         poll_type: 'marugoto',
+        tags: ['M-1グランプリ', 'お笑い', '漫才', '王者'],
         explanation: { summary: '王者の選択から、あなたが求める「漫才の理想形」が見えてきます。' },
         options: [
             { id: '1', label: '中川家（2001年）', votes: 0 },
@@ -616,6 +628,7 @@ const SEED_POLLS = [
         genre: 'お笑い',
         description: '惜しくも優勝を逃した実力派たち。',
         poll_type: 'marugoto',
+        tags: ['M-1グランプリ', 'お笑い', '漫才', '準優勝'],
         explanation: { summary: '準優勝コンビへの想いから、「報われてほしい」という感性が見えます。' },
         options: [
             { id: '1', label: 'オードリー', votes: 0 },
@@ -641,6 +654,7 @@ const SEED_POLLS = [
         genre: 'お笑い',
         description: 'あなたの笑いの好みは？',
         poll_type: 'marugoto',
+        tags: ['M-1グランプリ', 'お笑い', '漫才スタイル'],
         explanation: { summary: '漫才スタイルの好みは、日常のコミュニケーションスタイルに通じます。' },
         options: [
             { id: '1', label: 'しゃべくり漫才（中川家、サンドウィッチマン）', votes: 0 },
@@ -661,6 +675,7 @@ const SEED_POLLS = [
         genre: 'お笑い',
         description: 'M-1史に残る名ネタ・神回。',
         poll_type: 'marugoto',
+        tags: ['M-1グランプリ', 'お笑い', '伝説のネタ'],
         explanation: { summary: '心に残るネタは、あなたの「笑いの原点」かもしれません。' },
         options: [
             { id: '1', label: 'ミルクボーイ「コーンフレーク」', votes: 0 },
@@ -686,6 +701,7 @@ const SEED_POLLS = [
         genre: 'お笑い',
         description: '審査員の好みであなたの笑いへの姿勢がわかる。',
         poll_type: 'marugoto',
+        tags: ['M-1グランプリ', 'お笑い', '審査員'],
         explanation: { summary: '好きな審査員は、笑いに求める「評価軸」を表しています。' },
         options: [
             { id: '1', label: '松本人志', votes: 0 },
@@ -708,6 +724,7 @@ const SEED_POLLS = [
         genre: 'お笑い',
         description: 'M-1を彩るツッコミ職人たち。',
         poll_type: 'marugoto',
+        tags: ['M-1グランプリ', 'お笑い', 'ツッコミ'],
         explanation: { summary: 'ツッコミの好みは、あなたの「正論力」や「切り返し力」を表します。' },
         options: [
             { id: '1', label: '柴田英嗣（アンタッチャブル）', votes: 0 },
@@ -730,6 +747,7 @@ const SEED_POLLS = [
         genre: 'お笑い',
         description: 'M-1を彩るボケ職人たち。',
         poll_type: 'marugoto',
+        tags: ['M-1グランプリ', 'お笑い', 'ボケ'],
         explanation: { summary: 'ボケの好みは、あなたの「発想力」や「ユーモアの感性」を表します。' },
         options: [
             { id: '1', label: '山崎弘也（アンタッチャブル）', votes: 0 },
@@ -754,6 +772,7 @@ const SEED_POLLS = [
         genre: 'お笑い',
         description: '笑いだけじゃない、M-1の名シーン。',
         poll_type: 'marugoto',
+        tags: ['M-1グランプリ', 'お笑い', '名場面'],
         explanation: { summary: '選んだ名場面に、あなたがM-1に求める「ドラマ性」が表れます。' },
         options: [
             { id: '1', label: 'サンドウィッチマン敗者復活からの優勝', votes: 0 },
@@ -776,6 +795,7 @@ const SEED_POLLS = [
         genre: 'お笑い',
         description: 'あなたのM-1の見方。',
         poll_type: 'marugoto',
+        tags: ['M-1グランプリ', 'お笑い', '楽しみ方'],
         explanation: { summary: '楽しみ方から、笑いへの「向き合い方」が見えます。' },
         options: [
             { id: '1', label: '純粋にネタを楽しむ', votes: 0 },
@@ -796,6 +816,7 @@ const SEED_POLLS = [
         genre: 'お笑い',
         description: 'あなたがM-1を好きな理由。',
         poll_type: 'marugoto',
+        tags: ['M-1グランプリ', 'お笑い', '魅力'],
         explanation: { summary: 'M-1の魅力の感じ方で、笑いへの価値観が分かります。' },
         options: [
             { id: '1', label: '一夜でスターが生まれるドラマ性', votes: 0 },
