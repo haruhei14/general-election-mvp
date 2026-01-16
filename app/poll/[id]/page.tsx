@@ -15,74 +15,40 @@ type Props = {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 };
 
-// Hardcoded fallback to ensure OGP works even if DB sync fails
-const FALLBACK_POLLS: Record<string, any> = {
-    'disconnect-right-2026': {
-        id: 'disconnect-right-2026',
-        title: '休日や夜間の仕事連絡、あなたは「完全に遮断すべき」だと思う？',
-        description: '「つながらない権利」をどう守る？ワークライフバランスの新常識。',
-        image_url: 'https://www.nandemo-vote.com/ogp-disconnect-right.png',
-        genre: '仕事・社会人',
-        created_at: new Date().toISOString(),
-        options: []
-    }
+// ===== 超シンプルなOGP画像マッピング =====
+// お題IDに対応する画像ファイル名を直接指定
+// 画像は public/ フォルダに ogp-{id}.png の形式で配置
+const OGP_IMAGES: Record<string, string> = {
+    'disconnect-right-2026': 'https://www.nandemo-vote.com/ogp-disconnect-right.png',
+    // 今後追加するお題はここに1行追加するだけ
+    // 例: 'new-poll-id': 'https://www.nandemo-vote.com/ogp-new-poll-id.png',
 };
 
-export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+// デフォルト画像（マッピングにないお題用）
+const DEFAULT_OGP = 'https://www.nandemo-vote.com/ogp-marugoto.png';
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { id } = await params;
-    const resolvedSearchParams = await searchParams;
+    const poll = await getPoll(id);
 
-    // Try DB first, then fallback
-    let poll = await getPoll(id);
-    if (!poll && FALLBACK_POLLS[id]) {
-        poll = FALLBACK_POLLS[id] as any;
-    }
-
-    if (!poll) return { title: '404 - Not Found' };
-
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.nandemo-vote.com';
-
-    // 基本のOGP URL
-    let ogUrl = 'https://www.nandemo-vote.com/ogp-marugoto.png'; // Default fallback
-
-    if (id === 'disconnect-right-2026') {
-        ogUrl = 'https://www.nandemo-vote.com/ogp-disconnect-right.png';
-    } else if (poll.image_url) {
-        ogUrl = poll.image_url.startsWith('http') ? poll.image_url : `${baseUrl}${poll.image_url}`;
-    } else {
-        ogUrl = `${baseUrl}/api/og?title=${encodeURIComponent(poll.title)}`;
-    }
-
-    // シェア用パラメータ(s)がある場合はそれを使用、なければDBの最新データを使用
-    // フォーマット: Label:Votes,Label:Votes
-    let optionsStr = typeof resolvedSearchParams.s === 'string' ? resolvedSearchParams.s : '';
-
-    if (!optionsStr && poll.options && poll.options.length > 0) {
-        // 投票数順に上位2つを取得
-        const sortedOptions = [...poll.options].sort((a, b) => b.votes - a.votes).slice(0, 2);
-        // 合計票数が0でなければパラメータ生成（0票の場合はグラフなし）
-        const totalVotes = sortedOptions.reduce((sum, o) => sum + o.votes, 0);
-        if (totalVotes > 0) {
-            optionsStr = sortedOptions.map(o => `${o.label}:${o.votes}`).join(',');
-        }
-    }
-
-    if (optionsStr) {
-        ogUrl += `&options=${encodeURIComponent(optionsStr)}`;
-    }
+    // お題が見つからない場合でも、マッピングがあればOGPは返す
+    const ogpImage = OGP_IMAGES[id] || DEFAULT_OGP;
+    const title = poll?.title || 'なんでも総選挙';
+    const description = poll?.description || 'みんなの意見を可視化する投票サイト';
 
     return {
-        title: `${poll.title} | なんでも総選挙`,
-        description: poll.description || 'あなたも投票に参加しよう！',
+        title: `${title} | なんでも総選挙`,
+        description,
         openGraph: {
-            title: poll.title,
-            description: poll.description || 'あなたも投票に参加しよう！',
-            images: [{ url: ogUrl, width: 1200, height: 630 }],
+            title,
+            description,
+            images: [{ url: ogpImage, width: 1200, height: 630 }],
         },
         twitter: {
             card: 'summary_large_image',
-            title: poll.title,
-            images: [ogUrl],
+            title,
+            description,
+            images: [ogpImage],
         },
     };
 }
