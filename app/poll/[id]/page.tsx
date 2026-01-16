@@ -25,9 +25,15 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.nandemo-vote.com';
 
     // 基本のOGP URL
-    let ogUrl = poll.image_url
-        ? (poll.image_url.startsWith('http') ? poll.image_url : `${baseUrl}${poll.image_url}`)
-        : `${baseUrl}/api/og?title=${encodeURIComponent(poll.title)}`;
+    let ogUrl = 'https://www.nandemo-vote.com/ogp-marugoto.png'; // Default fallback
+
+    if (id === 'disconnect-right-2026') {
+        ogUrl = 'https://www.nandemo-vote.com/ogp-disconnect-right.png';
+    } else if (poll.image_url) {
+        ogUrl = poll.image_url.startsWith('http') ? poll.image_url : `${baseUrl}${poll.image_url}`;
+    } else {
+        ogUrl = `${baseUrl}/api/og?title=${encodeURIComponent(poll.title)}`;
+    }
 
     // シェア用パラメータ(s)がある場合はそれを使用、なければDBの最新データを使用
     // フォーマット: Label:Votes,Label:Votes
