@@ -15,10 +15,26 @@ type Props = {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 };
 
+// Hardcoded fallback to ensure OGP works even if DB sync fails
+const FALLBACK_POLLS: Record<string, Partial<any>> = {
+    'disconnect-right-2026': {
+        id: 'disconnect-right-2026',
+        title: '休日や夜間の仕事連絡、あなたは「完全に遮断すべき」だと思う？',
+        description: '「つながらない権利」をどう守る？ワークライフバランスの新常識。',
+        image_url: 'https://www.nandemo-vote.com/ogp-disconnect-right.png',
+        options: []
+    }
+};
+
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
     const { id } = await params;
     const resolvedSearchParams = await searchParams;
-    const poll = await getPoll(id);
+
+    // Try DB first, then fallback
+    let poll = await getPoll(id);
+    if (!poll && FALLBACK_POLLS[id]) {
+        poll = FALLBACK_POLLS[id];
+    }
 
     if (!poll) return { title: '404 - Not Found' };
 
