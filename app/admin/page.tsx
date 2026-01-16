@@ -228,7 +228,7 @@ function TweetGenerator() {
         if (!poll) return;
 
         const baseUrl = 'https://www.nandemo-vote.com';
-        const url = `${baseUrl}/poll/${poll.id}`;
+        const url = `${baseUrl}/poll/${poll.id}?v=1`;
 
         // ツイート本文の構築
         // 特にお題IDによるカスタム分岐があればここで調整可能
