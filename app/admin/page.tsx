@@ -185,6 +185,98 @@ export default function AdminPage() {
                     </div>
                 )}
             </div>
+
+            {/* Social Media Tool Section */}
+            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+                <div className="flex items-center gap-2">
+                    <span className="text-xl">🐦</span>
+                    <h2 className="font-bold text-slate-700">半自動告知ツイート</h2>
+                </div>
+                <p className="text-sm text-slate-500">
+                    最新の「今日の一問」を取得して、告知用の投稿を作成します。
+                </p>
+
+                <TweetGenerator />
+            </div>
+        </div>
+    );
+}
+
+function TweetGenerator() {
+    const [poll, setPoll] = useState<any>(null);
+    const [loading, setLoading] = useState(false);
+
+    const fetchLatest = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch('/api/polls/latest-daily');
+            const data = await res.json();
+            setPoll(data.poll);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 初期ロード
+    useEffect(() => {
+        fetchLatest();
+    }, []);
+
+    const handleTweet = () => {
+        if (!poll) return;
+
+        const baseUrl = 'https://www.nandemo-vote.com';
+        const url = `${baseUrl}/poll/${poll.id}`;
+
+        // ツイート本文の構築
+        // 特にお題IDによるカスタム分岐があればここで調整可能
+        let text = `【本日のお題】\n${poll.title}\n\n`;
+
+        // 選択肢の上位2つを表示（あれば）
+        if (poll.options && poll.options.length >= 2) {
+            text += `🅰️ ${poll.options[0].label}\n🅱️ ${poll.options[1].label}\n\n`;
+        }
+
+        text += `どっち派？みんなで投票しよう！👇\n#なんでも総選挙 #今日の一問`;
+
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+        window.open(twitterUrl, '_blank', 'width=600,height=500');
+    };
+
+    if (loading) return <div className="text-sm text-slate-500">読み込み中...</div>;
+    if (!poll) return (
+        <div>
+            <p className="text-sm text-red-500 mb-2">お題が見つかりませんでした</p>
+            <button onClick={fetchLatest} className="text-blue-600 text-sm underline">再読み込み</button>
+        </div>
+    );
+
+    return (
+        <div className="bg-slate-50 p-4 rounded-xl space-y-3">
+            <div className="flex items-start gap-3">
+                <div className="bg-blue-100 text-blue-600 p-2 rounded-lg font-bold text-xs flex-shrink-0">
+                    今日の一問
+                </div>
+                <div>
+                    <h3 className="font-bold text-slate-700 text-sm">{poll.title}</h3>
+                    <p className="text-xs text-slate-500 mt-1 line-clamp-1">{poll.description}</p>
+                </div>
+            </div>
+
+            <button
+                onClick={handleTweet}
+                className="w-full py-3 bg-black text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors"
+            >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+                告知ツイートを作成する
+            </button>
+            <p className="text-[10px] text-slate-400 text-center">
+                ※開いた画面で画像を追加したり文章を編集できます
+            </p>
         </div>
     );
 }
