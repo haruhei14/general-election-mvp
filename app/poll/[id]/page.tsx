@@ -19,6 +19,7 @@ type Props = {
 // お題IDに対応する画像ファイル名を直接指定
 // 画像は public/ フォルダに ogp-{id}.png の形式で配置
 const OGP_IMAGES: Record<string, string> = {
+    'live-action-goldenkamuy-2026': 'https://www.nandemo-vote.com/ogp-live-action.png?v=1',
     'disconnect-right-2026': 'https://www.nandemo-vote.com/ogp-disconnect-right.png?v=1',
     // 今後追加するお題はここに1行追加するだけ
     // 例: 'new-poll-id': 'https://www.nandemo-vote.com/ogp-new-poll-id.png?v=1',
@@ -179,9 +180,12 @@ export default async function PollPage(props: Props) {
 
                         {/* Custom Share Text for Specific Polls */}
                         {(() => {
-                            const shareText = poll.id === 'disconnect-right-2026'
-                                ? '休日の仕事LINE、正直どう思う？ #つながらない権利 #デジタルデトックス #なんでも総選挙'
-                                : undefined;
+                            let shareText = undefined;
+                            if (poll.id === 'live-action-goldenkamuy-2026') {
+                                shareText = '本日ドラマ版金カム放送開始！実写化のクオリティ、あなたが一番譲れないのは？ 🎬🔥 #ゴールデンカムイ #実写化 #山﨑賢人 #なんでも総選挙';
+                            } else if (poll.id === 'disconnect-right-2026') {
+                                shareText = '休日の仕事LINE、正直どう思う？ #つながらない権利 #デジタルデトックス #なんでも総選挙';
+                            }
 
                             return (
                                 <ShareButtons pollId={poll.id} pollTitle={poll.title} shareText={shareText} />
