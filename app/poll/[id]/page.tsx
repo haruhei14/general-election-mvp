@@ -115,12 +115,21 @@ export default async function PollPage(props: Props) {
                 '@type': 'Question',
                 'name': poll.title,
                 'text': poll.description || `${poll.title}について、みんなの意見を投票で決めています。`,
+                'dateCreated': poll.created_at,
+                'author': {
+                    '@type': 'Organization',
+                    'name': 'なんでも総選挙'
+                },
                 'answerCount': poll.options.length,
-                'upvoteCount': poll.options.reduce((sum, o) => sum + o.votes, 0),
-                'suggestedAnswer': poll.options.map(option => ({
+                'suggestedAnswer': poll.options.map((option, index) => ({
                     '@type': 'Answer',
                     'text': option.label,
                     'upvoteCount': option.votes,
+                    'dateCreated': poll.created_at,
+                    'author': {
+                        '@type': 'Organization',
+                        'name': 'なんでも総選挙'
+                    },
                     'url': `${baseUrl}/poll/${poll.id}`
                 }))
             }
