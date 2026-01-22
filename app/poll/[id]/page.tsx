@@ -19,6 +19,7 @@ type Props = {
 // お題IDに対応する画像ファイル名を直接指定
 // 画像は public/ フォルダに ogp-{id}.png の形式で配置
 const OGP_IMAGES: Record<string, string> = {
+    'oshinoko-miyako-2026': 'https://www.nandemo-vote.com/ogp-oshinoko-miyako.png?v=1',
     'senbatsu-march-2026': 'https://www.nandemo-vote.com/ogp-senbatsu.png?v=1',
     'fx-kurumi-anime-2026': 'https://www.nandemo-vote.com/ogp-fx-kurumi.png?v=1',
     'live-action-goldenkamuy-2026': 'https://www.nandemo-vote.com/ogp-live-action.png?v=1',
@@ -192,7 +193,9 @@ export default async function PollPage(props: Props) {
                         {/* Custom Share Text for Specific Polls */}
                         {(() => {
                             let shareText = undefined;
-                            if (poll.id === 'senbatsu-march-2026') {
+                            if (poll.id === 'oshinoko-miyako-2026') {
+                                shareText = '実写版【推しの子】ミヤコ役の倉科カナさんが神すぎる…！配役のセンス、どこに感じる？ 🌟🎬 #推しの子 #倉科カナ #実写化 #なんでも総選挙';
+                            } else if (poll.id === 'senbatsu-march-2026') {
                                 shareText = 'センバツ行進曲が「イイじゃん」に決定！⚾🎶 伝統にバズり曲はあり？なし？ #センバツ #高校野球 #MILK #なんでも総選挙';
                             } else if (poll.id === 'fx-kurumi-anime-2026') {
                                 shareText = 'くるみちゃんアニメ化決定！🎉 投資、ギャンブル、デスゲーム…あなたが一番脳が震えるのは？ 💸😱 #FX戦士くるみちゃん #アニメ化 #投資女子 #なんでも総選挙';
